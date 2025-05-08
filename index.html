@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MeepleShop - Boutique de Jeux de Société</title>
+    <title>Pistache - Boutique de Jeux de Société</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap">
     <style>
@@ -67,12 +67,7 @@
             background-color: var(--primary-color);
             color: var(--light-text);
         }
-        
-        main {
-            padding-top: 70px; /* Pour compenser le header fixé */
-        }
-        
-        /* Section pour catalogue et événements côte à côte */
+
         .horizontal-sections {
             display: flex;
             flex-direction: row;
@@ -90,8 +85,7 @@
             text-align: center;
             position: relative;
         }
-        
-        /* Classes pour les sections */
+
         .full-section {
             min-height: 100vh;
             width: 100%;
@@ -105,29 +99,25 @@
         }
         
         .shop-intro {
-            background: linear-gradient(rgba(61, 28, 14, 0.8), rgba(61, 28, 14, 0.9)), url('fond-accueil-titre.png') center/cover no-repeat;
+            background: linear-gradient(rgba(61, 28, 14, 0.8), rgba(61, 28, 14, 0.9)), url('images/accueil.png') center/cover no-repeat;
             color: var(--light-text);
             border-bottom: 3px solid var(--accent-color);
         }
-        
-        /* Modification pour uniformiser le fond des sections catalogue et événements */
+
         .catalogue-section,
         .events-section {
-            background-color: #E6DBC9; /* Marron clair uniforme pour les deux sections */
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d2b48c' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
-            border: none; /* Suppression des bordures */
+            background-color: #E6DBC9;
+            border: none;
         }
         
         .contact-section {
             background: linear-gradient(rgba(61, 28, 14, 0.8), rgba(61, 28, 14, 0.9)), url('/api/placeholder/1200/800') center/cover no-repeat;
             color: var(--light-text);
         }
-        
-        /* Supression des styles pour la boîte de section-content */
+
         .section-content {
             max-width: 90%;
             margin: 0 auto;
-            /* Suppression du background, padding, border-radius, box-shadow et border */
         }
         
         .half-section .section-content {
@@ -390,8 +380,7 @@
             font-size: 0.9rem;
             letter-spacing: 1px;
         }
-        
-        /* Scroll arrow */
+
         .scroll-arrow {
             position: absolute;
             bottom: 2rem;
@@ -438,8 +427,7 @@
                 gap: 0.8rem;
             }
         }
-        
-        /* Improved responsive menu */
+
         .menu-toggle {
             display: none;
             background: none;
@@ -496,34 +484,33 @@
 </head>
 <body>
     <header>
-        <div class="logo">MeepleShop</div>
+        <div class="logo">Pistache</div>
         <button class="menu-toggle" id="menuToggle">
             <i class="fas fa-bars"></i>
         </button>
         <nav>
             <ul id="mainMenu">
-                <li><a href="#home">Accueil</a></li>
-                <li><a href="#catalogue-events">Catalogue & Événements</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="catalogue.html">Catalogue</a></li>
+                <li><a href="evenements.html">Événements</a></li>
+                <li><a href="contact.html">Contact</a></li>
                 <li><a href="panier.html">Panier</a></li>
             </ul>
         </nav>
     </header>
     
     <main>
-        <!-- Section d'introduction full height & full length -->
         <section id="home" class="full-section shop-intro">
             <div class="section-content">
-                <h1 class="section-heading">MeepleShop</h1>
-                <p class="section-description">Bienvenue dans votre boutique spécialisée en jeux de société à Toulouse. Découvrez notre vaste collection de jeux pour tous les âges et tous les goûts. De la stratégie aux jeux familiaux, en passant par les jeux de rôle et les jeux de cartes, trouvez votre prochain coup de cœur ludique chez MeepleShop.</p>
+                <h1 class="section-heading">Pistache</h1>
+                <p class="section-description">Bienvenue dans votre boutique spécialisée en jeux de société à Bordeaux. Découvrez notre vaste collection de jeux pour tous les âges et tous les goûts. De la stratégie aux jeux familiaux, en passant par les jeux de rôle et les jeux de cartes, trouvez votre prochain coup de cœur ludique chez Pistache.</p>
                 <a href="#catalogue-events" class="btn">Découvrir nos jeux</a>
             </div>
             <div class="scroll-arrow"><i class="fas fa-chevron-down"></i></div>
         </section>
-        
-        <!-- Section catalogue et événements côte à côte -->
+
+        <!--Proposition de Tatiana : Mettre Les deux textes dans des boîtes-->
         <div id="catalogue-events" class="horizontal-sections">
-            <!-- Section catalogue -->
             <section id="catalogue" class="half-section catalogue-section">
                 <div class="section-content">
                     <h2 class="section-heading">Notre Catalogue</h2>
@@ -553,65 +540,65 @@
                 <div class="content-grid">
                     <!-- Jeu 1 -->
                     <div class="game-card">
-                        <img src="/api/placeholder/300/180" alt="Splendor Duel" class="game-image">
+                        <img src="/api/placeholder/300/180" alt="Mille Bornes" class="game-image">
                         <div class="game-info">
-                            <div class="game-title">Splendor Duel</div>
-                            <p class="game-description">Un jeu de stratégie et de collection de gemmes pour 2 joueurs.</p>
+                            <div class="game-title">Mille Bornes</div>
+                            <p class="game-description">Course automobile avec cartes d'obstacles et de progression.</p>
                             <div class="game-meta">
-                                <span class="game-year">2023</span>
-                                <span class="game-type">Stratégie</span>
+                                <span class="game-year">1954</span>
+                                <span class="game-type">Cartes</span>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Jeu 2 -->
                     <div class="game-card">
-                        <img src="/api/placeholder/300/180" alt="Wingspan" class="game-image">
+                        <img src="/api/placeholder/300/180" alt="Cluedo" class="game-image">
                         <div class="game-info">
-                            <div class="game-title">Wingspan</div>
-                            <p class="game-description">Un jeu de gestion où vous collectionnez et protégez des oiseaux.</p>
+                            <div class="game-title">Cluedo</div>
+                            <p class="game-description">Résolvez un meurtre en identifiant le coupable, l’arme et le lieu.</p>
                             <div class="game-meta">
-                                <span class="game-year">2022</span>
-                                <span class="game-type">Gestion</span>
+                                <span class="game-year">1949</span>
+                                <span class="game-type">Enquête</span>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Jeu 3 -->
                     <div class="game-card">
-                        <img src="/api/placeholder/300/180" alt="7 Wonders Architects" class="game-image">
+                        <img src="/api/placeholder/300/180" alt="Uno" class="game-image">
                         <div class="game-info">
-                            <div class="game-title">7 Wonders Architects</div>
-                            <p class="game-description">Version simplifiée du célèbre jeu 7 Wonders, accessible à tous.</p>
+                            <div class="game-title">Uno</div>
+                            <p class="game-description">Débarrassez-vous de vos cartes en assortissant couleurs ou chiffres.</p>
                             <div class="game-meta">
-                                <span class="game-year">2023</span>
-                                <span class="game-type">Familial</span>
+                                <span class="game-year">1971</span>
+                                <span class="game-type">Cartes</span>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Jeu 4 -->
                     <div class="game-card">
-                        <img src="/api/placeholder/300/180" alt="Cascadia" class="game-image">
+                        <img src="/api/placeholder/300/180" alt="Docteur Maboul" class="game-image">
                         <div class="game-info">
-                            <div class="game-title">Cascadia</div>
-                            <p class="game-description">Créez des habitats pour la faune sauvage dans ce jeu de placement de tuiles.</p>
+                            <div class="game-title">Docteur Maboul</div>
+                            <p class="game-description">Retirez des objets du corps sans toucher les bords métalliques.</p>
                             <div class="game-meta">
-                                <span class="game-year">2024</span>
-                                <span class="game-type">Placement</span>
+                                <span class="game-year">1965</span>
+                                <span class="game-type">Concentration</span>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Jeu 5 -->
                     <div class="game-card">
-                        <img src="/api/placeholder/300/180" alt="Libertalia" class="game-image">
+                        <img src="/api/placeholder/300/180" alt="Yams" class="game-image">
                         <div class="game-info">
-                            <div class="game-title">Libertalia</div>
-                            <p class="game-description">Un jeu de pirates où vous devez amasser le plus grand butin.</p>
+                            <div class="game-title">Yams</div>
+                            <p class="game-description">Lancez les dés pour former des combinaisons et marquer un maximum de points.</p>
                             <div class="game-meta">
-                                <span class="game-year">2023</span>
-                                <span class="game-type">Cartes</span>
+                                <span class="game-year">1956</span>
+                                <span class="game-type">Dés</span>
                             </div>
                         </div>
                     </div>
@@ -624,7 +611,7 @@
                     <a href="evenements.html" class="view-all">Voir tous les événements</a>
                 </div>
                 
-                <!-- Événement 1 (aujourd'hui) -->
+                <!-- Événement 1 -->
                 <div class="event-card">
                     <div class="event-date">
                         <div class="month">MAI</div>
@@ -708,16 +695,14 @@
     </main>
     
     <footer>
-        <p>&copy; 2025 MeepleShop. Tous droits réservés.</p>
+        <p>&copy; 2025 Pistache. Tous droits réservés.</p>
     </footer>
     
     <script>
-        // Toggle menu on mobile
         document.getElementById('menuToggle').addEventListener('click', function() {
             document.getElementById('mainMenu').classList.toggle('active');
         });
-        
-        // Smooth scrolling for anchor links
+
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -726,7 +711,6 @@
                     behavior: 'smooth'
                 });
                 
-                // Close mobile menu if open
                 if (document.getElementById('mainMenu').classList.contains('active')) {
                     document.getElementById('mainMenu').classList.remove('active');
                 }
