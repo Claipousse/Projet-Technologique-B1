@@ -80,10 +80,9 @@ CREATE TABLE inscription(
 );
 
 CREATE TABLE preferences(
-    id_preference INT NOT NULL AUTO_INCREMENT,
     id_inscription INT NOT NULL,
     id_jeux INT NOT NULL,
-    CONSTRAINT PK_PREF PRIMARY KEY (id_preference),
+    CONSTRAINT PK_PREF PRIMARY KEY (id_inscription, id_jeux),
     CONSTRAINT FK_INSC_PREF FOREIGN KEY (id_inscription) REFERENCES inscription (id_inscription),
     CONSTRAINT FK_JEUX_PREF FOREIGN KEY (id_jeux) REFERENCES jeux (id_jeux)
 );
