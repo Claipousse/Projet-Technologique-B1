@@ -1,1075 +1,1226 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Événements - Pistache - Boutique de Jeux de Société</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap"
+    />
     <style>
-        :root {
-            --primary-color: #8B4513;  /* Marron */
-            --secondary-color: #5D4037; /* Marron foncé */
-            --accent-color: #D2B48C;   /* Tan */
-            --light-bg: #F5F5DC;       /* Beige */
-            --dark-text: #3E2723;      /* Marron très foncé */
-            --light-text: #FFF8E1;     /* Ivoire */
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Lora', Georgia, serif;
-        }
-        
-        body {
-            background-color: var(--light-bg);
-            color: var(--dark-text);
-        }
-        
-        header {
-            background: var(--secondary-color);
-            color: var(--light-text);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-            border-bottom: 2px solid var(--accent-color);
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 1.5rem;
-        }
-        
-        nav a {
-            color: var(--light-text);
-            text-decoration: none;
-            padding: 0.5rem;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-            font-family: 'Playfair Display', serif;
-            letter-spacing: 1px;
-        }
-        
-        nav a:hover {
-            background-color: var(--primary-color);
-            color: var(--light-text);
-        }
+      :root {
+        --primary-color: #8b4513; /* Marron */
+        --secondary-color: #5d4037; /* Marron foncé */
+        --accent-color: #d2b48c; /* Tan */
+        --light-bg: #f5f5dc; /* Beige */
+        --dark-text: #3e2723; /* Marron très foncé */
+        --light-text: #fff8e1; /* Ivoire */
+      }
 
-        .events-hero {
-            background: linear-gradient(rgba(61, 28, 14, 0.8), rgba(61, 28, 14, 0.9)), url('/api/placeholder/1200/400') center/cover no-repeat;
-            color: var(--light-text);
-            padding: 8rem 2rem 4rem;
-            text-align: center;
-            border-bottom: 3px solid var(--accent-color);
-        }
-        
-        .events-hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            font-family: 'Playfair Display', Georgia, serif;
-        }
-        
-        .events-hero p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            line-height: 1.6;
-        }
-        
-        .events-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-            background-color: var(--light-bg);
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Lora", Georgia, serif;
+      }
 
-        .filters {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: center;
-            border: 1px solid #E6DDD0;
-        }
-        
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .filter-label {
-            font-weight: bold;
-            color: var(--primary-color);
-            font-size: 0.9rem;
-        }
-        
-        .filter-select {
-            padding: 0.5rem;
-            border: 1px solid var(--accent-color);
-            border-radius: 4px;
-            background-color: var(--light-bg);
-            color: var(--dark-text);
-        }
-        
-        .search-box {
-            flex-grow: 1;
-            position: relative;
-            min-width: 200px;
-        }
-        
-        .search-box input {
-            width: 100%;
-            padding: 0.5rem 0.5rem 0.5rem 2rem;
-            border: 1px solid var(--accent-color);
-            border-radius: 4px;
-            background-color: var(--light-bg);
-        }
-        
-        .search-icon {
-            position: absolute;
-            left: 0.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-color);
-        }
+      body {
+        background-color: var(--light-bg);
+        color: var(--dark-text);
+      }
 
-        .events-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .event-card {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #E6DDD0;
-        }
-        
-        .event-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            border-color: var(--accent-color);
-        }
+      header {
+        background: var(--secondary-color);
+        color: var(--light-text);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+        border-bottom: 2px solid var(--accent-color);
+      }
 
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo img {
+        height: 50px;
+        margin-left: 8px;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+        gap: 1.5rem;
+      }
+
+      nav a {
+        color: var(--light-text);
+        text-decoration: none;
+        padding: 0.5rem;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+        font-family: "Playfair Display", serif;
+        letter-spacing: 1px;
+      }
+
+      nav a:hover {
+        background-color: var(--primary-color);
+        color: var(--light-text);
+      }
+
+      .events-hero {
+        background: linear-gradient(
+            rgba(61, 28, 14, 0.8),
+            rgba(61, 28, 14, 0.9)
+          ),
+          url("/api/placeholder/1200/400") center/cover no-repeat;
+        color: var(--light-text);
+        padding: 8rem 2rem 4rem;
+        text-align: center;
+        border-bottom: 3px solid var(--accent-color);
+      }
+
+      .events-hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        font-family: "Playfair Display", Georgia, serif;
+      }
+
+      .events-hero p {
+        font-size: 1.2rem;
+        max-width: 800px;
+        margin: 0 auto 2rem;
+        line-height: 1.6;
+      }
+
+      .events-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+        background-color: var(--light-bg);
+      }
+
+      .filters {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+        border: 1px solid #e6ddd0;
+      }
+
+      .filter-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .filter-label {
+        font-weight: bold;
+        color: var(--primary-color);
+        font-size: 0.9rem;
+      }
+
+      .filter-select {
+        padding: 0.5rem;
+        border: 1px solid var(--accent-color);
+        border-radius: 4px;
+        background-color: var(--light-bg);
+        color: var(--dark-text);
+      }
+
+      .search-box {
+        flex-grow: 1;
+        position: relative;
+        min-width: 200px;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 0.5rem 0.5rem 0.5rem 2rem;
+        border: 1px solid var(--accent-color);
+        border-radius: 4px;
+        background-color: var(--light-bg);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--primary-color);
+      }
+
+      .events-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .event-card {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid #e6ddd0;
+      }
+
+      .event-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border-color: var(--accent-color);
+      }
+
+      .event-card-content {
+        display: flex;
+        min-height: 200px;
+      }
+
+      .event-image {
+        width: 30%;
+        object-fit: cover;
+        border-right: 1px solid #e6ddd0;
+      }
+
+      .event-info {
+        flex: 1;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .event-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 1px dotted var(--accent-color);
+      }
+
+      .event-title-group {
+        flex: 1;
+      }
+
+      .event-title {
+        font-size: 1.8rem;
+        color: var(--primary-color);
+        font-family: "Playfair Display", serif;
+        margin-bottom: 0.5rem;
+      }
+
+      .event-date {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--secondary-color);
+      }
+
+      .event-date i {
+        color: var(--primary-color);
+      }
+
+      .event-badge {
+        background-color: var(--primary-color);
+        color: var(--light-text);
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        display: inline-block;
+      }
+
+      .event-badge.limited {
+        background-color: #d32f2f;
+      }
+
+      .event-badge.available {
+        background-color: #388e3c;
+      }
+
+      .event-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .event-description {
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+        flex: 1;
+      }
+
+      .event-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-top: auto;
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .meta-item i {
+        color: var(--primary-color);
+      }
+
+      .event-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .event-tag {
+        background-color: var(--accent-color);
+        color: var(--dark-text);
+        padding: 0.3rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+      }
+
+      .event-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        background-color: #fff8e1;
+        border-top: 1px solid #e6ddd0;
+      }
+
+      .participation-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .progress-container {
+        width: 150px;
+        height: 8px;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background-color: var(--primary-color);
+      }
+
+      .participation-text {
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: var(--primary-color);
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 0.7rem 1.5rem;
+        background-color: var(--primary-color);
+        color: var(--light-text);
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+        border: none;
+        cursor: pointer;
+        font-size: 0.95rem;
+      }
+
+      .btn:hover {
+        background-color: var(--secondary-color);
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 3rem;
+        gap: 0.5rem;
+      }
+
+      .page-link {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: white;
+        border: 1px solid var(--accent-color);
+        border-radius: 4px;
+        text-decoration: none;
+        color: var(--primary-color);
+        transition: all 0.3s;
+      }
+
+      .page-link:hover,
+      .page-link.active {
+        background-color: var(--primary-color);
+        color: var(--light-text);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1001;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content {
+        background-color: var(--light-bg);
+        border-radius: 8px;
+        width: 90%;
+        max-width: 700px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        border: 2px solid var(--accent-color);
+      }
+
+      .modal-header {
+        background-color: var(--secondary-color);
+        color: var(--light-text);
+        padding: 1.5rem;
+        position: relative;
+        border-bottom: 2px solid var(--accent-color);
+      }
+
+      .modal-title {
+        font-size: 1.8rem;
+        font-family: "Playfair Display", serif;
+        margin-bottom: 0.5rem;
+      }
+
+      .modal-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .close-modal {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.5rem;
+        color: var(--light-text);
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      .modal-body {
+        padding: 2rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid var(--accent-color);
+        border-radius: 4px;
+        background-color: white;
+      }
+
+      .form-text {
+        font-size: 0.85rem;
+        color: #666;
+        margin-top: 0.3rem;
+      }
+
+      .form-section {
+        margin-bottom: 2rem;
+      }
+
+      .form-section-title {
+        font-size: 1.3rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--accent-color);
+        font-family: "Playfair Display", serif;
+      }
+
+      .games-selection {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+        margin-top: 1rem;
+      }
+
+      .game-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        border: 1px solid #e6ddd0;
+        border-radius: 4px;
+        background-color: white;
+        transition: background-color 0.3s;
+      }
+
+      .game-checkbox:hover {
+        background-color: #fff8e1;
+      }
+
+      .game-checkbox input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--primary-color);
+      }
+
+      .modal-footer {
+        padding: 1.5rem 2rem;
+        background-color: #f5f5f5;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #e6ddd0;
+      }
+
+      .btn-secondary {
+        background-color: #9e9e9e;
+      }
+
+      .btn-secondary:hover {
+        background-color: #757575;
+      }
+
+      footer {
+        background-color: var(--secondary-color);
+        color: var(--light-text);
+        text-align: center;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border-top: 3px solid var(--primary-color);
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+      }
+
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--light-text);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.5rem;
+      }
+
+      @media (max-width: 992px) {
         .event-card-content {
-            display: flex;
-            min-height: 200px;
+          flex-direction: column;
         }
-        
+
         .event-image {
-            width: 30%;
-            object-fit: cover;
-            border-right: 1px solid #E6DDD0;
+          width: 100%;
+          height: 200px;
+          border-right: none;
+          border-bottom: 1px solid #e6ddd0;
         }
-        
-        .event-info {
-            flex: 1;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .event-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 1px dotted var(--accent-color);
-        }
-        
-        .event-title-group {
-            flex: 1;
-        }
-        
-        .event-title {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            font-family: 'Playfair Display', serif;
-            margin-bottom: 0.5rem;
-        }
-        
-        .event-date {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--secondary-color);
-        }
-        
-        .event-date i {
-            color: var(--primary-color);
-        }
-        
-        .event-badge {
-            background-color: var(--primary-color);
-            color: var(--light-text);
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            white-space: nowrap;
-            display: inline-block;
-        }
-        
-        .event-badge.limited {
-            background-color: #D32F2F;
-        }
-        
-        .event-badge.available {
-            background-color: #388E3C;
-        }
-        
-        .event-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .event-description {
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-            flex: 1;
-        }
-        
-        .event-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-top: auto;
-        }
-        
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .meta-item i {
-            color: var(--primary-color);
-        }
-        
-        .event-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        .event-tag {
-            background-color: var(--accent-color);
-            color: var(--dark-text);
-            padding: 0.3rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-        
+
         .event-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            background-color: #FFF8E1;
-            border-top: 1px solid #E6DDD0;
-        }
-        
-        .participation-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .progress-container {
-            width: 150px;
-            height: 8px;
-            background-color: #E0E0E0;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            height: 100%;
-            background-color: var(--primary-color);
-        }
-        
-        .participation-text {
-            font-weight: bold;
-            font-size: 0.9rem;
-            color: var(--primary-color);
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 0.7rem 1.5rem;
-            background-color: var(--primary-color);
-            color: var(--light-text);
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-        
-        .btn:hover {
-            background-color: var(--secondary-color);
+          flex-direction: column;
+          gap: 1rem;
         }
 
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 3rem;
-            gap: 0.5rem;
-        }
-        
-        .page-link {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background-color: white;
-            border: 1px solid var(--accent-color);
-            border-radius: 4px;
-            text-decoration: none;
-            color: var(--primary-color);
-            transition: all 0.3s;
-        }
-        
-        .page-link:hover, .page-link.active {
-            background-color: var(--primary-color);
-            color: var(--light-text);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1001;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background-color: var(--light-bg);
-            border-radius: 8px;
-            width: 90%;
-            max-width: 700px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            border: 2px solid var(--accent-color);
-        }
-        
-        .modal-header {
-            background-color: var(--secondary-color);
-            color: var(--light-text);
-            padding: 1.5rem;
-            position: relative;
-            border-bottom: 2px solid var(--accent-color);
-        }
-        
-        .modal-title {
-            font-size: 1.8rem;
-            font-family: 'Playfair Display', serif;
-            margin-bottom: 0.5rem;
-        }
-        
-        .modal-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 1.5rem;
-            color: var(--light-text);
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .modal-body {
-            padding: 2rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid var(--accent-color);
-            border-radius: 4px;
-            background-color: white;
-        }
-        
-        .form-text {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 0.3rem;
-        }
-        
-        .form-section {
-            margin-bottom: 2rem;
-        }
-        
-        .form-section-title {
-            font-size: 1.3rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--accent-color);
-            font-family: 'Playfair Display', serif;
-        }
-        
-        .games-selection {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.8rem;
-            margin-top: 1rem;
-        }
-        
-        .game-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            border: 1px solid #E6DDD0;
-            border-radius: 4px;
-            background-color: white;
-            transition: background-color 0.3s;
-        }
-        
-        .game-checkbox:hover {
-            background-color: #FFF8E1;
-        }
-        
-        .game-checkbox input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary-color);
-        }
-        
-        .modal-footer {
-            padding: 1.5rem 2rem;
-            background-color: #F5F5F5;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #E6DDD0;
-        }
-        
-        .btn-secondary {
-            background-color: #9E9E9E;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #757575;
-        }
-
-        footer {
-            background-color: var(--secondary-color);
-            color: var(--light-text);
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            border-top: 3px solid var(--primary-color);
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
-        
         .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--light-text);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
+          display: block;
         }
 
-        @media (max-width: 992px) {
-            .event-card-content {
-                flex-direction: column;
-            }
-            
-            .event-image {
-                width: 100%;
-                height: 200px;
-                border-right: none;
-                border-bottom: 1px solid #E6DDD0;
-            }
-            
-            .event-actions {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .menu-toggle {
-                display: block;
-            }
-            
-            nav ul {
-                position: fixed;
-                top: 70px;
-                right: -300px;
-                width: 250px;
-                height: 100vh;
-                background-color: var(--secondary-color);
-                flex-direction: column;
-                padding: 2rem 1rem;
-                transition: right 0.3s ease;
-                box-shadow: -2px 0 10px rgba(0,0,0,0.2);
-                z-index: 1000;
-            }
-            
-            nav ul.active {
-                right: 0;
-            }
-            
-            nav ul li {
-                margin-bottom: 1rem;
-            }
-            
-            nav a {
-                display: block;
-                padding: 0.8rem;
-                width: 100%;
-                text-align: center;
-            }
-            
-            .games-selection {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .event-header {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .event-meta {
-                flex-direction: column;
-                gap: 0.8rem;
-            }
+        nav ul {
+          position: fixed;
+          top: 70px;
+          right: -300px;
+          width: 250px;
+          height: 100vh;
+          background-color: var(--secondary-color);
+          flex-direction: column;
+          padding: 2rem 1rem;
+          transition: right 0.3s ease;
+          box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+          z-index: 1000;
         }
 
-        /* Pour affichage de la modale (sera géré par JavaScript) */
-        .modal.show {
-            display: flex;
+        nav ul.active {
+          right: 0;
         }
+
+        nav ul li {
+          margin-bottom: 1rem;
+        }
+
+        nav a {
+          display: block;
+          padding: 0.8rem;
+          width: 100%;
+          text-align: center;
+        }
+
+        .games-selection {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .event-header {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .event-meta {
+          flex-direction: column;
+          gap: 0.8rem;
+        }
+      }
+
+      /* Pour affichage de la modale (sera géré par JavaScript) */
+      .modal.show {
+        display: flex;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <div class="logo">Pistache</div>
-        <button class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <nav>
-            <ul id="mainMenu">
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="catalogue.html">Catalogue</a></li>
-                <li><a href="evenements.html">Événements</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="panier.html">Panier</a></li>
-            </ul>
-        </nav>
+      <div class="logo">
+        <img src="media/images/pistache-logo.png" alt="Logo Pistache" />
+        Pistache
+      </div>
+      <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav>
+        <ul id="mainMenu">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="catalogue.html">Catalogue</a></li>
+          <li><a href="evenements.html">Événements</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="panier.html">Panier</a></li>
+        </ul>
+      </nav>
     </header>
-    
+
     <main>
-        <section class="events-hero">
-            <h1>Nos Événements</h1>
-            <p>Rejoignez-nous pour des moments de jeu inoubliables ! Découvrez notre programme d'événements où vous pourrez tester de nouveaux jeux, rencontrer d'autres passionnés et partager votre amour du jeu de société dans une ambiance conviviale.</p>
-        </section>
-        
-        <div class="events-container">
-            <div class="filters">
-                <div class="filter-group">
-                    <span class="filter-label">Période:</span>
-                    <select class="filter-select">
-                        <option value="all">Toutes les dates</option>
-                        <option value="today">Aujourd'hui</option>
-                        <option value="week">Cette semaine</option>
-                        <option value="month">Ce mois-ci</option>
-                        <option value="future">À venir</option>
-                    </select>
-                </div>
-                
-                <div class="filter-group">
-                    <span class="filter-label">Type:</span>
-                    <select class="filter-select">
-                        <option value="all">Tous les types</option>
-                        <option value="halfday">Demi-journée</option>
-                        <option value="fullday">Journée complète</option>
-                        <option value="weekend">Weekend</option>
-                    </select>
-                </div>
-                
-                <div class="filter-group">
-                    <span class="filter-label">Thème:</span>
-                    <select class="filter-select">
-                        <option value="all">Tous les thèmes</option>
-                        <option value="family">Jeux familiaux</option>
-                        <option value="strategy">Jeux de stratégie</option>
-                        <option value="cards">Jeux de cartes</option>
-                        <option value="roleplay">Jeux de rôle</option>
-                        <option value="discovery">Découverte</option>
-                    </select>
-                </div>
-                
-                <div class="filter-group">
-                    <span class="filter-label">Places:</span>
-                    <select class="filter-select">
-                        <option value="all">Toutes</option>
-                        <option value="available">Places disponibles</option>
-                        <option value="limited">Places limitées</option>
-                        <option value="full">Complet</option>
-                    </select>
-                </div>
-                
-                <div class="search-box">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" placeholder="Rechercher un événement...">
-                </div>
-            </div>
-            
-            <div class="events-list">
-                <!-- Événement 1 -->
-                <div class="event-card">
-                    <div class="event-card-content">
-                        <img src="/api/placeholder/400/300" alt="Soirée Découverte Jeux Coopératifs" class="event-image">
-                        <div class="event-info">
-                            <div class="event-header">
-                                <div class="event-title-group">
-                                    <h2 class="event-title">Soirée Découverte Jeux Coopératifs</h2>
-                                    <div class="event-date">
-                                        <i class="far fa-calendar-alt"></i>
-                                        <span>Mardi 13 Mai 2025</span>
-                                        <i class="far fa-clock"></i>
-                                        <span>19h00 - 22h00</span>
-                                    </div>
-                                </div>
-                                <span class="event-badge available">Places disponibles</span>
-                            </div>
-                            <div class="event-body">
-                                <p class="event-description">Venez découvrir une sélection de jeux coopératifs où l'entraide est la clé de la victoire ! Idéal pour les joueurs qui préfèrent la collaboration à la compétition. Nos animateurs vous présenteront des classiques et des nouveautés dans une ambiance détendue.</p>
-                                <div class="event-meta">
-                                    <div class="meta-item">
-                                        <i class="fas fa-users"></i>
-                                        <span>15/20 participants</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-hourglass-half"></i>
-                                        <span>Demi-journée</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Boutique Pistache</span>
-                                    </div>
-                                </div>
-                                <div class="event-tags">
-                                    <span class="event-tag">Coopération</span>
-                                    <span class="event-tag">Découverte</span>
-                                    <span class="event-tag">Tous niveaux</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="event-actions">
-                        <div class="participation-info">
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: 75%"></div>
-                            </div>
-                            <span class="participation-text">15/20 participants</span>
-                        </div>
-                        <button class="btn" onclick="openModal('event1')">S'inscrire</button>
-                    </div>
-                </div>
-                
-                <!-- Événement 2 -->
-                <div class="event-card">
-                    <div class="event-card-content">
-                        <img src="/api/placeholder/400/300" alt="Tournoi de Catan" class="event-image">
-                        <div class="event-info">
-                            <div class="event-header">
-                                <div class="event-title-group">
-                                    <h2 class="event-title">Tournoi de Catan</h2>
-                                    <div class="event-date">
-                                        <i class="far fa-calendar-alt"></i>
-                                        <span>Samedi 17 Mai 2025</span>
-                                        <i class="far fa-clock"></i>
-                                        <span>14h00 - 18h00</span>
-                                    </div>
-                                </div>
-                                <span class="event-badge limited">Places limitées</span>
-                            </div>
-                            <div class="event-body">
-                                <p class="event-description">Affrontez d'autres colons dans ce tournoi de Catan ! Montrez votre talent de stratège et de négociateur pour devenir le maître incontesté de l'île. Plusieurs manches avec un système d'élimination, et des extensions pour les phases finales.</p>
-                                <div class="event-meta">
-                                    <div class="meta-item">
-                                        <i class="fas fa-users"></i>
-                                        <span>18/24 participants</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-hourglass-half"></i>
-                                        <span>Demi-journée</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Boutique Pistache</span>
-                                    </div>
-                                </div>
-                                <div class="event-tags">
-                                    <span class="event-tag">Tournoi</span>
-                                    <span class="event-tag">Stratégie</span>
-                                    <span class="event-tag">Compétitif</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="event-actions">
-                        <div class="participation-info">
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: 75%"></div>
-                            </div>
-                            <span class="participation-text">18/24 participants</span>
-                        </div>
-                        <button class="btn" onclick="openModal('event2')">S'inscrire</button>
-                    </div>
-                </div>
-                
-                <!-- Événement 3 -->
-                <div class="event-card">
-                    <div class="event-card-content">
-                        <img src="/api/placeholder/400/300" alt="Weekend Jeux de Rôle" class="event-image">
-                        <div class="event-info">
-                            <div class="event-header">
-                                <div class="event-title-group">
-                                    <h2 class="event-title">Weekend Jeux de Rôle</h2>
-                                    <div class="event-date">
-                                        <i class="far fa-calendar-alt"></i>
-                                        <span>25-26 Mai 2025</span>
-                                        <i class="far fa-clock"></i>
-                                        <span>10h00 - 18h00</span>
-                                    </div>
-                                </div>
-                                <span class="event-badge">Weekend complet</span>
-                            </div>
-                            <div class="event-body">
-                                <p class="event-description">Un weekend entier dédié aux jeux de rôle ! Que vous soyez débutant ou expert, venez participer à différentes tables de jeu animées par nos maîtres du jeu expérimentés. Divers univers seront proposés : médiéval-fantastique, science-fiction, horreur, etc.</p>
-                                <div class="event-meta">
-                                    <div class="meta-item">
-                                        <i class="fas fa-users"></i>
-                                        <span>12/30 participants</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-hourglass-half"></i>
-                                        <span>Weekend</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Salle des fêtes (à côté)</span>
-                                    </div>
-                                </div>
-                                <div class="event-tags">
-                                    <span class="event-tag">Jeu de rôle</span>
-                                    <span class="event-tag">Immersion</span>
-                                    <span class="event-tag">Tous niveaux</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="event-actions">
-                        <div class="participation-info">
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: 40%"></div>
-                            </div>
-                            <span class="participation-text">12/30 participants</span>
-                        </div>
-                        <button class="btn" onclick="openModal('event3')">S'inscrire</button>
-                    </div>
-                </div>
-                
-                <!-- Événement 4 -->
-                <div class="event-card">
-                    <div class="event-card-content">
-                        <img src="/api/placeholder/400/300" alt="Après-midi Jeux en Famille" class="event-image">
-                        <div class="event-info">
-                            <div class="event-header">
-                                <div class="event-title-group">
-                                    <h2 class="event-title">Après-midi Jeux en Famille</h2>
-                                    <div class="event-date">
-                                        <i class="far fa-calendar-alt"></i>
-                                        <span>Dimanche 18 Mai 2025</span>
-                                        <i class="far fa-clock"></i>
-                                        <span>14h00 - 17h00</span>
-                                    </div>
-                                </div>
-                                <span class="event-badge available">Places disponibles</span>
-                            </div>
-                            <div class="event-body">
-                                <p class="event-description">Une après-midi conviviale pour toute la famille ! Découvrez des jeux adaptés à tous les âges, des petits aux grands-parents. Nos animateurs seront présents pour vous expliquer les règles et vous conseiller selon les goûts et l'âge de chacun.</p>
-                                <div class="event-meta">
-                                    <div class="meta-item">
-                                        <i class="fas fa-users"></i>
-                                        <span>12/30 participants</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-hourglass-half"></i>
-                                        <span>Demi-journée</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Boutique Pistache</span>
-                                    </div>
-                                </div>
-                                <div class="event-tags">
-                                    <span class="event-tag">Famille</span>
-                                    <span class="event-tag">Enfants</span>
-                                    <span class="event-tag">Convivial</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="event-actions">
-                        <div class="participation-info">
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: 40%"></div>
-                            </div>
-                            <span class="participation-text">12/30 participants</span>
-                        </div>
-                        <button class="btn" onclick="openModal('event4')">S'inscrire</button>
-                    </div>
-                </div>
-                
-                <!-- Événement 5 -->
-                <div class="event-card">
-                    <div class="event-card-content">
-                        <img src="/api/placeholder/400/300" alt="Journée Découverte Jeux de Plateau" class="event-image">
-                        <div class="event-info">
-                            <div class="event-header">
-                                <div class="event-title-group">
-                                    <h2 class="event-title">Journée Découverte Jeux de Plateau</h2>
-                                    <div class="event-date">
-                                        <i class="far fa-calendar-alt"></i>
-                                        <span>Samedi 24 Mai 2025</span>
-                                        <i class="far fa-clock"></i>
-                                        <span>10h00 - 19h00</span>
-                                    </div>
-                                </div>
-                                <span class="event-badge available">Places disponibles</span>
-                            </div>
-                            <div class="event-body">
-                                <p class="event-description">Une journée complète pour explorer l'univers des jeux de plateau ! Venez tester les dernières nouveautés et redécouvrir des classiques. Des démonstrations auront lieu toute la journée avec la présence exceptionnelle de deux auteurs de jeux.</p>
-                                <div class="event-meta">
-                                    <div class="meta-item">
-                                        <i class="fas fa-users"></i>
-                                        <span>22/40 participants</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-hourglass-half"></i>
-                                        <span>Journée complète</span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>Boutique Pistache</span>
-                                    </div>
-                                </div>
-                                <div class="event-tags">
-                                    <span class="event-tag">Découverte</span>
-                                    <span class="event-tag">Nouveautés</span>
-                                    <span class="event-tag">Démonstrations</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="event-actions">
-                        <div class="participation-info">
-                            <div class="progress-container">
-                                <div class="progress-bar" style="width: 55%"></div>
-                            </div>
-                            <span class="participation-text">22/40 participants</span>
-                        </div>
-                        <button class="btn" onclick="openModal('event5')">S'inscrire</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="pagination">
-                <a href="#" class="page-link active">1</a>
-                <a href="#" class="page-link">2</a>
-                <a href="#" class="page-link">3</a>
-                <a href="#" class="page-link"><i class="fas fa-angle-right"></i></a>
-            </div>
+      <section class="events-hero">
+        <h1>Nos Événements</h1>
+        <p>
+          Rejoignez-nous pour des moments de jeu inoubliables ! Découvrez notre
+          programme d'événements où vous pourrez tester de nouveaux jeux,
+          rencontrer d'autres passionnés et partager votre amour du jeu de
+          société dans une ambiance conviviale.
+        </p>
+      </section>
+
+      <div class="events-container">
+        <div class="filters">
+          <div class="filter-group">
+            <span class="filter-label">Période:</span>
+            <select class="filter-select">
+              <option value="all">Toutes les dates</option>
+              <option value="today">Aujourd'hui</option>
+              <option value="week">Cette semaine</option>
+              <option value="month">Ce mois-ci</option>
+              <option value="future">À venir</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <span class="filter-label">Type:</span>
+            <select class="filter-select">
+              <option value="all">Tous les types</option>
+              <option value="halfday">Demi-journée</option>
+              <option value="fullday">Journée complète</option>
+              <option value="weekend">Weekend</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <span class="filter-label">Thème:</span>
+            <select class="filter-select">
+              <option value="all">Tous les thèmes</option>
+              <option value="family">Jeux familiaux</option>
+              <option value="strategy">Jeux de stratégie</option>
+              <option value="cards">Jeux de cartes</option>
+              <option value="roleplay">Jeux de rôle</option>
+              <option value="discovery">Découverte</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <span class="filter-label">Places:</span>
+            <select class="filter-select">
+              <option value="all">Toutes</option>
+              <option value="available">Places disponibles</option>
+              <option value="limited">Places limitées</option>
+              <option value="full">Complet</option>
+            </select>
+          </div>
+
+          <div class="search-box">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" placeholder="Rechercher un événement..." />
+          </div>
         </div>
+
+        <div class="events-list">
+          <!-- Événement 1 -->
+          <div class="event-card">
+            <div class="event-card-content">
+              <img
+                src="/api/placeholder/400/300"
+                alt="Soirée Découverte Jeux Coopératifs"
+                class="event-image"
+              />
+              <div class="event-info">
+                <div class="event-header">
+                  <div class="event-title-group">
+                    <h2 class="event-title">
+                      Soirée Découverte Jeux Coopératifs
+                    </h2>
+                    <div class="event-date">
+                      <i class="far fa-calendar-alt"></i>
+                      <span>Mardi 13 Mai 2025</span>
+                      <i class="far fa-clock"></i>
+                      <span>19h00 - 22h00</span>
+                    </div>
+                  </div>
+                  <span class="event-badge available">Places disponibles</span>
+                </div>
+                <div class="event-body">
+                  <p class="event-description">
+                    Venez découvrir une sélection de jeux coopératifs où
+                    l'entraide est la clé de la victoire ! Idéal pour les
+                    joueurs qui préfèrent la collaboration à la compétition. Nos
+                    animateurs vous présenteront des classiques et des
+                    nouveautés dans une ambiance détendue.
+                  </p>
+                  <div class="event-meta">
+                    <div class="meta-item">
+                      <i class="fas fa-users"></i>
+                      <span>15/20 participants</span>
+                    </div>
+                    <div class="meta-item">
+                      <i class="fas fa-hourglass-half"></i>
+                      <span>Demi-journée</span>
+                    </div>
+                    <div class="meta-item">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <span>Boutique Pistache</span>
+                    </div>
+                  </div>
+                  <div class="event-tags">
+                    <span class="event-tag">Coopération</span>
+                    <span class="event-tag">Découverte</span>
+                    <span class="event-tag">Tous niveaux</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="event-actions">
+              <div class="participation-info">
+                <div class="progress-container">
+                  <div class="progress-bar" style="width: 75%"></div>
+                </div>
+                <span class="participation-text">15/20 participants</span>
+              </div>
+              <button class="btn" onclick="openModal('event1')">
+                S'inscrire
+              </button>
+            </div>
+          </div>
+
+          <!-- Événement 2 -->
+          <div class="event-card">
+            <div class="event-card-content">
+              <img
+                src="/api/placeholder/400/300"
+                alt="Tournoi de Catan"
+                class="event-image"
+              />
+              <div class="event-info">
+                <div class="event-header">
+                  <div class="event-title-group">
+                    <h2 class="event-title">Tournoi de Catan</h2>
+                    <div class="event-date">
+                      <i class="far fa-calendar-alt"></i>
+                      <span>Samedi 17 Mai 2025</span>
+                      <i class="far fa-clock"></i>
+                      <span>14h00 - 18h00</span>
+                    </div>
+                  </div>
+                  <span class="event-badge limited">Places limitées</span>
+                </div>
+                <div class="event-body">
+                  <p class="event-description">
+                    Affrontez d'autres colons dans ce tournoi de Catan ! Montrez
+                    votre talent de stratège et de négociateur pour devenir le
+                    maître incontesté de l'île. Plusieurs manches avec un
+                    système d'élimination, et des extensions pour les phases
+                    finales.
+                  </p>
+                  <div class="event-meta">
+                    <div class="meta-item">
+                      <i class="fas fa-users"></i>
+                      <span>18/24 participants</span>
+                    </div>
+                    <div class="meta-item">
+                      <i class="fas fa-hourglass-half"></i>
+                      <span>Demi-journée</span>
+                    </div>
+                    <div class="meta-item">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <span>Boutique Pistache</span>
+                    </div>
+                  </div>
+                  <div class="event-tags">
+                    <span class="event-tag">Tournoi</span>
+                    <span class="event-tag">Stratégie</span>
+                    <span class="event-tag">Compétitif</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="event-actions">
+              <div class="participation-info">
+                <div class="progress-container">
+                  <div class="progress-bar" style="width: 75%"></div>
+                </div>
+                <span class="participation-text">18/24 participants</span>
+              </div>
+              <button class="btn" onclick="openModal('event2')">
+                S'inscrire
+              </button>
+            </div>
+          </div>
+
+          <!-- Événement 3 -->
+          <div class="event-card">
+            <div class="event-card-content">
+              <img
+                src="/api/placeholder/400/300"
+                alt="Weekend Jeux de Rôle"
+                class="event-image"
+              />
+              <div class="event-info">
+                <div class="event-header">
+                  <div class="event-title-group">
+                    <h2 class="event-title">Weekend Jeux de Rôle</h2>
+                    <div class="event-date">
+                      <i class="far fa-calendar-alt"></i>
+                      <span>25-26 Mai 2025</span>
+                      <i class="far fa-clock"></i>
+                      <span>10h00 - 18h00</span>
+                    </div>
+                  </div>
+                  <span class="event-badge">Weekend complet</span>
+                </div>
+                <div class="event-body">
+                  <p class="event-description">
+                    Un weekend entier dédié aux jeux de rôle ! Que vous soyez
+                    débutant ou expert, venez participer à différentes tables de
+                    jeu animées par nos maîtres du jeu expérimentés. Divers
+                    univers seront proposés : médiéval-fantastique,
+                    science-fiction, horreur, etc.
+                  </p>
+                  <div class="event-meta">
+                    <div class="meta-item">
+                      <i class="fas fa-users"></i>
+                      <span>12/30 participants</span>
+                    </div>
+                    <div class="meta-item">
+                      <i class="fas fa-hourglass-half"></i>
+                      <span>Weekend</span>
+                    </div>
+                    <div class="meta-item">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <span>Salle des fêtes (à côté)</span>
+                    </div>
+                  </div>
+                  <div class="event-tags">
+                    <span class="event-tag">Jeu de rôle</span>
+                    <span class="event-tag">Immersion</span>
+                    <span class="event-tag">Tous niveaux</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="event-actions">
+              <div class="participation-info">
+                <div class="progress-container">
+                  <div class="progress-bar" style="width: 40%"></div>
+                </div>
+                <span class="participation-text">12/30 participants</span>
+              </div>
+              <button class="btn" onclick="openModal('event3')">
+                S'inscrire
+              </button>
+            </div>
+          </div>
+
+          <!-- Événement 4 -->
+          <div class="event-card">
+            <div class="event-card-content">
+              <img
+                src="/api/placeholder/400/300"
+                alt="Après-midi Jeux en Famille"
+                class="event-image"
+              />
+              <div class="event-info">
+                <div class="event-header">
+                  <div class="event-title-group">
+                    <h2 class="event-title">Après-midi Jeux en Famille</h2>
+                    <div class="event-date">
+                      <i class="far fa-calendar-alt"></i>
+                      <span>Dimanche 18 Mai 2025</span>
+                      <i class="far fa-clock"></i>
+                      <span>14h00 - 17h00</span>
+                    </div>
+                  </div>
+                  <span class="event-badge available">Places disponibles</span>
+                </div>
+                <div class="event-body">
+                  <p class="event-description">
+                    Une après-midi conviviale pour toute la famille ! Découvrez
+                    des jeux adaptés à tous les âges, des petits aux
+                    grands-parents. Nos animateurs seront présents pour vous
+                    expliquer les règles et vous conseiller selon les goûts et
+                    l'âge de chacun.
+                  </p>
+                  <div class="event-meta">
+                    <div class="meta-item">
+                      <i class="fas fa-users"></i>
+                      <span>12/30 participants</span>
+                    </div>
+                    <div class="meta-item">
+                      <i class="fas fa-hourglass-half"></i>
+                      <span>Demi-journée</span>
+                    </div>
+                    <div class="meta-item">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <span>Boutique Pistache</span>
+                    </div>
+                  </div>
+                  <div class="event-tags">
+                    <span class="event-tag">Famille</span>
+                    <span class="event-tag">Enfants</span>
+                    <span class="event-tag">Convivial</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="event-actions">
+              <div class="participation-info">
+                <div class="progress-container">
+                  <div class="progress-bar" style="width: 40%"></div>
+                </div>
+                <span class="participation-text">12/30 participants</span>
+              </div>
+              <button class="btn" onclick="openModal('event4')">
+                S'inscrire
+              </button>
+            </div>
+          </div>
+
+          <!-- Événement 5 -->
+          <div class="event-card">
+            <div class="event-card-content">
+              <img
+                src="/api/placeholder/400/300"
+                alt="Journée Découverte Jeux de Plateau"
+                class="event-image"
+              />
+              <div class="event-info">
+                <div class="event-header">
+                  <div class="event-title-group">
+                    <h2 class="event-title">
+                      Journée Découverte Jeux de Plateau
+                    </h2>
+                    <div class="event-date">
+                      <i class="far fa-calendar-alt"></i>
+                      <span>Samedi 24 Mai 2025</span>
+                      <i class="far fa-clock"></i>
+                      <span>10h00 - 19h00</span>
+                    </div>
+                  </div>
+                  <span class="event-badge available">Places disponibles</span>
+                </div>
+                <div class="event-body">
+                  <p class="event-description">
+                    Une journée complète pour explorer l'univers des jeux de
+                    plateau ! Venez tester les dernières nouveautés et
+                    redécouvrir des classiques. Des démonstrations auront lieu
+                    toute la journée avec la présence exceptionnelle de deux
+                    auteurs de jeux.
+                  </p>
+                  <div class="event-meta">
+                    <div class="meta-item">
+                      <i class="fas fa-users"></i>
+                      <span>22/40 participants</span>
+                    </div>
+                    <div class="meta-item">
+                      <i class="fas fa-hourglass-half"></i>
+                      <span>Journée complète</span>
+                    </div>
+                    <div class="meta-item">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <span>Boutique Pistache</span>
+                    </div>
+                  </div>
+                  <div class="event-tags">
+                    <span class="event-tag">Découverte</span>
+                    <span class="event-tag">Nouveautés</span>
+                    <span class="event-tag">Démonstrations</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="event-actions">
+              <div class="participation-info">
+                <div class="progress-container">
+                  <div class="progress-bar" style="width: 55%"></div>
+                </div>
+                <span class="participation-text">22/40 participants</span>
+              </div>
+              <button class="btn" onclick="openModal('event5')">
+                S'inscrire
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pagination">
+          <a href="#" class="page-link active">1</a>
+          <a href="#" class="page-link">2</a>
+          <a href="#" class="page-link">3</a>
+          <a href="#" class="page-link"><i class="fas fa-angle-right"></i></a>
+        </div>
+      </div>
     </main>
-    
+
     <!-- Modal d'inscription -->
     <div class="modal" id="inscriptionModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Inscription à l'événement</h2>
-                <p class="modal-subtitle" id="modalEventTitle">Soirée Découverte Jeux Coopératifs</p>
-                <button class="close-modal" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="inscriptionForm">
-                    <div class="form-section">
-                        <h3 class="form-section-title">Informations personnelles</h3>
-                        <div class="form-group">
-                            <label for="nom" class="form-label">Nom *</label>
-                            <input type="text" id="nom" name="nom" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="prenom" class="form-label">Prénom *</label>
-                            <input type="text" id="prenom" name="prenom" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="form-label">Email *</label>
-                            <input type="email" id="email" name="email" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="telephone" class="form-label">Téléphone</label>
-                            <input type="tel" id="telephone" name="telephone" class="form-control">
-                            <p class="form-text">Facultatif, pour vous contacter en cas de changement</p>
-                        </div>
-                    </div>
-                    
-                    <div class="form-section">
-                        <h3 class="form-section-title">Participation</h3>
-                        <div class="form-group">
-                            <label for="accompagnants" class="form-label">Nombre d'accompagnants</label>
-                            <select id="accompagnants" name="accompagnants" class="form-control">
-                                <option value="0">Juste moi</option>
-                                <option value="1">1 accompagnant</option>
-                                <option value="2">2 accompagnants</option>
-                                <option value="3">3 accompagnants</option>
-                                <option value="4">4 accompagnants</option>
-                            </select>
-                            <p class="form-text">Maximum 4 accompagnants par inscription</p>
-                        </div>
-                    </div>
-                    
-                    <div class="form-section">
-                        <h3 class="form-section-title">Préférences de jeux</h3>
-                        <p>Sélectionnez jusqu'à 3 jeux que vous aimeriez tester durant cet événement :</p>
-                        <div class="games-selection">
-                            <label class="game-checkbox">
-                                <input type="checkbox" name="jeux" value="catan"> Les Colons de Catane
-                            </label>
-                            <label class="game-checkbox">
-                                <input type="checkbox" name="jeux" value="dixit"> Dixit
-                            </label>
-                            <label class="game-checkbox">
-                                <input type="checkbox" name="jeux" value="pandemic"> Pandemic
-                            </label>
-                            <label class="game-checkbox">
-                                <input type="checkbox" name="jeux" value="7wonders"> 7 Wonders
-                            </label>
-                            <label class="game-checkbox">
-                                <input type="checkbox" name="jeux" value="uno"> Uno
-                            </label>
-                            <label class="game-checkbox">
-                                <input type="checkbox" name="jeux" value="cluedo"> Cluedo
-                            </label>
-                            <label class="game-checkbox">
-                                <input type="checkbox" name="jeux" value="exploding-kittens"> Exploding Kittens
-                            </label>
-                            <label class="game-checkbox">
-                                <input type="checkbox" name="jeux" value="azul"> Azul
-                            </label>
-                            <label class="game-checkbox">
-                                <input type="checkbox" name="jeux" value="codenames"> Codenames
-                            </label>
-                            <label class="game-checkbox">
-                                <input type="checkbox" name="jeux" value="takenoko"> Takenoko
-                            </label>
-                        </div>
-                        <p class="form-text">Vous pouvez sélectionner jusqu'à 3 jeux</p>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="commentaire" class="form-label">Commentaires ou demandes particulières</label>
-                        <textarea id="commentaire" name="commentaire" class="form-control" rows="3"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
-                <button type="submit" form="inscriptionForm" class="btn">Confirmer l'inscription</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Inscription à l'événement</h2>
+          <p class="modal-subtitle" id="modalEventTitle">
+            Soirée Découverte Jeux Coopératifs
+          </p>
+          <button class="close-modal" onclick="closeModal()">&times;</button>
         </div>
+        <div class="modal-body">
+          <form id="inscriptionForm">
+            <div class="form-section">
+              <h3 class="form-section-title">Informations personnelles</h3>
+              <div class="form-group">
+                <label for="nom" class="form-label">Nom *</label>
+                <input
+                  type="text"
+                  id="nom"
+                  name="nom"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="prenom" class="form-label">Prénom *</label>
+                <input
+                  type="text"
+                  id="prenom"
+                  name="prenom"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Email *</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="telephone" class="form-label">Téléphone</label>
+                <input
+                  type="tel"
+                  id="telephone"
+                  name="telephone"
+                  class="form-control"
+                />
+                <p class="form-text">
+                  Facultatif, pour vous contacter en cas de changement
+                </p>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3 class="form-section-title">Participation</h3>
+              <div class="form-group">
+                <label for="accompagnants" class="form-label"
+                  >Nombre d'accompagnants</label
+                >
+                <select
+                  id="accompagnants"
+                  name="accompagnants"
+                  class="form-control"
+                >
+                  <option value="0">Juste moi</option>
+                  <option value="1">1 accompagnant</option>
+                  <option value="2">2 accompagnants</option>
+                  <option value="3">3 accompagnants</option>
+                  <option value="4">4 accompagnants</option>
+                </select>
+                <p class="form-text">Maximum 4 accompagnants par inscription</p>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h3 class="form-section-title">Préférences de jeux</h3>
+              <p>
+                Sélectionnez jusqu'à 3 jeux que vous aimeriez tester durant cet
+                événement :
+              </p>
+              <div class="games-selection">
+                <label class="game-checkbox">
+                  <input type="checkbox" name="jeux" value="catan" /> Les Colons
+                  de Catane
+                </label>
+                <label class="game-checkbox">
+                  <input type="checkbox" name="jeux" value="dixit" /> Dixit
+                </label>
+                <label class="game-checkbox">
+                  <input type="checkbox" name="jeux" value="pandemic" />
+                  Pandemic
+                </label>
+                <label class="game-checkbox">
+                  <input type="checkbox" name="jeux" value="7wonders" /> 7
+                  Wonders
+                </label>
+                <label class="game-checkbox">
+                  <input type="checkbox" name="jeux" value="uno" /> Uno
+                </label>
+                <label class="game-checkbox">
+                  <input type="checkbox" name="jeux" value="cluedo" /> Cluedo
+                </label>
+                <label class="game-checkbox">
+                  <input
+                    type="checkbox"
+                    name="jeux"
+                    value="exploding-kittens"
+                  />
+                  Exploding Kittens
+                </label>
+                <label class="game-checkbox">
+                  <input type="checkbox" name="jeux" value="azul" /> Azul
+                </label>
+                <label class="game-checkbox">
+                  <input type="checkbox" name="jeux" value="codenames" />
+                  Codenames
+                </label>
+                <label class="game-checkbox">
+                  <input type="checkbox" name="jeux" value="takenoko" />
+                  Takenoko
+                </label>
+              </div>
+              <p class="form-text">Vous pouvez sélectionner jusqu'à 3 jeux</p>
+            </div>
+
+            <div class="form-group">
+              <label for="commentaire" class="form-label"
+                >Commentaires ou demandes particulières</label
+              >
+              <textarea
+                id="commentaire"
+                name="commentaire"
+                class="form-control"
+                rows="3"
+              ></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closeModal()">
+            Annuler
+          </button>
+          <button type="submit" form="inscriptionForm" class="btn">
+            Confirmer l'inscription
+          </button>
+        </div>
+      </div>
     </div>
-    
+
     <footer>
-        <p>&copy; 2025 Pistache. Tous droits réservés.</p>
+      <p>&copy; 2025 Pistache. Tous droits réservés.</p>
     </footer>
-    
+
     <script>
-        // Script pour le menu mobile
-        document.getElementById('menuToggle').addEventListener('click', function() {
-            document.getElementById('mainMenu').classList.toggle('active');
+      // Script pour le menu mobile
+      document
+        .getElementById("menuToggle")
+        .addEventListener("click", function () {
+          document.getElementById("mainMenu").classList.toggle("active");
         });
-        
-        // Scripts pour la modal d'inscription (pour la maquette uniquement)
-        function openModal(eventId) {
-            // Dans une implémentation réelle, on récupérerait les données de l'événement
-            // et on préremplirait le titre de la modal, etc.
-            document.getElementById('inscriptionModal').classList.add('show');
-            
-            // Limiter la sélection à 3 jeux maximum
-            const checkboxes = document.querySelectorAll('input[name="jeux"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const checked = document.querySelectorAll('input[name="jeux"]:checked');
-                    if (checked.length > 3) {
-                        this.checked = false;
-                    }
-                });
-            });
-        }
-        
-        function closeModal() {
-            document.getElementById('inscriptionModal').classList.remove('show');
-        }
+
+      // Scripts pour la modal d'inscription (pour la maquette uniquement)
+      function openModal(eventId) {
+        // Dans une implémentation réelle, on récupérerait les données de l'événement
+        // et on préremplirait le titre de la modal, etc.
+        document.getElementById("inscriptionModal").classList.add("show");
+
+        // Limiter la sélection à 3 jeux maximum
+        const checkboxes = document.querySelectorAll('input[name="jeux"]');
+        checkboxes.forEach((checkbox) => {
+          checkbox.addEventListener("change", function () {
+            const checked = document.querySelectorAll(
+              'input[name="jeux"]:checked'
+            );
+            if (checked.length > 3) {
+              this.checked = false;
+            }
+          });
+        });
+      }
+
+      function closeModal() {
+        document.getElementById("inscriptionModal").classList.remove("show");
+      }
     </script>
-</body>
+  </body>
 </html>

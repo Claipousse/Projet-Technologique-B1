@@ -45,7 +45,15 @@
         .logo {
             font-size: 1.5rem;
             font-weight: bold;
+            display: flex;
+            align-items: center;
         }
+        
+        .logo img {
+            height: 50px;
+            margin-left: 8px;
+        }
+
         
         nav ul {
             display: flex;
@@ -865,7 +873,10 @@
 </head>
 <body>
     <header>
-        <div class="logo">Pistache</div>
+        <div class="logo">
+            <img src="media/images/pistache-logo.png" alt="Logo Pistache">
+            Pistache
+        </div>
         <button class="menu-toggle" id="menuToggle">
             <i class="fas fa-bars"></i>
         </button>

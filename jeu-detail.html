@@ -1,740 +1,810 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mille Bornes - Pistache - Boutique de Jeux de Société</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap"
+    />
     <style>
-        :root {
-            --primary-color: #8B4513;  /* Marron */
-            --secondary-color: #5D4037; /* Marron foncé */
-            --accent-color: #D2B48C;   /* Tan */
-            --light-bg: #F5F5DC;       /* Beige */
-            --dark-text: #3E2723;      /* Marron très foncé */
-            --light-text: #FFF8E1;     /* Ivoire */
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Lora', Georgia, serif;
-        }
-        
-        body {
-            background-color: var(--light-bg);
-            color: var(--dark-text);
-        }
-        
-        header {
-            background: var(--secondary-color);
-            color: var(--light-text);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-            border-bottom: 2px solid var(--accent-color);
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 1.5rem;
-        }
-        
-        nav a {
-            color: var(--light-text);
-            text-decoration: none;
-            padding: 0.5rem;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-            font-family: 'Playfair Display', serif;
-            letter-spacing: 1px;
-        }
-        
-        nav a:hover {
-            background-color: var(--primary-color);
-            color: var(--light-text);
-        }
+      :root {
+        --primary-color: #8b4513; /* Marron */
+        --secondary-color: #5d4037; /* Marron foncé */
+        --accent-color: #d2b48c; /* Tan */
+        --light-bg: #f5f5dc; /* Beige */
+        --dark-text: #3e2723; /* Marron très foncé */
+        --light-text: #fff8e1; /* Ivoire */
+      }
 
-        .game-hero {
-            background: linear-gradient(rgba(61, 28, 14, 0.8), rgba(61, 28, 14, 0.9)), url('/api/placeholder/1200/400') center/cover no-repeat;
-            color: var(--light-text);
-            padding: 8rem 2rem 4rem;
-            text-align: center;
-            border-bottom: 3px solid var(--accent-color);
-        }
-        
-        .game-hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            font-family: 'Playfair Display', Georgia, serif;
-        }
-        
-        .game-hero p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            line-height: 1.6;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Lora", Georgia, serif;
+      }
 
-        .breadcrumb {
-            margin-top: 1rem;
-            margin-bottom: 2rem;
-            display: flex;
-            gap: 0.5rem;
-        }
+      body {
+        background-color: var(--light-bg);
+        color: var(--dark-text);
+      }
 
-        .breadcrumb a {
-            color: var(--light-text);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
+      header {
+        background: var(--secondary-color);
+        color: var(--light-text);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        position: fixed;
+        width: 100%;
+        z-index: 1000;
+        border-bottom: 2px solid var(--accent-color);
+      }
 
-        .breadcrumb a:hover {
-            color: var(--accent-color);
-        }
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+      }
 
-        .breadcrumb .separator {
-            color: var(--accent-color);
-        }
+      .logo img {
+        height: 50px;
+        margin-left: 8px;
+      }
 
-        .breadcrumb .current {
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-        
-        .game-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-            background-color: var(--light-bg);
-        }
+      nav ul {
+        display: flex;
+        list-style: none;
+        gap: 1.5rem;
+      }
 
-        .game-flex-container {
-            display: flex;
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-        
-        .game-images {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        
-        .main-image {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border: 3px solid white;
-            margin-bottom: 1rem;
-        }
-        
-        .thumbnails {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            display: none;
-        }
-        
-        .thumbnail {
-            width: calc(25% - 0.75rem);
-            height: 80px;
-            border-radius: 4px;
-            object-fit: cover;
-            border: 2px solid white;
-        }
-        
-        .game-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .game-title {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            font-family: 'Playfair Display', serif;
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
-        
-        .game-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 80px;
-            height: 3px;
-            background-color: var(--accent-color);
-        }
-        
-        .game-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px dotted var(--accent-color);
-        }
-        
-        .meta-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-        }
-        
-        .meta-label {
-            font-weight: bold;
-            font-size: 0.9rem;
-            color: var(--secondary-color);
-        }
-        
-        .meta-value {
-            font-size: 1.1rem;
-        }
-        
-        .game-description {
-            margin-bottom: 2rem;
-            line-height: 1.7;
-        }
-        
-        .price-box {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            border: 1px solid #E6DDD0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .price {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            font-family: 'Playfair Display', serif;
-        }
-        
-        .stock {
-            color: #2E7D32;
-            font-weight: bold;
-            font-size: 0.9rem;
-            margin-top: 0.3rem;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 1.8rem;
-            background-color: var(--primary-color);
-            color: var(--light-text);
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--light-text);
-            text-align: center;
-        }
-        
-        .btn:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .btn-add {
-            flex: 2;
-            font-size: 1.1rem;
-        }
-        
-        .btn-wishlist {
-            flex: 1;
-            background-color: white;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-        }
-        
-        .btn-wishlist:hover {
-            background-color: var(--light-bg);
-        }
-        
-        .content-section {
-            margin-bottom: 3rem;
-            background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border: 1px solid #E6DDD0;
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            font-family: 'Playfair Display', serif;
-            position: relative;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--accent-color);
-        }
-        
-        .rules-section {
-            margin-bottom: 2rem;
-        }
-        
-        .rules-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-            font-family: 'Playfair Display', serif;
-        }
-        
-        .rules-content {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .rules-text {
-            flex: 3;
-        }
-        
-        .rules-images {
-            flex: 2;
-        }
-        
-        .rule-image {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            border: 1px solid #E6DDD0;
-        }
-        
-        .rule-list {
-            list-style-position: inside;
-            margin-bottom: 1.5rem;
-        }
-        
-        .rule-list li {
-            margin-bottom: 0.8rem;
-        }
-        
-        .download-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        
-        .download-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background-color: var(--light-bg);
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        
-        .download-item:hover {
-            background-color: var(--accent-color);
-        }
-        
-        .download-icon {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-        
-        .download-info {
-            flex: 1;
-        }
-        
-        .download-title {
-            font-weight: bold;
-            margin-bottom: 0.3rem;
-        }
-        
-        .download-meta {
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        .download-btn {
-            padding: 0.5rem 1rem;
-            background-color: var(--primary-color);
-            color: var(--light-text);
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            transition: background-color 0.3s;
-        }
-        
-        .download-btn:hover {
-            background-color: var(--secondary-color);
-        }
-        
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            height: 0;
-            margin-bottom: 1.5rem;
-        }
-        
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border: 3px solid white;
-        }
-        
-        .related-games {
-            margin-top: 4rem;
-        }
-        
-        .related-title {
-            font-size: 2.2rem;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            text-align: center;
-            font-family: 'Playfair Display', serif;
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
-        
-        .related-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background-color: var(--accent-color);
-        }
-        
+      nav a {
+        color: var(--light-text);
+        text-decoration: none;
+        padding: 0.5rem;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+        font-family: "Playfair Display", serif;
+        letter-spacing: 1px;
+      }
+
+      nav a:hover {
+        background-color: var(--primary-color);
+        color: var(--light-text);
+      }
+
+      .game-hero {
+        background: linear-gradient(
+            rgba(61, 28, 14, 0.8),
+            rgba(61, 28, 14, 0.9)
+          ),
+          url("/api/placeholder/1200/400") center/cover no-repeat;
+        color: var(--light-text);
+        padding: 8rem 2rem 4rem;
+        text-align: center;
+        border-bottom: 3px solid var(--accent-color);
+      }
+
+      .game-hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        font-family: "Playfair Display", Georgia, serif;
+      }
+
+      .game-hero p {
+        font-size: 1.2rem;
+        max-width: 800px;
+        margin: 0 auto 2rem;
+        line-height: 1.6;
+      }
+
+      .breadcrumb {
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .breadcrumb a {
+        color: var(--light-text);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .breadcrumb a:hover {
+        color: var(--accent-color);
+      }
+
+      .breadcrumb .separator {
+        color: var(--accent-color);
+      }
+
+      .breadcrumb .current {
+        color: var(--accent-color);
+        font-weight: bold;
+      }
+
+      .game-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 3rem 2rem;
+        background-color: var(--light-bg);
+      }
+
+      .game-flex-container {
+        display: flex;
+        gap: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      .game-images {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .main-image {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border: 3px solid white;
+        margin-bottom: 1rem;
+      }
+
+      .thumbnails {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        display: none;
+      }
+
+      .thumbnail {
+        width: calc(25% - 0.75rem);
+        height: 80px;
+        border-radius: 4px;
+        object-fit: cover;
+        border: 2px solid white;
+      }
+
+      .game-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .game-title {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        font-family: "Playfair Display", serif;
+        position: relative;
+        padding-bottom: 0.5rem;
+      }
+
+      .game-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 80px;
+        height: 3px;
+        background-color: var(--accent-color);
+      }
+
+      .game-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px dotted var(--accent-color);
+      }
+
+      .meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .meta-label {
+        font-weight: bold;
+        font-size: 0.9rem;
+        color: var(--secondary-color);
+      }
+
+      .meta-value {
+        font-size: 1.1rem;
+      }
+
+      .game-description {
+        margin-bottom: 2rem;
+        line-height: 1.7;
+      }
+
+      .price-box {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        border: 1px solid #e6ddd0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .price {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        font-family: "Playfair Display", serif;
+      }
+
+      .stock {
+        color: #2e7d32;
+        font-weight: bold;
+        font-size: 0.9rem;
+        margin-top: 0.3rem;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 0.8rem 1.8rem;
+        background-color: var(--primary-color);
+        color: var(--light-text);
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--light-text);
+        text-align: center;
+      }
+
+      .btn:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .btn-add {
+        flex: 2;
+        font-size: 1.1rem;
+      }
+
+      .btn-wishlist {
+        flex: 1;
+        background-color: white;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+      }
+
+      .btn-wishlist:hover {
+        background-color: var(--light-bg);
+      }
+
+      .content-section {
+        margin-bottom: 3rem;
+        background-color: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e6ddd0;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        font-family: "Playfair Display", serif;
+        position: relative;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--accent-color);
+      }
+
+      .rules-section {
+        margin-bottom: 2rem;
+      }
+
+      .rules-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: var(--primary-color);
+        font-family: "Playfair Display", serif;
+      }
+
+      .rules-content {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .rules-text {
+        flex: 3;
+      }
+
+      .rules-images {
+        flex: 2;
+      }
+
+      .rule-image {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e6ddd0;
+      }
+
+      .rule-list {
+        list-style-position: inside;
+        margin-bottom: 1.5rem;
+      }
+
+      .rule-list li {
+        margin-bottom: 0.8rem;
+      }
+
+      .download-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .download-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background-color: var(--light-bg);
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+
+      .download-item:hover {
+        background-color: var(--accent-color);
+      }
+
+      .download-icon {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+      }
+
+      .download-info {
+        flex: 1;
+      }
+
+      .download-title {
+        font-weight: bold;
+        margin-bottom: 0.3rem;
+      }
+
+      .download-meta {
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      .download-btn {
+        padding: 0.5rem 1rem;
+        background-color: var(--primary-color);
+        color: var(--light-text);
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        transition: background-color 0.3s;
+      }
+
+      .download-btn:hover {
+        background-color: var(--secondary-color);
+      }
+
+      .video-container {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        height: 0;
+        margin-bottom: 1.5rem;
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border: 3px solid white;
+      }
+
+      .related-games {
+        margin-top: 4rem;
+      }
+
+      .related-title {
+        font-size: 2.2rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        text-align: center;
+        font-family: "Playfair Display", serif;
+        position: relative;
+        padding-bottom: 0.5rem;
+      }
+
+      .related-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 3px;
+        background-color: var(--accent-color);
+      }
+
+      .related-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+      }
+
+      .related-card {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid #e6ddd0;
+      }
+
+      .related-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border-color: var(--accent-color);
+      }
+
+      .related-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+      }
+
+      .related-info {
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .related-game-title {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: var(--primary-color);
+        font-family: "Playfair Display", serif;
+      }
+
+      .related-price {
+        font-weight: bold;
+        color: var(--secondary-color);
+      }
+
+      footer {
+        background-color: var(--secondary-color);
+        color: var(--light-text);
+        text-align: center;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        border-top: 3px solid var(--primary-color);
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+      }
+
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--light-text);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.5rem;
+      }
+
+      @media (max-width: 1200px) {
         .related-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
+          grid-template-columns: repeat(3, 1fr);
         }
-        
-        .related-card {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #E6DDD0;
-        }
-        
-        .related-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            border-color: var(--accent-color);
-        }
-        
-        .related-image {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
-        
-        .related-info {
-            padding: 1rem;
-            text-align: center;
-        }
-        
-        .related-game-title {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-            font-family: 'Playfair Display', serif;
-        }
-        
-        .related-price {
-            font-weight: bold;
-            color: var(--secondary-color);
+      }
+
+      @media (max-width: 992px) {
+        .game-flex-container {
+          flex-direction: column;
         }
 
-        footer {
-            background-color: var(--secondary-color);
-            color: var(--light-text);
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            border-top: 3px solid var(--primary-color);
-            font-family: 'Playfair Display', Georgia, serif;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
+        .rules-content {
+          flex-direction: column;
         }
-        
+
         .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--light-text);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
+          display: block;
         }
-        
-        @media (max-width: 1200px) {
-            .related-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+
+        nav ul {
+          position: fixed;
+          top: 70px;
+          right: -300px;
+          width: 250px;
+          height: 100vh;
+          background-color: var(--secondary-color);
+          flex-direction: column;
+          padding: 2rem 1rem;
+          transition: right 0.3s ease;
+          box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+          z-index: 1000;
         }
-        
-        @media (max-width: 992px) {
-            .game-flex-container {
-                flex-direction: column;
-            }
-            
-            .rules-content {
-                flex-direction: column;
-            }
-            
-            .menu-toggle {
-                display: block;
-            }
-            
-            nav ul {
-                position: fixed;
-                top: 70px;
-                right: -300px;
-                width: 250px;
-                height: 100vh;
-                background-color: var(--secondary-color);
-                flex-direction: column;
-                padding: 2rem 1rem;
-                transition: right 0.3s ease;
-                box-shadow: -2px 0 10px rgba(0,0,0,0.2);
-                z-index: 1000;
-            }
-            
-            nav ul.active {
-                right: 0;
-            }
-            
-            nav ul li {
-                margin-bottom: 1rem;
-            }
-            
-            nav a {
-                display: block;
-                padding: 0.8rem;
-                width: 100%;
-                text-align: center;
-            }
+
+        nav ul.active {
+          right: 0;
         }
-        
-        @media (max-width: 768px) {
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .thumbnail {
-                width: calc(33.33% - 0.67rem);
-            }
-            
-            .game-hero h1 {
-                font-size: 2.5rem;
-            }
+
+        nav ul li {
+          margin-bottom: 1rem;
         }
+
+        nav a {
+          display: block;
+          padding: 0.8rem;
+          width: 100%;
+          text-align: center;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .btn-group {
+          flex-direction: column;
+        }
+
+        .thumbnail {
+          width: calc(33.33% - 0.67rem);
+        }
+
+        .game-hero h1 {
+          font-size: 2.5rem;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <div class="logo">Pistache</div>
-        <button class="menu-toggle" id="menuToggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <nav>
-            <ul id="mainMenu">
-                <li><a href="index.html">Accueil</a></li>
-                <li><a href="catalogue.html">Catalogue</a></li>
-                <li><a href="evenements.html">Événements</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="panier.html">Panier</a></li>
-            </ul>
-        </nav>
+      <div class="logo">
+        <img src="media/images/pistache-logo.png" alt="Logo Pistache" />
+        Pistache
+      </div>
+      <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav>
+        <ul id="mainMenu">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="catalogue.html">Catalogue</a></li>
+          <li><a href="evenements.html">Événements</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="panier.html">Panier</a></li>
+        </ul>
+      </nav>
     </header>
-    
+
     <main>
-        <section class="game-hero">
-            <div class="breadcrumb">
-                <a href="index.html">Accueil</a>
-                <span class="separator">/</span>
-                <a href="catalogue.html">Catalogue</a>
-                <span class="separator">/</span>
-                <span class="current">Mille Bornes</span>
-            </div>
-            <h1>Mille Bornes</h1>
-            <p>Le célèbre jeu de cartes français où il faut parcourir 1000 kilomètres tout en évitant les embûches tendues par vos adversaires.</p>
-        </section>
-        
-        <div class="game-container">
-            <div class="game-flex-container">
-                <div class="game-images">
-                    <img src="media/images/jeux/milles-bornes.png" alt="Mille Bornes - Boîte du jeu" class="main-image">
-                </div>
-                
-                <div class="game-info">
-                    <h2 class="game-title">Mille Bornes</h2>
-                    
-                    <div class="game-meta">
-                        <div class="meta-item">
-                            <span class="meta-label">Année de création</span>
-                            <span class="meta-value">1954</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Éditeur</span>
-                            <span class="meta-value">Dujardin</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Créateur</span>
-                            <span class="meta-value">Edmond Dujardin</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Âge</span>
-                            <span class="meta-value">7+</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Joueurs</span>
-                            <span class="meta-value">2-6</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Durée</span>
-                            <span class="meta-value">~30 min</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-label">Type</span>
-                            <span class="meta-value">Cartes, Stratégie</span>
-                        </div>
-                    </div>
-                    
-                    <div class="game-description">
-                        <p>Mille Bornes est un jeu de cartes français classique créé en 1954 par Edmond Dujardin. Le jeu simule une course automobile où les joueurs doivent parcourir 1000 kilomètres tout en évitant les obstacles tendus par leurs adversaires.</p>
-                        <p>Véritable institution dans l'univers des jeux familiaux, Mille Bornes allie stratégie et tactique dans une course effrénée où coups bas et retournements de situation sont au rendez-vous !</p>
-                    </div>
-                    
-                    <div class="price-box">
-                        <div>
-                            <div class="price">16,90 €</div>
-                            <div class="stock">En stock (15 disponibles)</div>
-                        </div>
-                        <div class="btn-group">
-                            <a href="#" class="btn btn-add">Ajouter au panier</a>
-                            <a href="#" class="btn btn-wishlist"><i class="far fa-heart"></i> Wishlist</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Section Règles du jeu -->
-            <div class="content-section">
-                <h3 class="section-title">Règles du jeu</h3>
-                
-                <div class="rules-section">
-                    <h4 class="rules-title">Objectif du jeu</h4>
-                    <div class="rules-content">
-                        <div class="rules-text">
-                            <p>L'objectif de Mille Bornes est d'être le premier joueur ou la première équipe à parcourir 1000 kilomètres exactement. Pour y parvenir, vous devrez poser des cartes "Bornes" (distances) tout en surmontant les attaques de vos adversaires et en plaçant judicieusement vos cartes "Attaque" et "Parade".</p>
-                        </div>
-                        <div class="rules-images">
-                            <img src="/api/placeholder/300/200" alt="Objectif du jeu" class="rule-image">
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="rules-section">
-                    <h4 class="rules-title">Contenu de la boîte</h4>
-                    <div class="rules-content">
-                        <div class="rules-text">
-                            <ul class="rule-list">
-                                <li>106 cartes réparties en différentes catégories : Bornes (distances), Attaques, Parades, Bottes et Cartes spéciales</li>
-                                <li>Un sabot pour disposer les cartes</li>
-                                <li>Une règle du jeu détaillée</li>
-                            </ul>
-                        </div>
-                        <div class="rules-images">
-                            <img src="/api/placeholder/300/200" alt="Contenu de la boîte" class="rule-image">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Section Ressources -->
-            <div class="content-section">
-                <h3 class="section-title">Ressources téléchargeables</h3>
-                
-                <div class="download-list">
-                    <div class="download-item">
-                        <div class="download-icon">
-                            <i class="far fa-file-pdf"></i>
-                        </div>
-                        <div class="download-info">
-                            <div class="download-title">Règles du jeu - Mille Bornes (Version classique)</div>
-                            <div class="download-meta">PDF - 2.4 MB - Mis à jour le 15/03/2025</div>
-                        </div>
-                        <a href="#" class="download-btn">Télécharger</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Section Vidéos -->
-            <div class="content-section">
-                <h3 class="section-title">Vidéos</h3>
-                
-                <div class="rules-section">
-                    <h4 class="rules-title">Tutoriels et gameplay</h4>
-                    <div class="video-container">
-                        <!-- Placeholder pour une vidéo YouTube -->
-                        <iframe src="/api/placeholder/560/315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <p>Cette vidéo explique en détail les règles du Mille Bornes et montre une partie complète avec des exemples de stratégies gagnantes.</p>
-                </div>
-            </div>
+      <section class="game-hero">
+        <div class="breadcrumb">
+          <a href="index.html">Accueil</a>
+          <span class="separator">/</span>
+          <a href="catalogue.html">Catalogue</a>
+          <span class="separator">/</span>
+          <span class="current">Mille Bornes</span>
         </div>
+        <h1>Mille Bornes</h1>
+        <p>
+          Le célèbre jeu de cartes français où il faut parcourir 1000 kilomètres
+          tout en évitant les embûches tendues par vos adversaires.
+        </p>
+      </section>
+
+      <div class="game-container">
+        <div class="game-flex-container">
+          <div class="game-images">
+            <img
+              src="media/images/jeux/milles-bornes.png"
+              alt="Mille Bornes - Boîte du jeu"
+              class="main-image"
+            />
+          </div>
+
+          <div class="game-info">
+            <h2 class="game-title">Mille Bornes</h2>
+
+            <div class="game-meta">
+              <div class="meta-item">
+                <span class="meta-label">Année de création</span>
+                <span class="meta-value">1954</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Éditeur</span>
+                <span class="meta-value">Dujardin</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Créateur</span>
+                <span class="meta-value">Edmond Dujardin</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Âge</span>
+                <span class="meta-value">7+</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Joueurs</span>
+                <span class="meta-value">2-6</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Durée</span>
+                <span class="meta-value">~30 min</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Type</span>
+                <span class="meta-value">Cartes, Stratégie</span>
+              </div>
+            </div>
+
+            <div class="game-description">
+              <p>
+                Mille Bornes est un jeu de cartes français classique créé en
+                1954 par Edmond Dujardin. Le jeu simule une course automobile où
+                les joueurs doivent parcourir 1000 kilomètres tout en évitant
+                les obstacles tendus par leurs adversaires.
+              </p>
+              <p>
+                Véritable institution dans l'univers des jeux familiaux, Mille
+                Bornes allie stratégie et tactique dans une course effrénée où
+                coups bas et retournements de situation sont au rendez-vous !
+              </p>
+            </div>
+
+            <div class="price-box">
+              <div>
+                <div class="price">16,90 €</div>
+                <div class="stock">En stock (15 disponibles)</div>
+              </div>
+              <div class="btn-group">
+                <a href="#" class="btn btn-add">Ajouter au panier</a>
+                <a href="#" class="btn btn-wishlist"
+                  ><i class="far fa-heart"></i> Wishlist</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Règles du jeu -->
+        <div class="content-section">
+          <h3 class="section-title">Règles du jeu</h3>
+
+          <div class="rules-section">
+            <h4 class="rules-title">Objectif du jeu</h4>
+            <div class="rules-content">
+              <div class="rules-text">
+                <p>
+                  L'objectif de Mille Bornes est d'être le premier joueur ou la
+                  première équipe à parcourir 1000 kilomètres exactement. Pour y
+                  parvenir, vous devrez poser des cartes "Bornes" (distances)
+                  tout en surmontant les attaques de vos adversaires et en
+                  plaçant judicieusement vos cartes "Attaque" et "Parade".
+                </p>
+              </div>
+              <div class="rules-images">
+                <img
+                  src="/api/placeholder/300/200"
+                  alt="Objectif du jeu"
+                  class="rule-image"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="rules-section">
+            <h4 class="rules-title">Contenu de la boîte</h4>
+            <div class="rules-content">
+              <div class="rules-text">
+                <ul class="rule-list">
+                  <li>
+                    106 cartes réparties en différentes catégories : Bornes
+                    (distances), Attaques, Parades, Bottes et Cartes spéciales
+                  </li>
+                  <li>Un sabot pour disposer les cartes</li>
+                  <li>Une règle du jeu détaillée</li>
+                </ul>
+              </div>
+              <div class="rules-images">
+                <img
+                  src="/api/placeholder/300/200"
+                  alt="Contenu de la boîte"
+                  class="rule-image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Ressources -->
+        <div class="content-section">
+          <h3 class="section-title">Ressources téléchargeables</h3>
+
+          <div class="download-list">
+            <div class="download-item">
+              <div class="download-icon">
+                <i class="far fa-file-pdf"></i>
+              </div>
+              <div class="download-info">
+                <div class="download-title">
+                  Règles du jeu - Mille Bornes (Version classique)
+                </div>
+                <div class="download-meta">
+                  PDF - 2.4 MB - Mis à jour le 15/03/2025
+                </div>
+              </div>
+              <a href="#" class="download-btn">Télécharger</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Vidéos -->
+        <div class="content-section">
+          <h3 class="section-title">Vidéos</h3>
+
+          <div class="rules-section">
+            <h4 class="rules-title">Tutoriels et gameplay</h4>
+            <div class="video-container">
+              <!-- Placeholder pour une vidéo YouTube -->
+              <iframe
+                src="/api/placeholder/560/315"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <p>
+              Cette vidéo explique en détail les règles du Mille Bornes et
+              montre une partie complète avec des exemples de stratégies
+              gagnantes.
+            </p>
+          </div>
+        </div>
+      </div>
     </main>
-    
+
     <footer>
-        <p>&copy; 2025 Pistache. Tous droits réservés.</p>
+      <p>&copy; 2025 Pistache. Tous droits réservés.</p>
     </footer>
-    
+
     <script>
-        // Fonctionnalité pour le menu mobile
-        document.getElementById('menuToggle').addEventListener('click', function() {
-            document.getElementById('mainMenu').classList.toggle('active');
+      // Fonctionnalité pour le menu mobile
+      document
+        .getElementById("menuToggle")
+        .addEventListener("click", function () {
+          document.getElementById("mainMenu").classList.toggle("active");
         });
     </script>
-</body>
+  </body>
 </html>

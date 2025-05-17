@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS bdd_pistache;
 CREATE DATABASE bdd_pistache;
 USE bdd_pistache;
 
