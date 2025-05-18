@@ -71,3 +71,22 @@ if (isset($_GET['confirmer']) && $_GET['confirmer'] == 1) {
 }
 
 ?>
+
+<?php
+// annulation rapide d'une inscription par l'admin
+
+// Si un ID est passé et qu'on n'a pas cliqué sur "confirmer", on peut juste changer son statut en "Annulée"
+// C’est utile si on veut juste annuler l'inscription sans supprimer les données
+if (isset($_GET['id']) && !isset($_GET['confirmer'])) {
+    $id = intval($_GET['id']);
+
+    // On prépare la requête pour changer le statut
+    $changerStatut = $pdo->prepare("UPDATE inscription SET status = 'annulée' WHERE id_inscription = ?");
+    $changerStatut->execute([$id]);
+
+    // On redirige vers la liste avec un petit message (on peut adapter si besoin)
+    header("Location: liste.php?message=" . urlencode("L'inscription a été annulée (statut modifié)."));
+    exit;
+}
+?>
+
