@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../config/config.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];
     $annee_sortie = $_POST['annee_sortie'];
-    $genre = $_POST['genre'];
+    $id_genre = $_POST['genre'];
     $type = $_POST['type'];
     $description_courte = $_POST['description_courte'];
     $description_longue = $_POST['description_longue'];
@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $pdo = connexionBDD();
 
-    $requete = $pdo->prepare("INSERT INTO jeux (nom, annee_sortie, genre, type, description_courte, description_longue, image_url) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $requete->execute([$nom, $annee_sortie, $genre, $type, $description_courte, $description_longue, $image_url]);
+    $requete = $pdo->prepare("INSERT INTO jeux (nom, annee_sortie, id_genre, type, description_courte, description_longue, image_url) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $requete->execute([$nom, $annee_sortie, $id_genre, $type, $description_courte, $description_longue, $image_url]);
 
     echo "Le jeu a bien été ajouté.";
 }
@@ -28,7 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="number" name="annee_sortie"><br><br>
 
     <label>Genre :</label><br>
-    <input type="text" name="genre"><br><br>
+    <select name="genre">
+        <?php include 'get-genres.php'; ?>
+    </select><br><br>
 
     <label>Type :</label><br>
     <input type="text" name="type"><br><br>
