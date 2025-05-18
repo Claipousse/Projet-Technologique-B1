@@ -9,15 +9,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $accompagnants = $_POST['accompagnants'];
     $id_evenement = $_POST['id_evenement'];
+    $date_inscription = date('Y-m-d');
 
-    // Ajout du participant
-    $stmt1 = $pdo->prepare("INSERT INTO participant (nom, email, accompagnants) VALUES (?, ?, ?)");
-    $stmt1->execute([$nom, $email, $accompagnants]);
-    $id_participant = $pdo->lastInsertId();
+    // Création de l'utilisateur (avec rôle "participant" par défaut)
+    $stmt1 = $pdo->prepare("INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, role) VALUES (?, '', ?, '', 'participant')");
+    $stmt1->execute([$nom, $email]);
+    $id_utilisateur = $pdo->lastInsertId();
 
-    // Ajout de l'inscription
-    $stmt2 = $pdo->prepare("INSERT INTO inscription (id_participant, id_evenement) VALUES (?, ?)");
-    $stmt2->execute([$id_participant, $id_evenement]);
+    // Insertion de l'inscription (statut = validé)
+    $stmt2 = $pdo->prepare("INSERT INTO inscription (id_utilisateur, id_evenement, nb_accompagnant, date_inscription, status) VALUES (?, ?, ?, ?, 'validé')");
+    $stmt2->execute([$id_utilisateur, $id_evenement, $accompagnants, $date_inscription]);
 
     echo "<p style='color:green;'>Inscription enregistrée avec succès !</p>";
 }
@@ -27,10 +28,9 @@ $evenements = $pdo->query("
     SELECT e.id_evenement, e.titre
     FROM evenement e
     WHERE (
-        SELECT COUNT(*) + COALESCE(SUM(p.accompagnants), 0)
-        FROM inscription i
-        JOIN participant p ON p.id_participant = i.id_participant
-        WHERE i.id_evenement = e.id_evenement
+        SELECT COUNT(*) + COALESCE(SUM(nb_accompagnant), 0)
+        FROM inscription
+        WHERE id_evenement = e.id_evenement AND status = 'validé'
     ) < e.capacite_max
 ")->fetchAll();
 ?>
