@@ -1,0 +1,717 @@
+/*
+ * admin.css - Styles pour le panneau d'administration de Pistache
+ * Partie du projet technologique - Application Web pour une boutique de jeux de société
+ */
+
+:root {
+  --admin-primary: #2c3e50;
+  --admin-secondary: #34495e;
+  --admin-accent: #27ae60;
+  --admin-accent-light: #2ecc71;
+  --admin-light: #ecf0f1;
+  --admin-danger: #e74c3c;
+  --admin-warning: #f39c12;
+  --admin-info: #3498db;
+  --admin-success: #2ecc71;
+  --admin-text: #333;
+  --admin-muted: #7f8c8d;
+  --admin-border: #ddd;
+  --admin-hover: #f5f5f5;
+}
+
+/* Styles généraux */
+body {
+  font-family: 'Roboto', sans-serif;
+  color: var(--admin-text);
+  background-color: #f5f7fa;
+}
+
+.admin-container {
+  padding: 20px;
+}
+
+/* Navbar personnalisée */
+.navbar-admin {
+  background-color: var(--admin-primary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-weight: 600;
+  color: white !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus {
+  color: white;
+}
+
+.navbar-dark .navbar-nav .active > .nav-link {
+  color: white;
+  font-weight: 600;
+}
+
+/* Breadcrumb personnalisé */
+.breadcrumb-container {
+  background-color: var(--admin-light);
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.breadcrumb {
+  margin-bottom: 0;
+  background-color: transparent;
+  padding: 0.75rem 0;
+}
+
+.breadcrumb-item a {
+  color: var(--admin-secondary);
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  color: var(--admin-accent);
+}
+
+.breadcrumb-item.active {
+  color: var(--admin-muted);
+}
+
+/* Cards du tableau de bord */
+.card {
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: white;
+  border-bottom: 1px solid var(--admin-border);
+  font-weight: 600;
+  padding: 15px 20px;
+}
+
+.card-footer {
+  background-color: white;
+  border-top: 1px solid var(--admin-border);
+  padding: 12px 20px;
+}
+
+/* Statistiques */
+.stat-card {
+  text-align: center;
+  padding: 15px;
+}
+
+.stat-card .card-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  color: var(--admin-muted);
+}
+
+.stat-card .stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.stat-card .stat-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+/* Couleurs des cartes statistiques */
+.bg-primary {
+  background-color: var(--admin-primary) !important;
+}
+
+.bg-success {
+  background-color: var(--admin-success) !important;
+}
+
+.bg-info {
+  background-color: var(--admin-info) !important;
+}
+
+.bg-warning {
+  background-color: var(--admin-warning) !important;
+}
+
+.bg-danger {
+  background-color: var(--admin-danger) !important;
+}
+
+/* Tableaux */
+.table {
+  background-color: white;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  border-top: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: var(--admin-muted);
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: var(--admin-hover);
+}
+
+/* Badges */
+.badge {
+  padding: 5px 10px;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+/* Boutons */
+.btn {
+  border-radius: 4px;
+  font-weight: 500;
+  padding: 8px 16px;
+  transition: all 0.2s;
+}
+
+.btn-sm {
+  padding: 4px 8px;
+  font-size: 0.85rem;
+}
+
+.btn-primary {
+  background-color: var(--admin-primary);
+  border-color: var(--admin-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--admin-secondary);
+  border-color: var(--admin-secondary);
+}
+
+.btn-success {
+  background-color: var(--admin-success);
+  border-color: var(--admin-success);
+}
+
+.btn-success:hover {
+  background-color: var(--admin-accent);
+  border-color: var(--admin-accent);
+}
+
+.btn-info {
+  background-color: var(--admin-info);
+  border-color: var(--admin-info);
+}
+
+.btn-danger {
+  background-color: var(--admin-danger);
+  border-color: var(--admin-danger);
+}
+
+.btn-warning {
+  background-color: var(--admin-warning);
+  border-color: var(--admin-warning);
+}
+
+.btn-outline-primary {
+  color: var(--admin-primary);
+  border-color: var(--admin-primary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--admin-primary);
+  border-color: var(--admin-primary);
+}
+
+/* Formulaires */
+.form-control {
+  border-radius: 4px;
+  border: 1px solid var(--admin-border);
+  padding: 10px 15px;
+}
+
+.form-control:focus {
+  border-color: var(--admin-accent);
+  box-shadow: 0 0 0 0.2rem rgba(39, 174, 96, 0.25);
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--admin-secondary);
+}
+
+.form-text {
+  color: var(--admin-muted);
+}
+
+.form-check-input:checked {
+  background-color: var(--admin-accent);
+  border-color: var(--admin-accent);
+}
+
+/* Alertes */
+.alert {
+  border: none;
+  border-radius: 4px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+}
+
+.alert-success {
+  background-color: rgba(46, 204, 113, 0.15);
+  color: var(--admin-success);
+}
+
+.alert-danger {
+  background-color: rgba(231, 76, 60, 0.15);
+  color: var(--admin-danger);
+}
+
+.alert-warning {
+  background-color: rgba(243, 156, 18, 0.15);
+  color: var(--admin-warning);
+}
+
+.alert-info {
+  background-color: rgba(52, 152, 219, 0.15);
+  color: var(--admin-info);
+}
+
+/* Footer d'administration */
+.footer {
+  background-color: var(--admin-primary);
+  color: white;
+  padding: 20px 0;
+  margin-top: 40px;
+}
+
+.footer a {
+  color: white;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.footer a:hover {
+  opacity: 1;
+}
+
+/* Utilitaires */
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Pagination */
+.pagination {
+  margin-bottom: 0;
+}
+
+.page-item.active .page-link {
+  background-color: var(--admin-primary);
+  border-color: var(--admin-primary);
+}
+
+.page-link {
+  color: var(--admin-primary);
+}
+
+.page-link:hover {
+  color: var(--admin-secondary);
+  background-color: var(--admin-light);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table-responsive {
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .stat-card .stat-value {
+    font-size: 2rem;
+  }
+
+  .card-header {
+    padding: 12px 15px;
+  }
+
+  .card-body {
+    padding: 15px;
+  }
+}
+
+/* Styles pour les filtres */
+.filter-section {
+  background-color: white;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.filter-section .form-group {
+  margin-bottom: 10px;
+}
+
+/* Styles pour les détails */
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.detail-header h1 {
+  margin-bottom: 0;
+}
+
+.detail-section {
+  margin-bottom: 30px;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--admin-muted);
+}
+
+.detail-value {
+  margin-bottom: 0;
+}
+
+/* Styles pour la modal */
+.modal-header {
+  background-color: var(--admin-primary);
+  color: white;
+  border-bottom: none;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--admin-border);
+  background-color: #f8f9fa;
+}
+
+/* Styles pour les icônes */
+.icon-action {
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin-right: 10px;
+  color: var(--admin-secondary);
+  transition: color 0.2s;
+}
+
+.icon-action:hover {
+  color: var(--admin-primary);
+}
+
+.icon-danger {
+  color: var(--admin-danger);
+}
+
+.icon-warning {
+  color: var(--admin-warning);
+}
+
+.icon-success {
+  color: var(--admin-success);
+}
+
+/* Personnalisation des checkboxes et radios */
+.custom-control-input:checked ~ .custom-control-label::before {
+  background-color: var(--admin-accent);
+  border-color: var(--admin-accent);
+}
+
+/* Tooltips */
+.tooltip-inner {
+  background-color: var(--admin-primary);
+}
+
+.bs-tooltip-top .arrow::before {
+  border-top-color: var(--admin-primary);
+}
+
+.bs-tooltip-bottom .arrow::before {
+  border-bottom-color: var(--admin-primary);
+}
+
+.bs-tooltip-left .arrow::before {
+  border-left-color: var(--admin-primary);
+}
+
+.bs-tooltip-right .arrow::before {
+  border-right-color: var(--admin-primary);
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Sections repliables */
+.collapsible-section {
+  margin-bottom: 15px;
+}
+
+.collapsible-header {
+  background-color: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.collapsible-header::after {
+  content: '\f107';
+  font-family: 'Bootstrap Icons';
+  float: right;
+  transition: transform 0.3s;
+}
+
+.collapsible-header.active::after {
+  transform: rotate(180deg);
+}
+
+.collapsible-content {
+  padding: 15px;
+  border: 1px solid var(--admin-border);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+
+/* Améliorations de la navbar admin */
+.navbar-dark {
+  padding: 12px 0;
+  transition: padding 0.3s;
+}
+
+.navbar-dark.scrolled {
+  padding: 8px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s;
+}
+
+.navbar-brand:hover {
+  transform: translateY(-1px);
+}
+
+.navbar-brand::before {
+  content: "🎲"; /* Emoji de dé pour représenter les jeux */
+  margin-right: 8px;
+  font-size: 1.4rem;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  position: relative;
+  padding: 8px 15px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.navbar-dark .navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: var(--admin-accent);
+  transition: all 0.3s;
+  transform: translateX(-50%);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover::after,
+.navbar-dark .navbar-nav .active > .nav-link::after {
+  width: 80%;
+}
+
+.navbar-dark .navbar-nav .active > .nav-link {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.navbar-dark .dropdown-menu {
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.navbar-dark .dropdown-item {
+  padding: 8px 15px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.navbar-dark .dropdown-item:hover {
+  background-color: rgba(44, 62, 80, 0.1);
+  transform: translateX(3px);
+}
+
+.navbar-dark .dropdown-item i {
+  margin-right: 8px;
+  color: var(--admin-primary);
+}
+
+/* Amélioration du breadcrumb */
+.breadcrumb-container {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.breadcrumb {
+  font-size: 0.9rem;
+}
+
+.breadcrumb-item a {
+  position: relative;
+  font-weight: 500;
+}
+
+.breadcrumb-item a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 1px;
+  background-color: var(--admin-accent);
+  transition: width 0.3s;
+}
+
+.breadcrumb-item a:hover::after {
+  width: 100%;
+}
+
+/* Améliorations du footer */
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 25px 0;
+  background: linear-gradient(to right, var(--admin-primary), var(--admin-secondary));
+}
+
+.footer .container {
+  position: relative;
+}
+
+.footer p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+.footer a {
+  position: relative;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.footer a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+}
+
+.footer a::before {
+  content: '←';
+  margin-right: 8px;
+  transition: transform 0.3s;
+}
+
+.footer a:hover::before {
+  transform: translateX(-3px);
+}
+
+/* Animation pour le footer et header lors du chargement de la page */
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.navbar-dark {
+  animation: slideInDown 0.5s forwards;
+}
+
+.footer {
+  animation: slideInUp 0.5s forwards;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 576px) {
+  .footer {
+    text-align: center;
+  }
+
+  .footer .text-md-start,
+  .footer .text-md-end {
+    text-align: center !important;
+  }
+
+  .footer a {
+    display: inline-block;
+    margin-top: 10px;
+  }
+
+  .navbar-brand {
+    font-size: 1.1rem;
+  }
+
+  .navbar-brand::before {
+    margin-right: 5px;
+    font-size: 1.2rem;
+  }
+}

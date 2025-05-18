@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- CSS personnalisé d'administration -->
+    <link rel="stylesheet" href="../../assets/css/admin.css">
     <title>Administration</title>
 </head>
 <body>
@@ -19,28 +25,6 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="#"><i class="bi bi-speedometer2"></i> Tableau de bord</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="menu1Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-grid"></i> Menu 1
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="menu1Dropdown">
-                        <li><a class="dropdown-item" href="#">Option 1</a></li>
-                        <li><a class="dropdown-item" href="#">Option 2</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Option 3</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="menu2Dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-list-check"></i> Menu 2
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="menu2Dropdown">
-                        <li><a class="dropdown-item" href="#">Option 1</a></li>
-                        <li><a class="dropdown-item" href="#">Option 2</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Option 3</a></li>
-                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><i class="bi bi-people"></i> Utilisateurs</a>
@@ -72,5 +56,7 @@
         </nav>
     </div>
 </div>
-</body>
-</html>
+
+<!-- Début du contenu principal -->
+<main class="container mt-4">
+</main>

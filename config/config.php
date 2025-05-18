@@ -2,7 +2,7 @@
 session_start();
 $servername = "localhost";
 $username = "root"; //nom utilisateur, pas sur s'il faut l'intégrer avant dans la table utilisateur
-$password = ""; //Mot de passe vide, également changé sur PhpMyAdmin
+$password = "root"; //Mot de passe vide, également changé sur PhpMyAdmin
 $dbname = "BDD_pistache"; //Nom de la BDD
 
 // Fonction pour se connecter à la base de données
