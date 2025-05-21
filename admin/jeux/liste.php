@@ -2,10 +2,11 @@
 require_once '../../config/config.php';
 require_once '../../includes/fonctions.php';
 
-// Vérification des droits d'accès
+/* Vérification des droits d'accès
 if (!estConnecte() || !estAdmin()) {
     redirigerAvecMessage('../../connexion.php', "Vous devez être connecté en tant qu'administrateur.");
 }
+*/
 
 // Récupérer la liste des jeux
 try {

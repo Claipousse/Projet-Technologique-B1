@@ -3,7 +3,7 @@
 
 // On inclut la connexion à la base et le haut de page admin
 require_once __DIR__ . '/../../config/config.php';
-require_once __DIR__ . '/../admin-header.php';
+require_once __DIR__ . '/../includes/admin-header.php';
 
 $conn = connexionBDD(); // On se connecte à la base
 
