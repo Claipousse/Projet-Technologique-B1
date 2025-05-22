@@ -31,7 +31,13 @@ header {
   width: 100%;
   z-index: 1000;
   border-bottom: 2px solid var(--accent-color);
+  top: 0;
+  left: 0;
 }
+
+ .page-content {
+  padding-top: 80px; 
+} 
 
 .logo {
   font-size: 1.5rem;
