@@ -2,36 +2,6 @@
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/includes/fonctions.php';
 
-// Fonction pour formater les dates en français
-function formaterDateEvenement($date_debut, $date_fin) {
-    $mois = [
-        1 => 'Janvier', 2 => 'Février', 3 => 'Mars', 4 => 'Avril',
-        5 => 'Mai', 6 => 'Juin', 7 => 'Juillet', 8 => 'Août',
-        9 => 'Septembre', 10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre'
-    ];
-
-    $debut = new DateTime($date_debut);
-    $fin = new DateTime($date_fin);
-
-    if ($debut->format('Y-m-d') === $fin->format('Y-m-d')) {
-        // Même jour
-        return "Le " . $debut->format('j') . " " . $mois[(int)$debut->format('n')];
-    } else {
-        // Jours différents
-        $jour_debut = $debut->format('j');
-        $jour_fin = $fin->format('j');
-        $mois_fin = $mois[(int)$fin->format('n')];
-
-        if ($debut->format('n') === $fin->format('n')) {
-            // Même mois
-            return "Le " . $jour_debut . " & " . $jour_fin . " " . $mois_fin;
-        } else {
-            // Mois différents - on prend le mois de la fin
-            return "Le " . $jour_debut . " & " . $jour_fin . " " . $mois_fin;
-        }
-    }
-}
-
 // Récupérer les 5 derniers jeux ajoutés
 try {
     $conn = connexionBDD();
@@ -198,14 +168,14 @@ include_once 'includes/header.php';
                 <?php foreach ($evenements as $evenement): ?>
                     <div class="event-card" style="display: flex; align-items: center; gap: 15px; padding: 20px; margin-bottom: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid var(--primary-color);">
                         <div class="event-date-new">
-                            <?php echo formaterDateEvenement($evenement['date_debut'], $evenement['date_fin']); ?>
+                            <?php echo formaterDateEvenement($evenement['date_debut'], $evenement['date_fin'], true); ?>
                         </div>
                         <div class="event-info" style="flex: 1;">
                             <div class="event-title" style="font-weight: bold; font-size: 1.1em; margin-bottom: 5px;">
                                 <?php echo htmlspecialchars($evenement['titre']); ?>
                             </div>
                             <div class="event-description" style="color: #666; margin-bottom: 10px;">
-                                <?php echo htmlspecialchars(substr($evenement['description'], 0, 100)); ?>
+                                <?php echo htmlspecialchars(substr($evenement['description'], 0, 100)) . '...'; ?>
                             </div>
                             <div class="event-capacity">
                                 <div class="progress-mini">
