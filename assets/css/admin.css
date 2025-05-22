@@ -1,8 +1,3 @@
-/*
- * admin.css - Styles pour le panneau d'administration de Pistache
- * Partie du projet technologique - Application Web pour une boutique de jeux de société
- */
-
 :root {
   --admin-primary: #2c3e50;
   --admin-secondary: #34495e;
@@ -294,24 +289,6 @@ body {
 .alert-info {
   background-color: rgba(52, 152, 219, 0.15);
   color: var(--admin-info);
-}
-
-/* Footer d'administration */
-.footer {
-  background-color: var(--admin-primary);
-  color: white;
-  padding: 20px 0;
-  margin-top: 40px;
-}
-
-.footer a {
-  color: white;
-  opacity: 0.8;
-  transition: opacity 0.2s;
-}
-
-.footer a:hover {
-  opacity: 1;
 }
 
 /* Utilitaires */
@@ -619,46 +596,6 @@ body {
   width: 100%;
 }
 
-/* Améliorations du footer */
-.footer {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 25px 0;
-  background: linear-gradient(to right, var(--admin-primary), var(--admin-secondary));
-}
-
-.footer .container {
-  position: relative;
-}
-
-.footer p {
-  font-size: 0.95rem;
-  opacity: 0.9;
-  margin-bottom: 0;
-}
-
-.footer a {
-  position: relative;
-  font-weight: 500;
-  padding: 5px 10px;
-  border-radius: 4px;
-  transition: all 0.3s;
-}
-
-.footer a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  text-decoration: none;
-}
-
-.footer a::before {
-  content: '←';
-  margin-right: 8px;
-  transition: transform 0.3s;
-}
-
-.footer a:hover::before {
-  transform: translateX(-3px);
-}
-
 /* Animation pour le footer et header lors du chargement de la page */
 @keyframes slideInUp {
   from {
@@ -686,26 +623,8 @@ body {
   animation: slideInDown 0.5s forwards;
 }
 
-.footer {
-  animation: slideInUp 0.5s forwards;
-}
-
 /* Responsive adjustments for mobile */
 @media (max-width: 576px) {
-  .footer {
-    text-align: center;
-  }
-
-  .footer .text-md-start,
-  .footer .text-md-end {
-    text-align: center !important;
-  }
-
-  .footer a {
-    display: inline-block;
-    margin-top: 10px;
-  }
-
   .navbar-brand {
     font-size: 1.1rem;
   }
