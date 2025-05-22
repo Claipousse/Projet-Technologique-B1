@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<?php include("header.php"); ?>
+<?php include("includes/header.php"); ?>
 
 <main style="padding-top: 120px; padding-bottom: 80px; background-color: #f5f5dc;">
     <div style="max-width: 500px; margin: 0 auto; background-color: white; padding: 2rem; border-radius: 8px; border: 1px solid #d2b48c; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
@@ -55,10 +55,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" style="margin-top: 1.5rem; width: 100%; padding: 0.8rem; background-color: #8b4513; color: #fff8e1; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Se connecter</button>
 
             <p style="text-align: center; margin-top: 1.5rem;">
-                Pas encore de compte ? <a href="inscription.php" style="color: #8b4513; font-weight: bold;">Crée-en un ici</a>
+                Pas encore de compte ? <a href="creation_compte.php" style="color: #8b4513; font-weight: bold;">Crée-en un ici</a>
             </p>
         </form>
     </div>
 </main>
 
-<?php include("footer.php"); ?>
+<?php include("includes/footer.php"); ?>

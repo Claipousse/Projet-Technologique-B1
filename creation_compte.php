@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
-<?php include("header.php"); ?>
+<?php include("includes/header.php"); ?>
 
 <main style="padding-top: 120px; padding-bottom: 80px; background-color: #f5f5dc;">
     <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 2rem; border-radius: 8px; border: 1px solid #d2b48c; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
@@ -61,4 +61,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
 </main>
 
-<?php include("footer.php"); ?>
+<?php include("includes/footer.php"); ?>
