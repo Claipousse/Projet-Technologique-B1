@@ -2,72 +2,138 @@
 require_once(__DIR__ . "/../../config/config.php");
 $pdo = connexionBDD();
 
+$message = '';
+$messageType = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titre = htmlspecialchars($_POST['titre']);
     $description = htmlspecialchars($_POST['description']);
     $date_debut = $_POST['date_debut'];
-    $date_fin = $_POST['date_fin'];
-    $capacite = intval($_POST['capacite_max']);
     $duree_type = htmlspecialchars($_POST['duree_type']);
+    $capacite = intval($_POST['capacite_max']);
 
-    $sql = "INSERT INTO evenement (titre, description, date_debut, date_fin, capacite_max, duree_type)
-            VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$titre, $description, $date_debut, $date_fin, $capacite, $duree_type]);
+    // Calculer automatiquement la date de fin selon la durée
+    $date_fin = $date_debut; // Par défaut pour demi-journée et journée
+    if ($duree_type === 'weekend') {
+        $date_fin = date('Y-m-d', strtotime($date_debut . ' +1 day'));
+    }
 
-    echo "<div class='container mt-4'><div class='alert alert-success'>✅ Événement ajouté avec succès !</div></div>";
+    // Validation : date de début >= date actuelle
+    $date_actuelle = date('Y-m-d');
+    if ($date_debut < $date_actuelle) {
+        $message = "La date de début doit être supérieure ou égale à la date actuelle.";
+        $messageType = "danger";
+    } else {
+        try {
+            $sql = "INSERT INTO evenement (titre, description, date_debut, date_fin, capacite_max, duree_type)
+                    VALUES (?, ?, ?, ?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$titre, $description, $date_debut, $date_fin, $capacite, $duree_type]);
+
+            $message = "✅ Événement ajouté avec succès !";
+            $messageType = "success";
+        } catch (PDOException $e) {
+            $message = "Erreur lors de l'ajout : " . $e->getMessage();
+            $messageType = "danger";
+        }
+    }
 }
 include_once '../includes/admin-header.php';
 ?>
 
-<main class="container py-4">
-    <h1 class="text-center mb-4" style="font-family: 'Playfair Display', serif; color: #8B4513;">
-        Ajouter un événement
-    </h1>
+    <main class="container py-4">
+        <h1 class="text-center mb-4" style="font-family: 'Playfair Display', serif; color: #8B4513;">
+            Ajouter un événement
+        </h1>
 
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm p-4">
-                <form method="POST">
-                    <div class="mb-3">
-                        <label for="titre" class="form-label">Titre de l'évènement</label>
-                        <input type="text" class="form-control" id="titre" name="titre" required />
-                    </div>
+        <?php if (!empty($message)) : ?>
+            <div class="alert alert-<?php echo $messageType; ?>"><?php echo $message; ?></div>
+        <?php endif; ?>
 
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
-                    </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm p-4">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="titre" class="form-label">Titre de l'évènement</label>
+                            <input type="text" class="form-control" id="titre" name="titre" required />
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="date_debut" class="form-label">Date de début</label>
-                        <input type="date" class="form-control" id="date_debut" name="date_debut" required />
-                    </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="date_fin" class="form-label">Date de fin</label>
-                        <input type="date" class="form-control" id="date_fin" name="date_fin" required />
-                    </div>
+                        <div class="mb-3">
+                            <label for="date_debut" class="form-label">Date de début</label>
+                            <input type="date" class="form-control" id="date_debut" name="date_debut"
+                                   min="<?php echo date('Y-m-d'); ?>" required />
+                            <div class="form-text">La date doit être supérieure ou égale à aujourd'hui</div>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="capacite_max" class="form-label">Capacité maximale</label>
-                        <input type="number" class="form-control" id="capacite_max" name="capacite_max" min="1" required />
-                    </div>
+                        <div class="mb-3">
+                            <label for="duree_type" class="form-label">Durée</label>
+                            <select class="form-select" id="duree_type" name="duree_type" required>
+                                <option value="">Choisissez une durée</option>
+                                <option value="demi-journée">Demi-journée</option>
+                                <option value="journée">Journée</option>
+                                <option value="weekend">Weekend</option>
+                            </select>
+                            <div class="form-text" id="date_fin_info"></div>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="duree_type" class="form-label">Durée</label>
-                        <input type="text" class="form-control" id="duree_type" name="duree_type" required />
-                    </div>
+                        <div class="mb-3">
+                            <label for="capacite_max" class="form-label">Capacité maximale</label>
+                            <input type="number" class="form-control" id="capacite_max" name="capacite_max" min="1" required />
+                        </div>
 
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-success">
-                            <i class="bi bi-check-circle"></i> Ajouter l'évènement
-                        </button>
-                    </div>
-                </form>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Ajouter l'évènement
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateDebut = document.getElementById('date_debut');
+            const dureeType = document.getElementById('duree_type');
+            const dateFinInfo = document.getElementById('date_fin_info');
+
+            function updateDateFinInfo() {
+                const dateDebutValue = dateDebut.value;
+                const dureeValue = dureeType.value;
+
+                if (dateDebutValue && dureeValue) {
+                    const date = new Date(dateDebutValue);
+                    let dateFin = new Date(date);
+
+                    if (dureeValue === 'weekend') {
+                        dateFin.setDate(date.getDate() + 1);
+                    }
+
+                    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                    const dateDebutFormatted = date.toLocaleDateString('fr-FR', options);
+                    const dateFinFormatted = dateFin.toLocaleDateString('fr-FR', options);
+
+                    if (dureeValue === 'demi-journée' || dureeValue === 'journée') {
+                        dateFinInfo.textContent = `Date de fin automatique : ${dateDebutFormatted}`;
+                    } else {
+                        dateFinInfo.textContent = `Date de fin automatique : ${dateFinFormatted}`;
+                    }
+                    dateFinInfo.style.color = '#28a745';
+                } else {
+                    dateFinInfo.textContent = '';
+                }
+            }
+
+            dateDebut.addEventListener('change', updateDateFinInfo);
+            dureeType.addEventListener('change', updateDateFinInfo);
+        });
+    </script>
 
 <?php include_once "../includes/admin-footer.php" ?>

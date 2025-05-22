@@ -36,18 +36,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titre = $_POST['titre'];
     $description = $_POST['description'];
     $date_debut = $_POST['date_debut'];
-    $date_fin = $_POST['date_fin'];
-    $capacite_max = $_POST['capacite_max'];
     $duree_type = $_POST['duree_type'];
+    $capacite_max = $_POST['capacite_max'];
     $jeux = isset($_POST['jeux']) ? $_POST['jeux'] : [];
+
+    // Calculer automatiquement la date de fin selon la durée
+    $date_fin = $date_debut; // Par défaut pour demi-journée et journée
+    if ($duree_type === 'weekend') {
+        $date_fin = date('Y-m-d', strtotime($date_debut . ' +1 day'));
+    }
 
     // Validation simple
     if (empty($titre)) $erreurs[] = "Le titre est obligatoire.";
     if (empty($description)) $erreurs[] = "La description est obligatoire.";
     if (empty($date_debut)) $erreurs[] = "La date de début est obligatoire.";
-    if (empty($date_fin)) $erreurs[] = "La date de fin est obligatoire.";
-    if ($date_fin < $date_debut) $erreurs[] = "La date de fin doit être postérieure à la date de début.";
+    if (empty($duree_type)) $erreurs[] = "La durée est obligatoire.";
     if ($capacite_max <= 0) $erreurs[] = "La capacité doit être positive.";
+
+    // Validation : date de début >= date actuelle (sauf si l'événement a déjà commencé)
+    $date_actuelle = date('Y-m-d');
+    if ($date_debut < $date_actuelle && $evenement['date_debut'] >= $date_actuelle) {
+        $erreurs[] = "La date de début doit être supérieure ou égale à la date actuelle.";
+    }
 
     if (empty($erreurs)) {
         $conn->beginTransaction();
@@ -99,15 +109,17 @@ include_once '../includes/admin-header.php';
             </div>
 
             <div class="row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-6 mb-3">
                     <label for="date_debut" class="form-label">Date de début *</label>
-                    <input type="date" class="form-control" id="date_debut" name="date_debut" value="<?php echo $evenement['date_debut']; ?>" required>
+                    <input type="date" class="form-control" id="date_debut" name="date_debut"
+                           value="<?php echo $evenement['date_debut']; ?>"
+                           min="<?php echo ($evenement['date_debut'] < date('Y-m-d')) ? $evenement['date_debut'] : date('Y-m-d'); ?>"
+                           required>
+                    <?php if ($evenement['date_debut'] >= date('Y-m-d')) : ?>
+                        <div class="form-text">La date doit être supérieure ou égale à aujourd'hui</div>
+                    <?php endif; ?>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label for="date_fin" class="form-label">Date de fin *</label>
-                    <input type="date" class="form-control" id="date_fin" name="date_fin" value="<?php echo $evenement['date_fin']; ?>" required>
-                </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-6 mb-3">
                     <label for="capacite_max" class="form-label">Capacité *</label>
                     <input type="number" class="form-control" id="capacite_max" name="capacite_max" min="1" value="<?php echo $evenement['capacite_max']; ?>" required>
                 </div>
@@ -120,6 +132,7 @@ include_once '../includes/admin-header.php';
                     <option value="journée" <?php if ($evenement['duree_type'] == 'journée') echo 'selected'; ?>>Journée</option>
                     <option value="weekend" <?php if ($evenement['duree_type'] == 'weekend') echo 'selected'; ?>>Weekend</option>
                 </select>
+                <div class="form-text" id="date_fin_info"></div>
             </div>
 
             <div class="mb-3">
@@ -149,16 +162,41 @@ include_once '../includes/admin-header.php';
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const dateDebut = document.getElementById('date_debut');
-            const dateFin = document.getElementById('date_fin');
+            const dureeType = document.getElementById('duree_type');
+            const dateFinInfo = document.getElementById('date_fin_info');
 
-            dateDebut.addEventListener('change', function() {
-                if (dateFin.value && dateFin.value < dateDebut.value) {
-                    dateFin.value = dateDebut.value;
+            function updateDateFinInfo() {
+                const dateDebutValue = dateDebut.value;
+                const dureeValue = dureeType.value;
+
+                if (dateDebutValue && dureeValue) {
+                    const date = new Date(dateDebutValue);
+                    let dateFin = new Date(date);
+
+                    if (dureeValue === 'weekend') {
+                        dateFin.setDate(date.getDate() + 1);
+                    }
+
+                    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                    const dateDebutFormatted = date.toLocaleDateString('fr-FR', options);
+                    const dateFinFormatted = dateFin.toLocaleDateString('fr-FR', options);
+
+                    if (dureeValue === 'demi-journée' || dureeValue === 'journée') {
+                        dateFinInfo.textContent = `Date de fin automatique : ${dateDebutFormatted}`;
+                    } else {
+                        dateFinInfo.textContent = `Date de fin automatique : ${dateFinFormatted}`;
+                    }
+                    dateFinInfo.style.color = '#28a745';
+                } else {
+                    dateFinInfo.textContent = '';
                 }
-                dateFin.min = dateDebut.value;
-            });
+            }
 
-            dateFin.min = dateDebut.value;
+            // Initialiser l'affichage au chargement
+            updateDateFinInfo();
+
+            dateDebut.addEventListener('change', updateDateFinInfo);
+            dureeType.addEventListener('change', updateDateFinInfo);
         });
     </script>
 

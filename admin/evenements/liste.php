@@ -2,36 +2,23 @@
 require_once '../../config/config.php';
 require_once '../../includes/fonctions.php';
 
-/* Vérification des droits d'accès
-if (!estConnecte() || !estAdmin()) {
-    redirigerAvecMessage('../../connexion.php', "Vous devez être connecté en tant qu'administrateur.");
-}
-*/
-
 // Récupérer la liste des événements
 try {
     $conn = connexionBDD();
-    $sql = "SELECT id_evenement, titre, date_debut, date_fin, capacite_max, duree_type 
-           FROM evenement 
-           ORDER BY date_debut DESC";
+    $sql = "SELECT e.id_evenement, e.titre, e.date_debut, e.date_fin, e.capacite_max, e.duree_type,
+                   COUNT(i.id_inscription) as nb_inscrits
+            FROM evenement e
+            LEFT JOIN inscription i ON e.id_evenement = i.id_evenement
+            GROUP BY e.id_evenement
+            ORDER BY e.date_debut DESC";
     $stmt = $conn->query($sql);
     $evenements = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Pour chaque événement, récupérer le nombre d'inscrits
-    foreach ($evenements as &$evenement) {
-        $sql_count = "SELECT COUNT(*) as nb_inscrits FROM inscription WHERE id_evenement = :id_evenement";
-        $stmt_count = $conn->prepare($sql_count);
-        $stmt_count->execute([':id_evenement' => $evenement['id_evenement']]);
-        $result = $stmt_count->fetch(PDO::FETCH_ASSOC);
-        $evenement['nb_inscrits'] = $result['nb_inscrits'];
-    }
-    unset($evenement); // Important : détruire la référence
-
 } catch (PDOException $e) {
+    $evenements = [];
     $message = "Erreur: " . $e->getMessage();
 }
 
-// Affichage du message
 $message = isset($_GET['message']) ? $_GET['message'] : '';
 $messageType = isset($_GET['type']) ? $_GET['type'] : 'info';
 
@@ -39,55 +26,86 @@ include_once '../includes/admin-header.php';
 ?>
 
     <div class="container mt-4">
-        <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Liste des événements</h1>
-            <a href="ajouter.php" class="btn btn-success">Ajouter un événement</a>
+            <a href="ajouter.php" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Ajouter un événement
+            </a>
         </div>
 
         <?php if (!empty($message)) : ?>
-            <div class="alert alert-<?php echo $messageType; ?>"><?php echo $message; ?></div>
+            <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show">
+                <?php echo $message; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
         <?php endif; ?>
 
         <?php if (empty($evenements)) : ?>
-            <div class="alert alert-info">Aucun événement disponible.</div>
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> Aucun événement disponible.
+            </div>
         <?php else : ?>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Titre</th>
-                    <th>Dates</th>
-                    <th>Durée</th>
-                    <th>Capacité</th>
-                    <th>Inscrits</th>
-                    <th>Places restantes</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($evenements as $evenement) : ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($evenement['titre']); ?></td>
-                        <td>
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                        <tr>
+                            <th class="fw-bold text-muted">TITRE</th>
+                            <th class="fw-bold text-muted">DATES</th>
+                            <th class="fw-bold text-muted">DURÉE</th>
+                            <th class="fw-bold text-muted text-center">PARTICIPATION</th>
+                            <th class="fw-bold text-muted text-center">ACTIONS</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($evenements as $evenement) : ?>
                             <?php
-                            echo date('d/m/Y', strtotime($evenement['date_debut']));
-                            if ($evenement['date_debut'] != $evenement['date_fin']) {
-                                echo ' - ' . date('d/m/Y', strtotime($evenement['date_fin']));
-                            }
+                            $pourcentage = ($evenement['capacite_max'] > 0) ?
+                                round(($evenement['nb_inscrits'] / $evenement['capacite_max']) * 100) : 0;
                             ?>
-                        </td>
-                        <td><?php echo htmlspecialchars($evenement['duree_type']); ?></td>
-                        <td><?php echo htmlspecialchars($evenement['capacite_max']); ?></td>
-                        <td><?php echo $evenement['nb_inscrits']; ?></td>
-                        <td><?php echo $evenement['capacite_max'] - $evenement['nb_inscrits']; ?></td>
-                        <td>
-                            <a href="modifier.php?id=<?php echo $evenement['id_evenement']; ?>" class="btn btn-sm btn-primary">Modifier</a>
-                            <a href="supprimer.php?id=<?php echo $evenement['id_evenement']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');">Supprimer</a>
-                            <a href="../inscriptions/liste.php?evenement=<?php echo $evenement['id_evenement']; ?>" class="btn btn-sm btn-info">Inscriptions</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-            </table>
+                            <tr>
+                                <td>
+                                    <strong><?php echo htmlspecialchars($evenement['titre']); ?></strong>
+                                </td>
+                                <td>
+                                    <?php echo formaterDateEvenement($evenement['date_debut'], $evenement['date_fin']); ?>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary"><?php echo htmlspecialchars($evenement['duree_type']); ?></span>
+                                </td>
+                                <td class="text-center">
+                                    <div class="progress-bar-custom">
+                                        <div class="progress-fill" style="width: <?php echo $pourcentage; ?>%"></div>
+                                        <div class="progress-text">
+                                            <?php echo $evenement['nb_inscrits']; ?>/<?php echo $evenement['capacite_max']; ?>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <a href="modifier.php?id=<?php echo $evenement['id_evenement']; ?>"
+                                       class="btn btn-outline-primary btn-sm"
+                                       style="margin-right: 4px;"
+                                       title="Modifier">
+                                        <i class="bi bi-pencil"></i> Modifier
+                                    </a>
+                                    <a href="supprimer.php?id=<?php echo $evenement['id_evenement']; ?>"
+                                       class="btn btn-outline-danger btn-sm"
+                                       style="margin-right: 4px;"
+                                       onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');"
+                                       title="Supprimer">
+                                        <i class="bi bi-trash"></i> Supprimer
+                                    </a>
+                                    <a href="../inscriptions/liste.php?evenement=<?php echo $evenement['id_evenement']; ?>"
+                                       class="btn btn-outline-info btn-sm" title="Voir les inscriptions">
+                                        <i class="bi bi-people"></i> Inscriptions
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         <?php endif; ?>
     </div>
 

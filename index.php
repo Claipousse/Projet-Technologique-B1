@@ -2,6 +2,36 @@
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/includes/fonctions.php';
 
+// Fonction pour formater les dates en français
+function formaterDateEvenement($date_debut, $date_fin) {
+    $mois = [
+        1 => 'Janvier', 2 => 'Février', 3 => 'Mars', 4 => 'Avril',
+        5 => 'Mai', 6 => 'Juin', 7 => 'Juillet', 8 => 'Août',
+        9 => 'Septembre', 10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre'
+    ];
+
+    $debut = new DateTime($date_debut);
+    $fin = new DateTime($date_fin);
+
+    if ($debut->format('Y-m-d') === $fin->format('Y-m-d')) {
+        // Même jour
+        return "Le " . $debut->format('j') . " " . $mois[(int)$debut->format('n')];
+    } else {
+        // Jours différents
+        $jour_debut = $debut->format('j');
+        $jour_fin = $fin->format('j');
+        $mois_fin = $mois[(int)$fin->format('n')];
+
+        if ($debut->format('n') === $fin->format('n')) {
+            // Même mois
+            return "Le " . $jour_debut . " & " . $jour_fin . " " . $mois_fin;
+        } else {
+            // Mois différents - on prend le mois de la fin
+            return "Le " . $jour_debut . " & " . $jour_fin . " " . $mois_fin;
+        }
+    }
+}
+
 // Récupérer les 5 derniers jeux ajoutés
 try {
     $conn = connexionBDD();
@@ -15,19 +45,61 @@ try {
     $jeux = [];
 }
 
-// Récupérer les 5 prochains événements
+// Récupérer les 5 prochains événements avec nombre d'inscrits
 try {
-    $evenements = $conn->query("SELECT titre, description, date_debut, date_fin, capacite_max
+    $evenements = $conn->query("SELECT titre, description, date_debut, date_fin, capacite_max, id_evenement
                                FROM evenement
                                WHERE date_debut >= CURDATE()
                                ORDER BY date_debut ASC
                                LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
+
+    // Pour chaque événement, récupérer le nombre d'inscrits
+    foreach ($evenements as &$evenement) {
+        $sql_count = "SELECT COUNT(*) as nb_inscrits FROM inscription WHERE id_evenement = :id_evenement";
+        $stmt_count = $conn->prepare($sql_count);
+        $stmt_count->execute([':id_evenement' => $evenement['id_evenement']]);
+        $result = $stmt_count->fetch(PDO::FETCH_ASSOC);
+        $evenement['nb_inscrits'] = $result['nb_inscrits'];
+        $evenement['places_restantes'] = $evenement['capacite_max'] - $evenement['nb_inscrits'];
+        $evenement['pourcentage_remplissage'] = ($evenement['capacite_max'] > 0) ?
+            round(($evenement['nb_inscrits'] / $evenement['capacite_max']) * 100) : 0;
+    }
+    unset($evenement);
+
 } catch (PDOException $e) {
     $evenements = [];
 }
 
 include_once 'includes/header.php';
 ?>
+
+    <style>
+        .progress-mini {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+
+        .progress-bar-mini {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745 0%, #20c997 50%, #ffc107 80%, #dc3545 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .event-date-new {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9em;
+            text-align: center;
+            min-width: 120px;
+        }
+    </style>
 
     <section id="home" class="full-section shop-intro">
         <div class="section-content">
@@ -124,34 +196,29 @@ include_once 'includes/header.php';
 
             <?php if (!empty($evenements)): ?>
                 <?php foreach ($evenements as $evenement): ?>
-                    <?php
-                    $date = new DateTime($evenement['date_debut']);
-                    $mois = ['JAN', 'FÉV', 'MAR', 'AVR', 'MAI', 'JUN', 'JUL', 'AOÛ', 'SEP', 'OCT', 'NOV', 'DÉC'];
-                    $mois_nom = $mois[$date->format('n') - 1];
-                    $jour = $date->format('d');
-                    ?>
-                    <div class="event-card">
-                        <div class="event-date">
-                            <div class="month"><?php echo $mois_nom; ?></div>
-                            <div class="day"><?php echo $jour; ?></div>
+                    <div class="event-card" style="display: flex; align-items: center; gap: 15px; padding: 20px; margin-bottom: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid var(--primary-color);">
+                        <div class="event-date-new">
+                            <?php echo formaterDateEvenement($evenement['date_debut'], $evenement['date_fin']); ?>
                         </div>
-                        <div class="event-info">
-                            <div class="event-title"><?php echo htmlspecialchars($evenement['titre']); ?></div>
-                            <div class="event-duration">
-                                <?php
-                                $date_debut = new DateTime($evenement['date_debut']);
-                                $date_fin = new DateTime($evenement['date_fin']);
-                                if ($date_debut->format('Y-m-d') === $date_fin->format('Y-m-d')) {
-                                    echo "Journée complète";
-                                } else {
-                                    echo "Du " . $date_debut->format('d/m') . " au " . $date_fin->format('d/m');
-                                }
-                                ?>
+                        <div class="event-info" style="flex: 1;">
+                            <div class="event-title" style="font-weight: bold; font-size: 1.1em; margin-bottom: 5px;">
+                                <?php echo htmlspecialchars($evenement['titre']); ?>
                             </div>
-                            <div class="event-meta">
-              <span style="color: var(--primary-color); font-weight: bold;">
-                Capacité max: <?php echo $evenement['capacite_max']; ?> participants
-              </span>
+                            <div class="event-description" style="color: #666; margin-bottom: 10px;">
+                                <?php echo htmlspecialchars(substr($evenement['description'], 0, 100)); ?>
+                            </div>
+                            <div class="event-capacity">
+                                <div class="progress-mini">
+                                    <div class="progress-bar-mini" style="width: <?php echo $evenement['pourcentage_remplissage']; ?>%"></div>
+                                </div>
+                                <small style="color: #495057; font-weight: 500;">
+                                    <?php echo $evenement['nb_inscrits']; ?>/<?php echo $evenement['capacite_max']; ?> participants
+                                    <?php if ($evenement['places_restantes'] > 0): ?>
+                                        - <span style="color: #28a745;"><?php echo $evenement['places_restantes']; ?> places restantes</span>
+                                    <?php else: ?>
+                                        - <span style="color: #dc3545;">Complet</span>
+                                    <?php endif; ?>
+                                </small>
                             </div>
                         </div>
                     </div>
