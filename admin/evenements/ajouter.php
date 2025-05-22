@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../../config.php";
+require_once __DIR__ . "/../../config/config.php";
 require_once __DIR__ . "/../../admin-header.php";
 $pdo = connexionBDD();
 
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <main class="container py-4">
     <h1 class="text-center mb-4" style="font-family: 'Playfair Display', serif; color: #8B4513;">
-        ✍️ Ajouter une inscription
+        Ajouter une inscription
     </h1>
 
     <div class="row justify-content-center">
@@ -65,4 +65,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
 </main>
 
-<?php require_once(__DIR__ . "/../../admin-footer.php"); ?>
+<?php require_once __DIR__ . "/../../admin-footer.php"; ?>
