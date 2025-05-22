@@ -431,7 +431,7 @@
       </button>
       <nav>
         <ul id="mainMenu">
-          <li><a href="index.html">Accueil</a></li>
+          <li><a href="index.php">Accueil</a></li>
           <li><a href="catalogue.html">Catalogue</a></li>
           <li><a href="evenements.html">Événements</a></li>
           <li><a href="contact.php">Contact</a></li>

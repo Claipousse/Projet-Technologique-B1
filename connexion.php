@@ -1,6 +1,8 @@
 <?php
-session_start();
 require_once(__DIR__ . '/config/config.php');
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $erreur = "";
 
@@ -21,10 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["nom"] = $utilisateur["nom"];
 
         if ($utilisateur["role"] == "admin") {
-            header("Location: ../index.php");
+            header("Location: admin/index.php"); // tableau de bord admin
         } else {
-            header("Location: ../index.html");
+            header("Location: index.php"); //  page d’accueil
         }
+
         exit();
     } else {
         $erreur = "Email ou mot de passe incorrect.";
@@ -32,116 +35,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Connexion - Pistache</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap"/>
-    <style>
-        :root {
-            --primary-color: #8b4513;
-            --secondary-color: #5d4037;
-            --accent-color: #d2b48c;
-            --light-bg: #f5f5dc;
-            --dark-text: #3e2723;
-            --light-text: #fff8e1;
-        }
+<?php include("header.php"); ?>
 
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--light-bg);
-            font-family: 'Lora', Georgia, serif;
-            color: var(--dark-text);
-        }
+<main style="padding-top: 120px; padding-bottom: 80px; background-color: #f5f5dc;">
+    <div style="max-width: 500px; margin: 0 auto; background-color: white; padding: 2rem; border-radius: 8px; border: 1px solid #d2b48c; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <h1 style="text-align: center; font-family: 'Playfair Display', serif; font-size: 2rem; color: #8b4513;">Connexion</h1>
 
-        .container {
-            max-width: 500px;
-            margin: 6rem auto;
-            padding: 2rem;
-            background-color: white;
-            border: 1px solid var(--accent-color);
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+        <?php if ($erreur): ?>
+            <p style="color: red; text-align: center;"><?php echo $erreur; ?></p>
+        <?php endif; ?>
 
-        h1 {
-            font-family: "Playfair Display", serif;
-            font-size: 2rem;
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+        <form method="post" action="">
+            <label for="email" style="font-weight: bold; display: block; margin-top: 1rem;">Adresse email</label>
+            <input type="email" name="email" required style="width: 100%; padding: 0.8rem; margin-top: 0.3rem; border: 1px solid #d2b48c; border-radius: 4px; background-color: #f5f5dc;">
 
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
+            <label for="mot_de_passe" style="font-weight: bold; display: block; margin-top: 1.2rem;">Mot de passe</label>
+            <input type="password" name="mot_de_passe" required style="width: 100%; padding: 0.8rem; margin-top: 0.3rem; border: 1px solid #d2b48c; border-radius: 4px; background-color: #f5f5dc;">
 
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid var(--accent-color);
-            border-radius: 4px;
-            margin-bottom: 1.5rem;
-            background-color: var(--light-bg);
-        }
+            <button type="submit" style="margin-top: 1.5rem; width: 100%; padding: 0.8rem; background-color: #8b4513; color: #fff8e1; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Se connecter</button>
 
-        button {
-            width: 100%;
-            padding: 0.8rem;
-            background-color: var(--primary-color);
-            color: var(--light-text);
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: var(--secondary-color);
-        }
-
-        .erreur {
-            color: red;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .logo {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-
-        .logo img {
-            height: 60px;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <div class="logo">
-        <img src="../media/images/pistache-logo.png" alt="Logo Pistache">
+            <p style="text-align: center; margin-top: 1.5rem;">
+                Pas encore de compte ? <a href="inscription.php" style="color: #8b4513; font-weight: bold;">Crée-en un ici</a>
+            </p>
+        </form>
     </div>
-    <h1>Connexion</h1>
-    <?php if ($erreur): ?>
-        <div class="erreur"><?php echo $erreur; ?></div>
-    <?php endif; ?>
-    <form method="post" action="">
-        <label for="email">Adresse email</label>
-        <input type="email" id="email" name="email" required>
+</main>
 
-        <label for="mot_de_passe">Mot de passe</label>
-        <input type="password" id="mot_de_passe" name="mot_de_passe" required>
-
-        <button type="submit">Se connecter</button>
-    </form>
-</div>
-</body>
-</html>
+<?php include("footer.php"); ?>
