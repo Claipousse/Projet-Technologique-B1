@@ -1,132 +1,147 @@
 <?php
-require_once 'config/config.php';
-require_once 'includes/fonctions.php';
+session_start();
+require_once('../config.php');
 
-$erreurs = [];
-$email = '';
+$erreur = "";
 
-// Si l'utilisateur est déjà connecté, le rediriger vers la page d'accueil
-if (estConnecte()) {
-    // Si c'est un admin, rediriger vers le tableau de bord admin
-    if (estAdmin()) {
-        header('Location: admin/index.php');
-        exit;
-    }
-    // Sinon rediriger vers la page d'accueil
-    header('Location: index.php');
-    exit;
-}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $bdd = connexionBDD();
 
-// Traitement du formulaire de connexion
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim(isset($_POST['email']) ? $_POST['email'] : '');
-    $mot_de_passe = isset($_POST['mot_de_passe']) ? $_POST['mot_de_passe'] : '';
+    $email = $_POST["email"];
+    $mdp = $_POST["mot_de_passe"];
 
-    // Validation des données
-    if (empty($email)) {
-        $erreurs[] = "L'adresse email est obligatoire.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $erreurs[] = "L'adresse email n'est pas valide.";
-    }
+    $sql = "SELECT * FROM utilisateur WHERE email = ?";
+    $stmt = $bdd->prepare($sql);
+    $stmt->execute([$email]);
+    $utilisateur = $stmt->fetch();
 
-    if (empty($mot_de_passe)) {
-        $erreurs[] = "Le mot de passe est obligatoire.";
-    }
+    if ($utilisateur && password_verify($mdp, $utilisateur["mot_de_passe"])) {
+        $_SESSION["id_utilisateur"] = $utilisateur["id_utilisateur"];
+        $_SESSION["role"] = $utilisateur["role"];
+        $_SESSION["nom"] = $utilisateur["nom"];
 
-    // Si pas d'erreurs, tentative de connexion
-    if (empty($erreurs)) {
-        try {
-            $conn = connexionBDD();
-            $stmt = $conn->prepare("SELECT id_utilisateur, email, mot_de_passe, nom, prenom, role FROM utilisateur WHERE email = :email");
-            $stmt->bindParam(':email', $email);
-            $stmt->execute();
-
-            if ($stmt->rowCount() > 0) {
-                $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                // Vérification du mot de passe
-                if (password_verify($mot_de_passe, $utilisateur['mot_de_passe'])) {
-                    // Connexion réussie
-                    $_SESSION['utilisateur'] = [
-                        'id' => $utilisateur['id_utilisateur'],
-                        'email' => $utilisateur['email'],
-                        'nom' => $utilisateur['nom'],
-                        'prenom' => $utilisateur['prenom'],
-                        'role' => $utilisateur['role']
-                    ];
-
-                    // Redirection selon le rôle
-                    if ($utilisateur['role'] === 'admin') {
-                        header('Location: admin/index.php');
-                        exit;
-                    } else {
-                        header('Location: index.php');
-                        exit;
-                    }
-                } else {
-                    $erreurs[] = "Mot de passe incorrect.";
-                }
-            } else {
-                $erreurs[] = "Aucun utilisateur trouvé avec cette adresse email.";
-            }
-        } catch (PDOException $e) {
-            $erreurs[] = "Erreur de connexion à la base de données: " . $e->getMessage();
+        if ($utilisateur["role"] == "admin") {
+            header("Location: ../index.php");
+        } else {
+            header("Location: ../index.html");
         }
+        exit();
+    } else {
+        $erreur = "Email ou mot de passe incorrect.";
     }
 }
-
-// Inclure l'en-tête
-include_once 'includes/header.php';
 ?>
 
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="text-center">Connexion</h2>
-                    </div>
-                    <div class="card-body">
-                        <?php if (!empty($erreurs)): ?>
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    <?php foreach ($erreurs as $erreur): ?>
-                                        <li><?php echo $erreur; ?></li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Connexion - Pistache</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap"/>
+    <style>
+        :root {
+            --primary-color: #8b4513;
+            --secondary-color: #5d4037;
+            --accent-color: #d2b48c;
+            --light-bg: #f5f5dc;
+            --dark-text: #3e2723;
+            --light-text: #fff8e1;
+        }
 
-                        <?php if (isset($_SESSION['message'])): ?>
-                            <div class="alert alert-<?php echo isset($_SESSION['message_type']) ? $_SESSION['message_type'] : 'info'; ?>">
-                                <?php echo $_SESSION['message']; ?>
-                                <?php unset($_SESSION['message']); unset($_SESSION['message_type']); ?>
-                            </div>
-                        <?php endif; ?>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            font-family: 'Lora', Georgia, serif;
+            color: var(--dark-text);
+        }
 
-                        <form method="post" action="connexion.php">
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Adresse email</label>
-                                <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="mot_de_passe" class="form-label">Mot de passe</label>
-                                <input type="password" class="form-control" id="mot_de_passe" name="mot_de_passe" required>
-                            </div>
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">Se connecter</button>
-                            </div>
-                        </form>
+        .container {
+            max-width: 500px;
+            margin: 6rem auto;
+            padding: 2rem;
+            background-color: white;
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
 
-                        <div class="mt-3 text-center">
-                            <!--Lien vers des pages à ajouter dans le futur-->
-                            <p>Vous n'avez pas de compte ? <a href="inscription.php">Inscrivez-vous ici</a></p>
-                            <p><a href="mot-de-passe-oublie.php">Mot de passe oublié ?</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        h1 {
+            font-family: "Playfair Display", serif;
+            font-size: 2rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--accent-color);
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            background-color: var(--light-bg);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .erreur {
+            color: red;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo img {
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="logo">
+        <img src="../media/images/pistache-logo.png" alt="Logo Pistache">
     </div>
+    <h1>Connexion</h1>
+    <?php if ($erreur): ?>
+        <div class="erreur"><?php echo $erreur; ?></div>
+    <?php endif; ?>
+    <form method="post" action="">
+        <label for="email">Adresse email</label>
+        <input type="email" id="email" name="email" required>
 
-<?php include_once 'includes/footer.php'; ?>
+        <label for="mot_de_passe">Mot de passe</label>
+        <input type="password" id="mot_de_passe" name="mot_de_passe" required>
+
+        <button type="submit">Se connecter</button>
+    </form>
+</div>
+</body>
+</html>
