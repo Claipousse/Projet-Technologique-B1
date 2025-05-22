@@ -91,7 +91,7 @@ nav a:hover {
   right: 0;
   background-color: var(--secondary-color);
   min-width: 160px;
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
   border-radius: 4px;
   margin-top: 8px;
@@ -415,6 +415,19 @@ nav a:hover {
   font-size: 2rem;
   animation: bounce 2s infinite;
   cursor: pointer;
+}
+
+.scroll-arrow a {
+  color: var(--light-text) !important;
+  text-decoration: none !important;
+}
+
+.scroll-arrow a:hover,
+.scroll-arrow a:visited,
+.scroll-arrow a:active,
+.scroll-arrow a:focus {
+  color: var(--light-text) !important;
+  text-decoration: none !important;
 }
 
 @keyframes bounce {
