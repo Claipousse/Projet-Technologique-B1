@@ -4,11 +4,12 @@
 // Inclusion du fichier de configuration
 require_once __DIR__ . '/../../config/config.php';
 
-// Vérification de la connexion de l'utilisateur 
+/* Vérification de la connexion de l'utilisateur
 if (!estConnecte() || !estAdmin()) {
     // Rediriger vers la page de connexion 
     rediriger('connexion.php');
 }
+*/
 
 // Récupérer l'ID du jeu à supprimer
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
