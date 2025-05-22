@@ -12,6 +12,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap"
     />
+  
     <style>
       :root {
         --primary-color: #8b4513; /* Marron */
@@ -419,26 +420,8 @@
             }
         }
     }
+    include_once 'includes/header.php';
     ?>
-
-    <header>
-      <div class="logo">
-        <img src="media/images/pistache-logo.png" alt="Logo Pistache" />
-        Pistache
-      </div>
-      <button class="menu-toggle" id="menuToggle">
-        <i class="fas fa-bars"></i>
-      </button>
-      <nav>
-        <ul id="mainMenu">
-          <li><a href="index.php">Accueil</a></li>
-          <li><a href="catalogue.html">Catalogue</a></li>
-          <li><a href="evenements.html">Événements</a></li>
-          <li><a href="contact.php">Contact</a></li>
-          <li><a href="panier.html">Panier</a></li>
-        </ul>
-      </nav>
-    </header>
 
     <main>
       <h1 class="page-title">Contactez-nous</h1>
@@ -539,16 +522,7 @@
       </div>
     </main>
 
-    <footer>
-      <p>&copy; 2025 Pistache. Tous droits réservés.</p>
-    </footer>
+<?php include_once 'includes/footer.php'; ?>
 
-    <script>
-      document
-        .getElementById("menuToggle")
-        .addEventListener("click", function () {
-          document.getElementById("mainMenu").classList.toggle("active");
-        });
-    </script>
   </body>
 </html>
