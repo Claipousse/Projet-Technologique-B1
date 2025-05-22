@@ -1,6 +1,5 @@
 <?php
 require_once(__DIR__ . "/../../config/config.php");
-require_once(__DIR__ . "/../admin-header.php");
 $pdo = connexionBDD();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     echo "<div class='container mt-4'><div class='alert alert-success'>✅ Événement ajouté avec succès !</div></div>";
 }
+include_once '../includes/admin-header.php';
 ?>
 
 <main class="container py-4">
@@ -70,4 +70,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </main>
 
-<?php require_once(__DIR__ . "/../admin-footer.php"); ?>
+<?php include_once "../includes/admin-footer.php" ?>
