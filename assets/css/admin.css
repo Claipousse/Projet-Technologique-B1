@@ -509,7 +509,6 @@ body {
 }
 
 .navbar-brand::before {
-  content: "🎲"; /* Emoji de dé pour représenter les jeux */
   margin-right: 8px;
   font-size: 1.4rem;
 }
@@ -692,4 +691,48 @@ body {
   font-weight: bold;
   color: #495057;
   z-index: 10;
+}
+
+/* Fix pour les liens dans les card-footer des statistiques */
+.card-footer a {
+  color: inherit !important;
+  text-decoration: none !important;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.card-footer a:hover {
+  opacity: 0.8 !important;
+}
+
+/* Styles spécifiques pour les cartes colorées */
+.bg-primary .card-footer a,
+.bg-success .card-footer a {
+  color: white !important;
+}
+
+.bg-warning .card-footer a {
+  color: #212529 !important;
+}
+
+.bg-info .card-footer a {
+  color: white !important;
+}
+
+.bg-danger .card-footer a {
+  color: white !important;
+}
+
+/* Assurer la visibilité des liens dans les cartes statistiques */
+.card.bg-primary .card-footer,
+.card.bg-success .card-footer,
+.card.bg-info .card-footer,
+.card.bg-danger .card-footer {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.card.bg-warning .card-footer {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
