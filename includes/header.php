@@ -1,63 +1,50 @@
+<?php
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../includes/fonctions.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pistache - Boutique de Jeux de Société</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <!-- CSS personnalisé -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-custom fixed-top">
-            <div class="container">
-                <a class="navbar-brand" href="index.php">
-                    <img src="assets/images/pistache-logo.png" alt="Logo Pistache" height="40">
-                    Pistache
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarMain">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.php">Accueil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="catalogue.php">Catalogue</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="evenements.php">Événements</a>
-                        </li>
-                        <?php if (estConnecte()): ?>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-person-circle"></i> <?php echo $_SESSION['utilisateur']['prenom']; ?>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <?php if (estAdmin()): ?>
-                                        <li><a class="dropdown-item" href="admin/index.php"><i class="bi bi-speedometer2"></i> Tableau de bord</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                    <?php endif; ?>
-                                    <li><a class="dropdown-item" href="profil.php"><i class="bi bi-person"></i> Mon profil</a></li>
-                                    <li><a class="dropdown-item" href="deconnexion.php"><i class="bi bi-box-arrow-right"></i> Déconnexion</a></li>
-                                </ul>
-                            </li>
-                        <?php else: ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="connexion.php">Connexion</a>
-                            </li>
+<header>
+    <a href="../index.php" class="logo">
+        <img src="../assets/images/pistache-logo.png" alt="Logo Pistache" />
+        Pistache
+    </a>
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    <nav>
+        <ul id="mainMenu">
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="catalogue.php">Catalogue</a></li>
+            <li><a href="evenements.php">Événements</a></li>
+            <li><a href="contact.php">Contact</a></li>
+            <?php if (estConnecte()): ?>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="fas fa-user-circle"></i>
+                        <?php echo isset($_SESSION['utilisateur']['prenom']) ? $_SESSION['utilisateur']['prenom'] : 'Utilisateur'; ?>
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-content">
+                        <?php if (estAdmin()): ?>
+                            <a href="admin/index.php"><i class="fas fa-cog"></i> Administration</a>
                         <?php endif; ?>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <!-- Espace pour compenser la navbar fixed -->
-        <div style="height: 76px;"></div>
-    </header>
-    
-    <main>
+                        <a href="profil.php"><i class="fas fa-user"></i> Mon profil</a>
+                        <a href="deconnexion.php"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
+                    </div>
+                </li>
+            <?php else: ?>
+                <li><a href="connexion.php">Se connecter</a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+</header>
