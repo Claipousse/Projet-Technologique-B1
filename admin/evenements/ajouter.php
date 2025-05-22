@@ -1,42 +1,68 @@
 <?php
-require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . "/../../config.php";
+require_once __DIR__ . "/../../admin-header.php";
+$pdo = connexionBDD();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $titre = $_POST['titre'];
-    $description = $_POST['description'];
-    $date_debut = $_POST['date_debut'];
-    $date_fin = $_POST['date_fin'];
-    $capacite_max = $_POST['capacite_max'];
-    $duree_type = $_POST['duree_type'];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $nom = $_POST["nom"];
+    $prenom = $_POST["prenom"];
+    $email = $_POST["email"];
+    $nb_accompagnant = $_POST["nb_accompagnant"];
+    $id_evenement = $_POST["id_evenement"];
 
-    $pdo = connexionBDD();
+    $sql = "INSERT INTO inscription (id_utilisateur, id_evenement, nb_accompagnant, date_inscription, status)
+            VALUES ((SELECT id_utilisateur FROM utilisateur WHERE email = ?), ?, ?, CURDATE(), 'validée')";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$email, $id_evenement, $nb_accompagnant]);
 
-    $requete = $pdo->prepare("INSERT INTO evenement (titre, description, date_debut, date_fin, capacite_max, duree_type) VALUES (?, ?, ?, ?, ?, ?)"); // les ? sont des places reservées aux valeurs quon va mettre
-    $requete->execute([$titre, $description, $date_debut, $date_fin, $capacite_max, $duree_type]);
-
-    echo "L'événement a bien été ajouté.";
+    header("Location: liste.php");
+    exit();
 }
 ?>
 
-<h2>Ajouter un événement</h2>
-<form method="POST">
-    <label>Titre :</label><br>
-    <input type="text" name="titre"><br><br>
+<main class="container py-4">
+    <h1 class="text-center mb-4" style="font-family: 'Playfair Display', serif; color: #8B4513;">
+        ✍️ Ajouter une inscription
+    </h1>
 
-    <label>Description :</label><br>
-    <textarea name="description"></textarea><br><br>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm p-4">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" name="nom" required />
+                    </div>
 
-    <label>Date de début :</label><br>
-    <input type="date" name="date_debut"><br><br>
+                    <div class="mb-3">
+                        <label for="prenom" class="form-label">Prénom</label>
+                        <input type="text" class="form-control" id="prenom" name="prenom" required />
+                    </div>
 
-    <label>Date de fin :</label><br>
-    <input type="date" name="date_fin"><br><br>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required />
+                    </div>
 
-    <label>Capacité maximale :</label><br>
-    <input type="number" name="capacite_max"><br><br>
+                    <div class="mb-3">
+                        <label for="nb_accompagnant" class="form-label">Nombre d'accompagnants</label>
+                        <input type="number" class="form-control" id="nb_accompagnant" name="nb_accompagnant" min="0" value="0" />
+                    </div>
 
-    <label>Durée :</label><br>
-    <input type="text" name="duree_type"><br><br>
+                    <div class="mb-3">
+                        <label for="id_evenement" class="form-label">ID de l'événement</label>
+                        <input type="number" class="form-control" id="id_evenement" name="id_evenement" required />
+                    </div>
 
-    <input type="submit" value="Ajouter">
-</form>
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-circle"></i> Ajouter l'inscription
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<?php require_once(__DIR__ . "/../../admin-footer.php"); ?>
