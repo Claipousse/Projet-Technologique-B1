@@ -51,7 +51,7 @@ CREATE TABLE ressource(
 CREATE TABLE evenement(
     id_evenement INT NOT NULL AUTO_INCREMENT,
     titre VARCHAR(100) NOT NULL,
-    description TEXT NOT NULL, 
+    description TEXT NOT NULL,
     date_debut DATE NOT NULL,
     date_fin DATE NOT NULL,
     capacite_max INT NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE inscription(
     id_inscription INT NOT NULL AUTO_INCREMENT,
     id_utilisateur INT NOT NULL,
     id_evenement INT NOT NULL,
-    nb_accompagnant INT, 
+    nb_accompagnant INT,
     date_inscription DATE NOT NULL,
     status ENUM('en attente', 'validé', 'annulé') NOT NULL,
     CONSTRAINT PK_INSC PRIMARY KEY (id_inscription),
@@ -87,3 +87,41 @@ CREATE TABLE preferences(
     CONSTRAINT FK_INSC_PREF FOREIGN KEY (id_inscription) REFERENCES inscription (id_inscription),
     CONSTRAINT FK_JEUX_PREF FOREIGN KEY (id_jeux) REFERENCES jeux (id_jeux)
 );
+
+alter table jeux add column image_path VARCHAR(255);
+
+-- Insertion des genres
+INSERT INTO genre (nom_genre)
+VALUES
+    ('Fantaisie'),
+    ('Science-Fiction'),
+    ('Historique'),
+    ('Post-apocalyptique'),
+    ('Horreur'),
+    ('Médiéval'),
+    ('Pirates'),
+    ('Contemporain'),
+    ('Mythologie'),
+    ('Western');
+
+-- Insertion des types
+INSERT INTO type (nom_type)
+VALUES
+    ('Jeu de plateau'),
+    ('Jeu de cartes'),
+    ('Jeu coopératif'),
+    ('Jeu de stratégie'),
+    ('Jeu de gestion'),
+    ('Jeu dambiance'),
+    ('Jeu de dés'),
+    ('Jeu de rôle'),
+    ('Jeu de déduction'),
+    ('Jeu de tuiles');
+
+INSERT INTO evenement (titre, description, date_debut, date_fin, capacite_max, duree_type)
+VALUES
+    ("Atelier '7 Wonders vs Catan'", "Découvre deux piliers du jeu de stratégie moderne ! Apprends à développer ta civilisation, gérer tes ressources et construire ton empire avec 7 Wonders et Les Colons de Catane. Idéal pour les amateurs de stratégie.", "2025-06-15", "2025-06-15", 12, "journée"),
+    ("Mission Pandémie", "En équipe, coopérez pour éradiquer les maladies mortelles qui menacent le monde ! Ce scénario immersif vous plonge dans le jeu Pandemic, entre tension et collaboration.", "2025-06-22", "2025-06-22", 8, "demi-journée"),
+    ("Soirée Créative Dixit", "Laisse parler ton imagination et ton intuition avec le jeu Dixit ! Une soirée pleine de poésie, d’illustrations magnifiques et de devinettes subtiles. Parfait pour se détendre et rire ensemble.", "2025-06-28", "2025-06-28", 10, "soirée"),
+    ("Tournoi Uno + Mille Bornes", "Affronte les autres participants dans un tournoi dynamique où Uno et Mille Bornes seront à l’honneur. De la stratégie, du fun, et surtout beaucoup de cartes à jouer !", "2025-07-06", "2025-07-06", 20, "journée"),
+    ("Week-end Mystères & Déductions", "Résous des enquêtes, bluffe tes amis et déduis l’impossible dans un week-end spécial Cluedo, Codenames et Scrabble ! Idéal pour les esprits curieux et logiques.", "2025-07-13", "2025-07-14", 10, "week-end");
