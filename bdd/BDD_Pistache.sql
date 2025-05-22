@@ -142,3 +142,6 @@ VALUES
     ('Mille Bornes', 'Le célèbre jeu de cartes de course automobile', 'Le célèbre jeu de cartes de course automobile où il faut parcourir 1000 km tout en évitant les embûches tendues par vos adversaires.', 1954, CURDATE(), 8, 2, 'assets/images/jeux/MilleBornes.png'),
     ('Scrabble', 'Le jeu de lettres classique', 'Le jeu de lettres classique où vous devez former des mots entrecroisés sur un plateau pour marquer un maximum de points.', 1948, CURDATE(), 8, 6, 'assets/images/jeux/scrabble.png');
     
+-- insertion de l'admin
+INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, role)
+VALUES ('pist', 'ache', 'pistache280525@gmail.com', 'pisTache2805', 'admin');
