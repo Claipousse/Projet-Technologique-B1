@@ -1,242 +1,230 @@
-/**
- * admin.js - Scripts pour le panneau d'administration de Pistache
- * Partie du projet technologique - Application Web pour une boutique de jeux de société
- */
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialiser les tooltips Bootstrap
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
 
-    // Initialiser les popovers Bootstrap
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl, {
-            html: true
-        });
-    });
+    //Met à jour automatiquement l'affichage de la date de fin selon la durée sélectionnée
+    function initEventDateManager() {
+        const dateDebut = document.getElementById('date_debut');
+        const dureeType = document.getElementById('duree_type');
+        const dateFinInfo = document.getElementById('date_fin_info');
 
-    // Gestion de la confirmation de suppression
-    const confirmDelete = document.querySelectorAll('.confirm-delete');
-    confirmDelete.forEach(button => {
-        button.addEventListener('click', function(event) {
-            if (!confirm('Êtes-vous sûr de vouloir supprimer cet élément ? Cette action est irréversible.')) {
-                event.preventDefault();
-            }
-        });
-    });
+        // Vérifier que les éléments existent avant de continuer
+        if (!dateDebut || !dureeType || !dateFinInfo) {
+            return;
+        }
 
-    // Fonction pour limiter le nombre de sélections dans les checkboxes
-    function limitCheckboxes(name, maxChecked) {
-        const checkboxes = document.querySelectorAll(`input[name="${name}"]`);
-        let checkedCount = 0;
+        function updateDateFinInfo() {
+            const dateDebutValue = dateDebut.value;
+            const dureeValue = dureeType.value;
 
-        checkboxes.forEach(function(checkbox) {
-            if (checkbox.checked) checkedCount++;
+            if (dateDebutValue && dureeValue) {
+                const date = new Date(dateDebutValue);
+                let dateFin = new Date(date);
 
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    checkedCount++;
-                    if (checkedCount > maxChecked) {
-                        this.checked = false;
-                        checkedCount--;
-                        alert(`Vous ne pouvez pas sélectionner plus de ${maxChecked} options.`);
-                    }
-                } else {
-                    checkedCount--;
+                // Calculer la date de fin selon la durée
+                if (dureeValue === 'weekend') {
+                    dateFin.setDate(date.getDate() + 1);
                 }
-            });
-        });
-    }
 
-    // Limiter à 3 jeux pour les préférences
-    if (document.querySelector('input[name="preferences[]"]')) {
-        limitCheckboxes('preferences[]', 3);
-    }
+                // Options de formatage pour l'affichage en français
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const dateDebutFormatted = date.toLocaleDateString('fr-FR', options);
+                const dateFinFormatted = dateFin.toLocaleDateString('fr-FR', options);
 
-    // Gestion des filtres avec mise à jour automatique
-    const autoSubmitFilters = document.querySelectorAll('.auto-submit');
-    autoSubmitFilters.forEach(filter => {
-        filter.addEventListener('change', function() {
-            this.closest('form').submit();
-        });
-    });
-
-    // Toggle sections repliables
-    const collapsibleHeaders = document.querySelectorAll('.collapsible-header');
-    collapsibleHeaders.forEach(header => {
-        header.addEventListener('click', function() {
-            this.classList.toggle('active');
-            const content = this.nextElementSibling;
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-            } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-            }
-        });
-    });
-
-    // Fonctionnalité de recherche instantanée pour les tableaux
-    function setupTableSearch(inputId, tableId) {
-        const searchInput = document.getElementById(inputId);
-        if (!searchInput) return;
-
-        searchInput.addEventListener('keyup', function() {
-            const searchText = this.value.toLowerCase();
-            const table = document.getElementById(tableId);
-            const rows = table.querySelectorAll('tbody tr');
-
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                if (text.indexOf(searchText) > -1) {
-                    row.style.display = '';
+                // Afficher le texte selon la durée
+                if (dureeValue === 'demi-journée' || dureeValue === 'journée') {
+                    dateFinInfo.textContent = `Date de fin automatique : ${dateDebutFormatted}`;
                 } else {
-                    row.style.display = 'none';
+                    dateFinInfo.textContent = `Date de fin automatique : ${dateFinFormatted}`;
                 }
-            });
-        });
-    }
-
-    // Initialiser le recherche pour différentes tables
-    setupTableSearch('searchJeux', 'tableJeux');
-    setupTableSearch('searchEvenements', 'tableEvenements');
-    setupTableSearch('searchUtilisateurs', 'tableUtilisateurs');
-    setupTableSearch('searchInscriptions', 'tableInscriptions');
-
-    // Gestion de l'affichage des champs de mot de passe
-    const togglePassword = document.getElementById('changer_mdp');
-    if (togglePassword) {
-        togglePassword.addEventListener('change', function() {
-            const passwordFields = document.getElementById('password_fields');
-            if (this.checked) {
-                passwordFields.style.display = 'block';
+                dateFinInfo.style.color = '#28a745';
             } else {
-                passwordFields.style.display = 'none';
+                dateFinInfo.textContent = '';
             }
-        });
+        }
+
+        // Attacher les événements
+        dateDebut.addEventListener('change', updateDateFinInfo);
+        dureeType.addEventListener('change', updateDateFinInfo);
+
+        // Initialiser l'affichage au chargement (utile pour la modification)
+        updateDateFinInfo();
     }
 
-    // Prévisualisation d'image pour l'upload
-    const imageUpload = document.getElementById('image_upload');
-    if (imageUpload) {
-        imageUpload.addEventListener('change', function() {
-            const file = this.files[0];
+    // Gère la prévisualisation d'images pour les formulaires d'upload
+    function initImagePreview() {
+        const imageInput = document.getElementById('image');
+        const preview = document.getElementById('preview');
+
+        // Vérifier que les éléments existent avant de continuer
+        if (!imageInput || !preview) {
+            return;
+        }
+
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            
             if (file) {
+                // Vérifier que c'est bien une image
+                if (!file.type.startsWith('image/')) {
+                    preview.style.display = 'none';
+                    alert('Veuillez sélectionner un fichier image valide.');
+                    return;
+                }
+
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const preview = document.getElementById('image_preview');
                     preview.src = e.target.result;
                     preview.style.display = 'block';
-                }
+                };
                 reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
             }
         });
     }
 
-    // Système d'onglets pour les formulaires complexes
-    const tabButtons = document.querySelectorAll('.tab-button');
-    if (tabButtons.length > 0) {
-        tabButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Désactiver tous les onglets
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                
-                // Cacher tous les contenus d'onglets
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.style.display = 'none';
-                });
-                
-                // Activer l'onglet cliqué
-                this.classList.add('active');
-                
-                // Afficher le contenu correspondant
-                const targetTab = this.getAttribute('data-tab');
-                document.getElementById(targetTab).style.display = 'block';
-            });
-        });
+    //Ajoute des confirmations personnalisés pour les suppressions
+    function initDeleteConfirmations() {
+        const deleteLinks = document.querySelectorAll('a[href*="supprimer.php"]');
         
-        // Activer le premier onglet par défaut
-        tabButtons[0].click();
-    }
+        deleteLinks.forEach(function(link) {
+            // Récupérer le type d'élément à supprimer depuis l'URL ou le contexte
+            let itemType = 'cet élément';
+            if (link.href.includes('/jeux/')) {
+                itemType = 'ce jeu';
+            } else if (link.href.includes('/evenements/')) {
+                itemType = 'cet événement';
+            } else if (link.href.includes('/inscriptions/')) {
+                itemType = 'cette inscription';
+            }
 
-    // Fonction pour activer/désactiver des champs en fonction d'une checkbox
-    function toggleFieldsVisibility(checkboxId, targetFieldsSelector, invert = false) {
-        const checkbox = document.getElementById(checkboxId);
-        if (!checkbox) return;
-
-        const updateVisibility = function() {
-            const fieldsToToggle = document.querySelectorAll(targetFieldsSelector);
-            fieldsToToggle.forEach(field => {
-                if (invert) {
-                    field.style.display = checkbox.checked ? 'none' : 'block';
-                } else {
-                    field.style.display = checkbox.checked ? 'block' : 'none';
+            link.addEventListener('click', function(e) {
+                const confirmed = confirm(`Êtes-vous sûr de vouloir supprimer ${itemType} ?\n\nCette action est irréversible.`);
+                if (!confirmed) {
+                    e.preventDefault();
                 }
             });
-        };
+        });
+    }
 
-        // Initialiser l'état
-        updateVisibility();
+    //Masque automatiquement les alertes après 5 secondes
+    function initAutoHideAlerts() {
+        const successAlerts = document.querySelectorAll('.alert-success');
         
-        // Ajouter l'écouteur d'événement
-        checkbox.addEventListener('change', updateVisibility);
-    }
-
-    // Gestion du compteur de caractères pour les textarea
-    const textareas = document.querySelectorAll('.character-counter');
-    textareas.forEach(textarea => {
-        const maxLength = textarea.getAttribute('maxlength');
-        if (!maxLength) return;
-
-        // Créer le compteur
-        const counter = document.createElement('div');
-        counter.className = 'text-muted small text-end';
-        counter.innerHTML = `0/${maxLength} caractères`;
-        textarea.parentNode.insertBefore(counter, textarea.nextSibling);
-
-        // Mettre à jour le compteur
-        textarea.addEventListener('input', function() {
-            const currentLength = this.value.length;
-            counter.innerHTML = `${currentLength}/${maxLength} caractères`;
-        });
-    });
-
-    // Gestion des dates dans les formulaires d'événements
-    const dateDebut = document.getElementById('date_debut');
-    const dateFin = document.getElementById('date_fin');
-    if (dateDebut && dateFin) {
-        dateDebut.addEventListener('change', function() {
-            // Assurer que la date de fin est au moins égale à la date de début
-            if (dateFin.value && dateFin.value < dateDebut.value) {
-                dateFin.value = dateDebut.value;
-            }
-            // Mettre à jour la date minimale pour la date de fin
-            dateFin.min = dateDebut.value;
+        successAlerts.forEach(function(alert) {
+            // Masquer automatiquement après 5 secondes
+            setTimeout(function() {
+                if (alert.parentNode) {
+                    alert.style.transition = 'opacity 0.5s';
+                    alert.style.opacity = '0';
+                    setTimeout(function() {
+                        if (alert.parentNode) {
+                            alert.remove();
+                        }
+                    }, 500);
+                }
+            }, 5000); //5000ms = 5sec
         });
     }
 
-    // Animation de chargement pour les actions qui prennent du temps
-    const loadingButtons = document.querySelectorAll('.btn-loading');
-    loadingButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Sauvegarder le texte d'origine
-            if (!button.getAttribute('data-original-text')) {
-                button.setAttribute('data-original-text', button.innerHTML);
+    //Amélioration UX des formulaires
+    function initFormEnhancements() {
+        // Sauvegarde automatique des données du formulaire en cas de rafraîchissement accidentel
+        const forms = document.querySelectorAll('form[method="POST"], form[method="post"]');
+        
+        forms.forEach(function(form) {
+            const formId = form.action || window.location.pathname;
+            
+            // Restaurer les données sauvegardées
+            const savedData = localStorage.getItem('form_backup_' + formId);
+            if (savedData) {
+                try {
+                    const data = JSON.parse(savedData);
+                    Object.keys(data).forEach(function(name) {
+                        const input = form.querySelector(`[name="${name}"]`);
+                        if (input && input.type !== 'password' && input.type !== 'file') {
+                            input.value = data[name];
+                        }
+                    });
+                    // Supprimer la sauvegarde après restauration
+                    localStorage.removeItem('form_backup_' + formId);
+                } catch (e) {
+                    // Ignorer les erreurs de parsing
+                }
             }
-            
-            // Changer l'apparence pendant le chargement
-            button.disabled = true;
-            button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Chargement...';
-            
-            // Rétablir l'apparence après le chargement (simulé ici)
-            setTimeout(() => {
-                button.innerHTML = button.getAttribute('data-original-text');
-                button.disabled = false;
-            }, 5000); // Ceci est juste pour la démonstration
+
+            // Sauvegarder les données avant soumission
+            form.addEventListener('submit', function() {
+                localStorage.removeItem('form_backup_' + formId);
+            });
+
+            // Sauvegarder périodiquement les données
+            let saveTimeout;
+            form.addEventListener('input', function() {
+                clearTimeout(saveTimeout);
+                saveTimeout = setTimeout(function() {
+                    const formData = new FormData(form);
+                    const data = {};
+                    for (let [name, value] of formData.entries()) {
+                        if (form.querySelector(`[name="${name}"]`).type !== 'password' && 
+                            form.querySelector(`[name="${name}"]`).type !== 'file') {
+                            data[name] = value;
+                        }
+                    }
+                    localStorage.setItem('form_backup_' + formId, JSON.stringify(data));
+                }, 1000);
+            });
         });
-    });
+    }
+
+    // Initialiser tous les modules
+    initEventDateManager();
+    initImagePreview();
+    initDeleteConfirmations();
+    initAutoHideAlerts();
+    initFormEnhancements();
+
+    // Afficher un message de debug en mode développement
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        console.log('Admin.js chargé avec succès - Modules initialisés');
+    }
 });
+
+//Les fonctions en dessous sont utilitaires
+//Utilitaire pour formater les dates en français
+window.AdminUtils = {
+    formatDate: function(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+    },
+
+    //Utilitaire pour valider les emails
+    isValidEmail: function(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    },
+
+    //Utilitaire pour afficher des notifications toast
+    showToast: function(message, type = 'info') {
+        // Créer un toast Bootstrap ou une notification simple
+        const toast = document.createElement('div');
+        toast.className = `alert alert-${type} position-fixed`;
+        toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        toast.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close ms-2" onclick="this.parentElement.remove()"></button>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // Supprimer automatiquement après 5 secondes
+        setTimeout(function() {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 5000);
+    }
+};

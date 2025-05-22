@@ -159,45 +159,4 @@ include_once '../includes/admin-header.php';
         </form>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const dateDebut = document.getElementById('date_debut');
-            const dureeType = document.getElementById('duree_type');
-            const dateFinInfo = document.getElementById('date_fin_info');
-
-            function updateDateFinInfo() {
-                const dateDebutValue = dateDebut.value;
-                const dureeValue = dureeType.value;
-
-                if (dateDebutValue && dureeValue) {
-                    const date = new Date(dateDebutValue);
-                    let dateFin = new Date(date);
-
-                    if (dureeValue === 'weekend') {
-                        dateFin.setDate(date.getDate() + 1);
-                    }
-
-                    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                    const dateDebutFormatted = date.toLocaleDateString('fr-FR', options);
-                    const dateFinFormatted = dateFin.toLocaleDateString('fr-FR', options);
-
-                    if (dureeValue === 'demi-journée' || dureeValue === 'journée') {
-                        dateFinInfo.textContent = `Date de fin automatique : ${dateDebutFormatted}`;
-                    } else {
-                        dateFinInfo.textContent = `Date de fin automatique : ${dateFinFormatted}`;
-                    }
-                    dateFinInfo.style.color = '#28a745';
-                } else {
-                    dateFinInfo.textContent = '';
-                }
-            }
-
-            // Initialiser l'affichage au chargement
-            updateDateFinInfo();
-
-            dateDebut.addEventListener('change', updateDateFinInfo);
-            dureeType.addEventListener('change', updateDateFinInfo);
-        });
-    </script>
-
 <?php include_once '../includes/admin-footer.php'; ?>
