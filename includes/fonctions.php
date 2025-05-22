@@ -29,8 +29,12 @@ function urlActuelle() {
 
 //Redirige vers une url avec un message
 function redirigerAvecMessage($url, $message, $type = 'success') {
-    $_SESSION['message'] = $message;
-    $_SESSION['message_type'] = $type;
+    // Déterminer le séparateur (? ou &) selon si l'URL a déjà des paramètres
+    $separator = strpos($url, '?') !== false ? '&' : '?';
+
+    // Ajouter les paramètres message et type à l'URL
+    $url .= $separator . 'message=' . urlencode($message) . '&type=' . urlencode($type);
+
     rediriger($url); //rediriger() est une fonction de config.php
 }
 
@@ -72,28 +76,4 @@ function evenementExiste($date_debut, $date_fin, $id = null) /*id = paramètre o
     $stmt->execute($params);
 
     return $stmt->rowCount() > 0; //Si au moins 1 événement à été trouvé true, sinon false
-}
-
-//Telecharger un fichier et retourne son chemin de destination
-function telechargerFichier($fichier, $dossier) {
-    if (!isset($fichier) || fichier['error'] != 0) {
-        return false; //Si le fichier n'a pas été envoyé, retourne faux
-    }
-
-    //Définit chemin du dossier de destination
-    $dossierDestination = __DIR__ . '../../uploads/' . $dossier . '/';
-
-    //Check si dossier existe, sinon le crée
-    if (!file_exists($dossierDestination)) {
-        //0777 = permissions par défauts de umask, true crée des dossier parents si nécéssaire (récursive)
-        mkdir($dossierDestination, 0777, true);
-    }
-
-    //Déplace fichier téléchargé vers dossier de destination
-    if (move_uploaded_file($fichier['tmp_name'], $dossierDestination . $fichier['name'])) {
-        return 'uploads/' . $dossier . '/' . $fichier['name']; //Renvoi chemin vers le fichier en cas de succès
-    }
-
-    //Si le déplacement échoue, false (permet à la fonction appelante d'afficher un message d'erreur
-    return false;
 }

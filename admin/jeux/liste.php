@@ -91,7 +91,7 @@ include_once '../includes/admin-header.php';
                                             <a href="modifier.php?id=<?php echo $jeu['id_jeux']; ?>" class="btn btn-sm btn-primary me-2">
                                                 <i class="bi bi-pencil"></i> Modifier
                                             </a>
-                                            <a href="suppression.php?id=<?php echo $jeu['id_jeux']; ?>" class="btn btn-sm btn-danger"
+                                            <a href="supprimer.php?id=<?php echo $jeu['id_jeux']; ?>" class="btn btn-sm btn-danger"
                                                onclick="return confirm('Supprimer ce jeu ?');">
                                                 <i class="bi bi-trash"></i> Supprimer
                                             </a>
