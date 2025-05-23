@@ -30,7 +30,7 @@ try {
         exit();
     }
 
-    // Récupérer les ressources associées au jeu (images, vidéos, PDFs)
+    // Récupérer les ressources associées au jeu organisées par type
     $stmt_ressources = $conn->prepare("
         SELECT * FROM ressource 
         WHERE id_jeux = :id_jeu 
@@ -38,6 +38,21 @@ try {
     ");
     $stmt_ressources->execute([':id_jeu' => $id_jeu]);
     $ressources = $stmt_ressources->fetchAll(PDO::FETCH_ASSOC);
+
+    // Organiser les ressources par type (PDF et vidéo seulement)
+    $document = null;
+    $video = null;
+
+    foreach ($ressources as $ressource) {
+        switch ($ressource['type_ressource']) {
+            case 'pdf':
+                $document = $ressource;
+                break;
+            case 'video':
+                $video = $ressource;
+                break;
+        }
+    }
 
 } catch (PDOException $e) {
     error_log("Erreur lors de la récupération du jeu : " . $e->getMessage());
@@ -111,34 +126,74 @@ include_once 'includes/header.php';
                 </div>
             </section>
 
-            <!-- Ressources supplémentaires -->
-            <?php if (!empty($ressources)): ?>
-                <section class="jeu-ressources">
+            <!-- Section Document -->
+            <?php if ($document): ?>
+                <section class="jeu-document">
                     <div class="content-section">
-                        <h2>Ressources supplémentaires</h2>
-                        <div class="ressources-grid">
-                            <?php foreach ($ressources as $ressource): ?>
-                                <div class="ressource-item">
-                                    <div class="ressource-icon">
-                                        <?php if ($ressource['type_ressource'] === 'video'): ?>
-                                            <i class="fas fa-play-circle"></i>
-                                        <?php elseif ($ressource['type_ressource'] === 'pdf'): ?>
-                                            <i class="fas fa-file-pdf"></i>
-                                        <?php else: ?>
-                                            <i class="fas fa-image"></i>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="ressource-info">
-                                        <h4><?= htmlspecialchars($ressource['titre']) ?></h4>
-                                        <span class="ressource-type"><?= ucfirst(htmlspecialchars($ressource['type_ressource'])) ?></span>
-                                    </div>
-                                    <a href="<?= htmlspecialchars($ressource['url']) ?>"
-                                       target="_blank"
-                                       class="ressource-link">
-                                        <i class="fas fa-external-link-alt"></i>
-                                    </a>
+                        <h2>Document</h2>
+                        <div class="document-item">
+                            <div class="document-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="document-info">
+                                <h4><?= htmlspecialchars($document['titre']) ?></h4>
+                                <span class="document-type">Document PDF</span>
+                            </div>
+                            <a href="<?= htmlspecialchars($document['url']) ?>"
+                               target="_blank"
+                               class="document-link">
+                                <i class="fas fa-download"></i>
+                                Télécharger
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            <?php endif; ?>
+
+            <!-- Section Vidéo -->
+            <?php if ($video): ?>
+                <section class="jeu-video">
+                    <div class="content-section">
+                        <h2>Vidéo</h2>
+                        <div class="video-container">
+                            <?php
+                            // Extraire l'ID YouTube de l'URL pour créer un iframe
+                            $video_id = '';
+                            if (preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/', $video['url'], $matches)) {
+                                $video_id = $matches[1];
+                            }
+                            ?>
+
+                            <?php if ($video_id): ?>
+                                <div class="video-wrapper">
+                                    <iframe
+                                            src="https://www.youtube.com/embed/<?= $video_id ?>"
+                                            title="<?= htmlspecialchars($video['titre']) ?>"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowfullscreen>
+                                    </iframe>
                                 </div>
-                            <?php endforeach; ?>
+                                <div class="video-info">
+                                    <h4><?= htmlspecialchars($video['titre']) ?></h4>
+                                </div>
+                            <?php else: ?>
+                                <div class="video-error">
+                                    <div class="video-no-thumb">
+                                        <i class="fas fa-video"></i>
+                                    </div>
+                                    <div class="video-info">
+                                        <h4><?= htmlspecialchars($video['titre']) ?></h4>
+                                        <p>Lien YouTube invalide</p>
+                                        <a href="<?= htmlspecialchars($video['url']) ?>"
+                                           target="_blank"
+                                           class="video-external-link">
+                                            <i class="fas fa-external-link-alt"></i>
+                                            Voir le lien original
+                                        </a>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </section>
@@ -146,5 +201,34 @@ include_once 'includes/header.php';
 
         </main>
     </div>
+
+    <!-- Modal pour les images (plus nécessaire mais gardé pour compatibilité) -->
+    <div id="imageModal" class="modal" onclick="fermerModal()">
+        <div class="modal-content">
+            <span class="close" onclick="fermerModal()">&times;</span>
+            <img id="modalImage" src="" alt="">
+            <div id="modalTitle"></div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functions (gardées pour compatibilité mais plus nécessaires)
+        function ouvrirModal(src, title) {
+            document.getElementById('modalImage').src = src;
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('imageModal').style.display = 'block';
+        }
+
+        function fermerModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        // Fermer le modal avec la touche Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                fermerModal();
+            }
+        });
+    </script>
 
 <?php include_once 'includes/footer.php'; ?>
