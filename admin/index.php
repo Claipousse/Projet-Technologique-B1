@@ -18,9 +18,9 @@ try {
     $stmt = $pdo->query("SELECT COUNT(*) FROM inscription WHERE status = 'en attente'");
     $nbInscriptionsEnAttente = $stmt->fetchColumn();
 
-    // Récupérer les 3 derniers jeux ajoutés
+    // Récupérer les 5 derniers jeux ajoutés (modifié de 3 à 5)
     $stmt = $pdo->query("SELECT id_jeux, nom, date_ajout FROM jeux 
-                        ORDER BY date_ajout DESC, id_jeux DESC LIMIT 3");
+                        ORDER BY date_ajout DESC, id_jeux DESC LIMIT 5");
     $derniersJeux = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Récupérer les 3 derniers événements
@@ -58,7 +58,7 @@ include_once 'includes/admin-header.php';
             <div class="alert alert-danger"><?php echo $message; ?></div>
         <?php endif; ?>
 
-        <!-- Statistiques - 3 cartes alignées -->
+        <!-- Statistiques -->
         <div class="row mt-4">
             <div class="col-md-4 mb-4">
                 <div class="card bg-primary text-white h-100">
@@ -67,10 +67,10 @@ include_once 'includes/admin-header.php';
                         <p class="card-text display-4"><?php echo $nbJeux; ?></p>
                     </div>
                     <div class="card-footer d-flex">
-                        <a href="jeux/liste.php" class="text-white text-decoration-none" style="color: white !important;">Voir détails</a>
+                        <a href="jeux/liste.php" class="text-white text-decoration-none">Voir détails</a>
                         <span class="ms-auto">
-                            <i class="bi bi-dice-6"></i>
-                        </span>
+                        <i class="bi bi-dice-6"></i>
+                    </span>
                     </div>
                 </div>
             </div>
@@ -82,10 +82,10 @@ include_once 'includes/admin-header.php';
                         <p class="card-text display-4"><?php echo $nbEvenements; ?></p>
                     </div>
                     <div class="card-footer d-flex">
-                        <a href="evenements/liste.php" class="text-white text-decoration-none" style="color: white !important;">Voir détails</a>
+                        <a href="evenements/liste.php" class="text-white text-decoration-none">Voir détails</a>
                         <span class="ms-auto">
-                            <i class="bi bi-calendar-event"></i>
-                        </span>
+                        <i class="bi bi-calendar-event"></i>
+                    </span>
                     </div>
                 </div>
             </div>
@@ -106,23 +106,23 @@ include_once 'includes/admin-header.php';
             </div>
         </div>
 
-        <!-- Listes des derniers éléments - 3 colonnes alignées -->
-        <div class="row mt-4">
+        <!-- Listes des derniers éléments -->
+        <div class="row dashboard-section">
             <!-- Derniers jeux ajoutés -->
             <div class="col-md-4">
-                <div class="card h-100">
+                <div class="card dashboard-cards dashboard-uniform-height">
                     <div class="card-header">
-                        <h5>Derniers jeux ajoutés</h5>
+                        <h5>5 derniers jeux ajoutés</h5>
                     </div>
                     <div class="card-body">
                         <?php if (empty($derniersJeux)): ?>
-                            <p class="text-muted">Aucun jeu disponible</p>
+                            <p class="text-muted mb-0">Aucun jeu disponible</p>
                         <?php else: ?>
                             <div class="list-group list-group-flush">
                                 <?php foreach ($derniersJeux as $jeu): ?>
                                     <div class="list-group-item px-0">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1"><?php echo htmlspecialchars($jeu['nom']); ?></h6>
+                                        <div class="d-flex w-100 justify-content-between align-items-center">
+                                            <h6 class="mb-0 me-2"><?php echo htmlspecialchars($jeu['nom']); ?></h6>
                                             <small class="text-muted">
                                                 <?php echo $jeu['date_ajout'] ? date('d/m/Y', strtotime($jeu['date_ajout'])) : 'N/A'; ?>
                                             </small>
@@ -140,26 +140,28 @@ include_once 'includes/admin-header.php';
 
             <!-- Derniers événements -->
             <div class="col-md-4">
-                <div class="card h-100">
+                <div class="card dashboard-cards dashboard-uniform-height">
                     <div class="card-header">
                         <h5>Derniers événements</h5>
                     </div>
                     <div class="card-body">
                         <?php if (empty($derniersEvenements)): ?>
-                            <p class="text-muted">Aucun événement disponible</p>
+                            <p class="text-muted mb-0">Aucun événement disponible</p>
                         <?php else: ?>
                             <div class="list-group list-group-flush">
                                 <?php foreach ($derniersEvenements as $evenement): ?>
                                     <div class="list-group-item px-0">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1"><?php echo htmlspecialchars($evenement['titre']); ?></h6>
+                                        <div class="d-flex w-100 justify-content-between align-items-start">
+                                            <div class="me-2">
+                                                <h6 class="mb-1"><?php echo htmlspecialchars($evenement['titre']); ?></h6>
+                                                <small class="text-muted">
+                                                    <?php echo $evenement['nb_inscrits']; ?> / <?php echo $evenement['capacite_max']; ?> inscrits
+                                                </small>
+                                            </div>
                                             <small class="text-muted">
                                                 <?php echo date('d/m/Y', strtotime($evenement['date_debut'])); ?>
                                             </small>
                                         </div>
-                                        <small class="text-muted">
-                                            <?php echo $evenement['nb_inscrits']; ?> / <?php echo $evenement['capacite_max']; ?> inscrits
-                                        </small>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -173,32 +175,34 @@ include_once 'includes/admin-header.php';
 
             <!-- Dernières inscriptions -->
             <div class="col-md-4">
-                <div class="card h-100">
+                <div class="card dashboard-cards dashboard-uniform-height">
                     <div class="card-header">
                         <h5>Dernières inscriptions</h5>
                     </div>
                     <div class="card-body">
                         <?php if (empty($dernieresInscriptions)): ?>
-                            <p class="text-muted">Aucune inscription récente</p>
+                            <p class="text-muted mb-0">Aucune inscription récente</p>
                         <?php else: ?>
                             <div class="list-group list-group-flush">
                                 <?php foreach ($dernieresInscriptions as $inscription): ?>
                                     <div class="list-group-item px-0">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1"><?php echo htmlspecialchars($inscription['prenom'] . ' ' . $inscription['nom']); ?></h6>
+                                        <div class="d-flex w-100 justify-content-between align-items-start">
+                                            <div class="me-2">
+                                                <h6 class="mb-1"><?php echo htmlspecialchars($inscription['prenom'] . ' ' . $inscription['nom']); ?></h6>
+                                                <small class="text-muted d-block"><?php echo htmlspecialchars($inscription['titre']); ?></small>
+                                                <div class="mt-1">
+                                                    <?php if ($inscription['status'] == 'en attente'): ?>
+                                                        <span class="badge bg-warning text-dark">En attente</span>
+                                                    <?php elseif ($inscription['status'] == 'validé'): ?>
+                                                        <span class="badge bg-success">Validé</span>
+                                                    <?php else: ?>
+                                                        <span class="badge bg-danger">Annulé</span>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
                                             <small class="text-muted">
                                                 <?php echo date('d/m/Y', strtotime($inscription['date_inscription'])); ?>
                                             </small>
-                                        </div>
-                                        <small class="text-muted"><?php echo htmlspecialchars($inscription['titre']); ?></small>
-                                        <div class="mt-1">
-                                            <?php if ($inscription['status'] == 'en attente'): ?>
-                                                <span class="badge bg-warning text-dark">En attente</span>
-                                            <?php elseif ($inscription['status'] == 'validé'): ?>
-                                                <span class="badge bg-success">Validé</span>
-                                            <?php else: ?>
-                                                <span class="badge bg-danger">Annulé</span>
-                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
