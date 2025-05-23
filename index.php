@@ -43,34 +43,6 @@ try {
 include_once 'includes/header.php';
 ?>
 
-    <style>
-        .progress-mini {
-            height: 8px;
-            background-color: #e9ecef;
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 5px 0;
-        }
-
-        .progress-bar-mini {
-            height: 100%;
-            background: linear-gradient(90deg, #28a745 0%, #20c997 50%, #ffc107 80%, #dc3545 100%);
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-
-        .event-date-new {
-            background: linear-gradient(135deg, #8B4513, #A0522D);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9em;
-            text-align: center;
-            min-width: 120px;
-        }
-    </style>
-
     <section id="home" class="full-section shop-intro">
         <div class="section-content">
             <h1 class="section-heading">Pistache</h1>
@@ -166,12 +138,12 @@ include_once 'includes/header.php';
 
             <?php if (!empty($evenements)): ?>
                 <?php foreach ($evenements as $evenement): ?>
-                    <div class="event-card" style="display: flex; align-items: center; gap: 15px; padding: 20px; margin-bottom: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid var(--primary-color);">
+                    <div class="event-card">
                         <div class="event-date-new">
                             <?php echo formaterDateEvenement($evenement['date_debut'], $evenement['date_fin'], true); ?>
                         </div>
-                        <div class="event-info" style="flex: 1;">
-                            <div class="event-title" style="font-weight: bold; font-size: 1.1em; margin-bottom: 5px;">
+                        <div class="event-info">
+                            <div class="event-title">
                                 <?php echo htmlspecialchars($evenement['titre']); ?>
                             </div>
                             <div class="event-description" style="color: #666; margin-bottom: 10px;">

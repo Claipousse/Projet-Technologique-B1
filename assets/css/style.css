@@ -1,3 +1,8 @@
+/* ======================================
+   CSS UNIFIÉ POUR PISTACHE
+   Compatible avec tous les fichiers PHP
+   ====================================== */
+
 :root {
   --primary-color: #8b4513; /* Marron */
   --secondary-color: #5d4037; /* Marron foncé */
@@ -7,18 +12,26 @@
   --light-text: #fff8e1; /* Ivoire */
 }
 
+/* ======================================
+   RESET ET BASE
+   ====================================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Lora", Georgia, serif;
 }
 
 body {
+  font-family: "Lora", Georgia, serif;
   background-color: var(--light-bg);
   color: var(--dark-text);
+  line-height: 1.6;
+  margin: 0;
 }
 
+/* ======================================
+   HEADER GLOBAL
+   ====================================== */
 header {
   background: var(--secondary-color);
   color: var(--light-text);
@@ -33,10 +46,6 @@ header {
   border-bottom: 2px solid var(--accent-color);
   top: 0;
   left: 0;
-}
-
-.page-content {
-  padding-top: 80px;
 }
 
 .logo {
@@ -85,7 +94,9 @@ nav a:hover {
   padding: 0.5rem;
 }
 
-/* Dropdown menu */
+/* ======================================
+   DROPDOWN MENU
+   ====================================== */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -138,24 +149,22 @@ nav a:hover {
   background-color: var(--primary-color);
 }
 
-.horizontal-sections {
-  display: flex;
-  flex-direction: row;
-  min-height: 100vh;
-  width: 100%;
+/* ======================================
+   LAYOUTS GÉNÉRIQUES
+   ====================================== */
+.page-content {
+  padding-top: 100px; /* Espace pour header fixe */
+  min-height: calc(100vh - 100px);
 }
 
-.half-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 5rem 2rem;
-  text-align: center;
-  position: relative;
+main {
+  background-color: var(--light-bg);
+  min-height: calc(100vh - 140px);
 }
 
+/* ======================================
+   PAGE D'ACCUEIL (index.php)
+   ====================================== */
 .full-section {
   min-height: 100vh;
   width: 100%;
@@ -178,10 +187,23 @@ nav a:hover {
   border-bottom: 3px solid var(--accent-color);
 }
 
-.catalogue-section,
-.events-section {
+.horizontal-sections {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.half-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 2rem;
+  text-align: center;
+  position: relative;
   background-color: #e6dbc9;
-  border: none;
 }
 
 .section-content {
@@ -223,6 +245,9 @@ nav a:hover {
   line-height: 1.6;
 }
 
+/* ======================================
+   BOUTONS
+   ====================================== */
 .btn {
   display: inline-block;
   padding: 0.8rem 1.8rem;
@@ -235,6 +260,8 @@ nav a:hover {
   transition: all 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   border: 1px solid var(--light-text);
+  font-family: "Playfair Display", serif;
+  cursor: pointer;
 }
 
 .btn:hover {
@@ -245,6 +272,31 @@ nav a:hover {
   text-decoration: none;
 }
 
+.inscription-btn {
+  display: block;
+  width: fit-content;
+  margin: 0 auto 2rem;
+  padding: 0.8rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  letter-spacing: 1px;
+}
+
+.inscription-btn:hover {
+  background-color: var(--secondary-color);
+  text-decoration: none;
+  color: white;
+}
+
+/* ======================================
+   CONTENT CONTAINER (index.php)
+   ====================================== */
 .content-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -289,18 +341,27 @@ nav a:hover {
   text-decoration: none;
 }
 
-.content-grid {
+/* ======================================
+   GRILLES DE JEUX
+   ====================================== */
+.content-grid,
+.games-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1.5rem;
   margin-bottom: 3rem;
 }
 
+.games-grid {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
 .game-card {
   background-color: white;
-  border-radius: 4px;
+  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
   border: 1px solid #e6ddd0;
   height: 100%;
@@ -310,8 +371,8 @@ nav a:hover {
 }
 
 .game-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   border-color: var(--accent-color);
 }
 
@@ -319,6 +380,10 @@ nav a:hover {
   width: 100%;
   height: 180px;
   object-fit: cover;
+}
+
+.games-grid .game-image {
+  height: 200px;
 }
 
 .game-info {
@@ -338,6 +403,23 @@ nav a:hover {
   color: var(--primary-color);
 }
 
+.games-grid .game-title {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.game-description {
+  color: #666;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+  font-size: 0.95rem;
+  flex-grow: 1;
+}
+
+.games-grid .game-description {
+  margin-bottom: 1.5rem;
+}
+
 .game-meta {
   display: flex;
   justify-content: space-between;
@@ -348,16 +430,79 @@ nav a:hover {
   border-top: 1px dotted #d2b48c;
 }
 
-.game-description {
-  color: #666;
-  margin-bottom: 1rem;
-  line-height: 1.4;
-  font-size: 0.95rem;
+.game-year,
+.game-type,
+.game-tag {
+  background-color: var(--accent-color);
+  color: var(--dark-text);
+  padding: 0.3rem 0.6rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 
+/* ======================================
+   ÉVÉNEMENTS (evenements.php)
+   ====================================== */
+.event {
+  background-color: white;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+  border: 1px solid #e6ddd0;
+}
+
+.event:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.event h2 {
+  margin-bottom: 1rem;
+  color: var(--secondary-color);
+  font-size: 1.5rem;
+  font-family: "Playfair Display", serif;
+}
+
+.tags {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background-color: #f0e6d2;
+  color: var(--secondary-color);
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.places {
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  font-weight: bold;
+}
+
+.event p {
+  line-height: 1.6;
+  margin: 0;
+  font-size: 1rem;
+  color: var(--dark-text);
+}
+
+/* ======================================
+   ÉVÉNEMENTS CARDS (index.php)
+   ====================================== */
 .event-card {
   background-color: white;
-  border-radius: 4px;
+  border-radius: 10px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -374,28 +519,15 @@ nav a:hover {
   border-color: var(--accent-color);
 }
 
-.event-date {
-  background-color: var(--primary-color);
-  color: var(--light-text);
-  padding: 1rem;
-  border-radius: 2px;
+.event-date-new {
+  background: linear-gradient(135deg, var(--primary-color), #A0522D);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9em;
   text-align: center;
-  min-width: 100px;
-  border: 1px solid var(--accent-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.month {
-  font-size: 1rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-  margin-bottom: 0.3rem;
-}
-
-.day {
-  font-size: 2rem;
-  font-weight: bold;
-  font-family: "Playfair Display", serif;
+  min-width: 120px;
 }
 
 .event-info {
@@ -411,19 +543,379 @@ nav a:hover {
   font-family: "Playfair Display", serif;
 }
 
-.event-duration {
-  margin-bottom: 0.8rem;
-  font-style: italic;
-  color: #666;
+.progress-mini {
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 5px 0;
 }
 
-.event-meta {
+.progress-bar-mini {
+  height: 100%;
+  background: linear-gradient(90deg, #28a745 0%, #20c997 50%, #ffc107 80%, #dc3545 100%);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* ======================================
+   CATALOGUE (catalogue.php)
+   ====================================== */
+.catalogue-hero {
+  background: linear-gradient(rgba(61, 28, 14, 0.8), rgba(61, 28, 14, 0.9)),
+  url("/api/placeholder/1200/400") center/cover no-repeat;
+  color: var(--light-text);
+  padding: 8rem 2rem 4rem;
+  text-align: center;
+  border-bottom: 3px solid var(--accent-color);
+  margin-top: 70px;
+}
+
+.catalogue-hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.catalogue-hero p {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+.catalogue-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background-color: var(--light-bg);
+}
+
+/* ======================================
+   FILTRES (catalogue.php)
+   ====================================== */
+.filters {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  border: 1px solid #e6ddd0;
+}
+
+.filters form {
   display: flex;
-  justify-content: space-between;
-  color: #666;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-label {
+  font-weight: bold;
+  color: var(--primary-color);
   font-size: 0.9rem;
 }
 
+.filter-select,
+.search-input,
+.form-control {
+  padding: 0.5rem;
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  background-color: var(--light-bg);
+  color: var(--dark-text);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-control:focus,
+.filter-select:focus,
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(210, 180, 140, 0.3);
+}
+
+.search-box {
+  flex-grow: 1;
+  position: relative;
+  min-width: 200px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.5rem 0.5rem 0.5rem 2rem;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary-color);
+}
+
+.filter-btn {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.filter-btn:hover {
+  background-color: var(--secondary-color);
+}
+
+/* ======================================
+   PAGINATION
+   ====================================== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.page-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: white;
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  text-decoration: none;
+  color: var(--primary-color);
+  transition: all 0.3s;
+}
+
+.page-link:hover,
+.page-link.active {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  text-decoration: none;
+}
+
+.no-results {
+  text-align: center;
+  color: #666;
+  padding: 3rem;
+  grid-column: 1 / -1;
+}
+
+.no-results i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+/* ======================================
+   PAGES DE CONNEXION ET CONTACT
+   ====================================== */
+.page-title {
+  font-family: "Playfair Display", serif;
+  color: var(--primary-color);
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.page-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+/* Styles spécifiques contact.php */
+.contact-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.contact-info {
+  flex: 1;
+  min-width: 300px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--accent-color);
+}
+
+.contact-form-container {
+  flex: 2;
+  min-width: 300px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--accent-color);
+}
+
+.info-title {
+  font-family: "Playfair Display", serif;
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.5rem;
+}
+
+.info-list {
+  list-style: none;
+}
+
+.info-item {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.info-icon {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  width: 20px;
+  text-align: center;
+}
+
+.info-content {
+  flex: 1;
+}
+
+.info-label {
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  color: var(--dark-text);
+}
+
+.info-text {
+  color: #666;
+  line-height: 1.4;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--dark-text);
+}
+
+textarea.form-control {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.btn-submit {
+  display: inline-block;
+  padding: 0.8rem 1.8rem;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--light-text);
+  cursor: pointer;
+  font-family: "Playfair Display", serif;
+}
+
+.btn-submit:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.social-links {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.social-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.social-link:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-3px);
+}
+
+.map-container {
+  width: 100%;
+  margin-top: 2rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--accent-color);
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 300px;
+  border: none;
+}
+
+/* ======================================
+   ALERTES
+   ====================================== */
+.alert {
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* ======================================
+   SCROLL ARROW
+   ====================================== */
 .scroll-arrow {
   position: absolute;
   bottom: 2rem;
@@ -440,20 +932,8 @@ nav a:hover {
   text-decoration: none !important;
 }
 
-.scroll-arrow a:hover,
-.scroll-arrow a:visited,
-.scroll-arrow a:active,
-.scroll-arrow a:focus {
-  color: var(--light-text) !important;
-  text-decoration: none !important;
-}
-
 @keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
+  0%, 20%, 50%, 80%, 100% {
     transform: translateY(0) translateX(-50%);
   }
   40% {
@@ -464,6 +944,9 @@ nav a:hover {
   }
 }
 
+/* ======================================
+   FOOTER
+   ====================================== */
 footer {
   background-color: var(--secondary-color);
   color: var(--light-text);
@@ -476,23 +959,87 @@ footer {
   letter-spacing: 1px;
 }
 
+/* ======================================
+   STYLES SPÉCIFIQUES PAGES
+   ====================================== */
+
+/* Page événements avec styles inline intégrés */
+.evenements-page main {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.evenements-page main h1 {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-family: "Playfair Display", serif;
+}
+
+/* Pages connexion et création compte */
+.auth-container {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent-color);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.auth-container h1 {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.auth-container .form-group label {
+  font-weight: bold;
+  display: block;
+  margin-top: 1rem;
+}
+
+.auth-container .form-control {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.3rem;
+  background-color: var(--light-bg);
+}
+
+.auth-container .btn {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.8rem;
+}
+
+.auth-container p {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.auth-container a {
+  color: var(--primary-color);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
+
+/* ======================================
+   RESPONSIVE DESIGN
+   ====================================== */
 @media (max-width: 1200px) {
   .content-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-}
 
-@media (max-width: 768px) {
-  .section-heading {
-    font-size: 2.2rem;
-  }
-
-  .content-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .section-title {
-    font-size: 1.8rem;
+  .games-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -545,5 +1092,242 @@ footer {
     box-shadow: none;
     margin-top: 0.5rem;
     margin-left: 1rem;
+  }
+
+  .event-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .event-date-new {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .contact-container {
+    flex-direction: column;
+  }
+
+  .contact-info,
+  .contact-form-container {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-heading {
+    font-size: 2.2rem;
+  }
+
+  .content-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .games-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .evenements-page main {
+    padding: 0.5rem;
+  }
+
+  .evenements-page main h1 {
+    font-size: 2rem;
+  }
+
+  .event {
+    padding: 1rem;
+  }
+
+  .tags {
+    flex-direction: column;
+  }
+
+  .tag, .places {
+    width: fit-content;
+  }
+
+  .page-content {
+    padding-top: 80px;
+  }
+
+  .catalogue-hero {
+    margin-top: 60px;
+    padding: 6rem 1rem 3rem;
+  }
+
+  .catalogue-hero h1 {
+    font-size: 2rem;
+  }
+
+  .catalogue-container {
+    padding: 2rem 1rem;
+  }
+
+  .filters form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .filter-select,
+  .search-input {
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-grid,
+  .games-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-section,
+  .half-section {
+    padding: 2rem 1rem;
+  }
+
+  .section-heading {
+    font-size: 1.8rem;
+  }
+
+  .section-description {
+    font-size: 1rem;
+  }
+
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .catalogue-hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .catalogue-hero p {
+    font-size: 1rem;
+  }
+
+  .auth-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .contact-container {
+    padding: 1rem;
+  }
+
+  .contact-info,
+  .contact-form-container {
+    padding: 1.5rem;
+  }
+}
+
+/* ======================================
+   UTILITAIRES
+   ====================================== */
+.text-center {
+  text-align: center;
+}
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+
+.p-1 { padding: 0.5rem; }
+.p-2 { padding: 1rem; }
+.p-3 { padding: 1.5rem; }
+.p-4 { padding: 2rem; }
+
+.d-none { display: none; }
+.d-block { display: block; }
+.d-flex { display: flex; }
+
+.justify-center { justify-content: center; }
+.align-center { align-items: center; }
+
+.text-primary { color: var(--primary-color); }
+.text-secondary { color: var(--secondary-color); }
+.text-muted { color: #666; }
+
+.bg-white { background-color: white; }
+.bg-light { background-color: var(--light-bg); }
+
+.border { border: 1px solid var(--accent-color); }
+.border-radius { border-radius: 4px; }
+
+.shadow { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+.shadow-lg { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
+
+/* ======================================
+   ANIMATIONS ET TRANSITIONS
+   ====================================== */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* ======================================
+   PRINT STYLES
+   ====================================== */
+@media print {
+  header,
+  footer,
+  .menu-toggle,
+  .scroll-arrow,
+  .filters,
+  .pagination {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .page-content {
+    padding-top: 0 !important;
+  }
+
+  .game-card,
+  .event {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
   }
 }

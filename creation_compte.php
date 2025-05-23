@@ -31,34 +31,46 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <?php include("includes/header.php"); ?>
 
-<main style="padding-top: 120px; padding-bottom: 80px; background-color: #f5f5dc;">
-    <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 2rem; border-radius: 8px; border: 1px solid #d2b48c; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-        <h1 style="text-align: center; font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #8b4513;">Créer un compte</h1>
+    <div class="page-content">
+        <main>
+            <div class="auth-container">
+                <h1>Créer un compte</h1>
 
-        <?php if ($erreur): ?>
-            <p style="color: red; text-align: center; font-weight: bold;"><?php echo $erreur; ?></p>
-        <?php endif; ?>
+                <?php if ($erreur): ?>
+                    <div class="alert alert-error">
+                        <?php echo $erreur; ?>
+                    </div>
+                <?php endif; ?>
 
-        <form method="post" action="">
-            <label for="nom" style="font-weight: bold; display: block; margin-top: 1.2rem;">Nom</label>
-            <input type="text" id="nom" name="nom" required style="width: 100%; padding: 0.8rem; border: 1px solid #d2b48c; border-radius: 4px; background-color: #f5f5dc;">
+                <form method="post" action="">
+                    <div class="form-group">
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" id="nom" name="nom" class="form-control" required>
+                    </div>
 
-            <label for="prenom" style="font-weight: bold; display: block; margin-top: 1.2rem;">Prénom</label>
-            <input type="text" id="prenom" name="prenom" required style="width: 100%; padding: 0.8rem; border: 1px solid #d2b48c; border-radius: 4px; background-color: #f5f5dc;">
+                    <div class="form-group">
+                        <label for="prenom" class="form-label">Prénom</label>
+                        <input type="text" id="prenom" name="prenom" class="form-control" required>
+                    </div>
 
-            <label for="email" style="font-weight: bold; display: block; margin-top: 1.2rem;">Adresse email</label>
-            <input type="email" id="email" name="email" required style="width: 100%; padding: 0.8rem; border: 1px solid #d2b48c; border-radius: 4px; background-color: #f5f5dc;">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Adresse email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
 
-            <label for="mot_de_passe" style="font-weight: bold; display: block; margin-top: 1.2rem;">Mot de passe</label>
-            <input type="password" id="mot_de_passe" name="mot_de_passe" required style="width: 100%; padding: 0.8rem; border: 1px solid #d2b48c; border-radius: 4px; background-color: #f5f5dc;">
+                    <div class="form-group">
+                        <label for="mot_de_passe" class="form-label">Mot de passe</label>
+                        <input type="password" id="mot_de_passe" name="mot_de_passe" class="form-control" required>
+                    </div>
 
-            <button type="submit" style="margin-top: 2rem; width: 100%; padding: 0.8rem; background-color: #8b4513; color: #fff8e1; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">S'inscrire</button>
+                    <button type="submit" class="btn">Créer un compte</button>
 
-            <p style="text-align: center; margin-top: 1.5rem;">
-                Déjà un compte ? <a href="connexion.php" style="color: #8b4513; font-weight: bold;">Connecte-toi ici</a>
-            </p>
-        </form>
+                    <p>
+                        Déjà un compte ? <a href="connexion.php">Connecte-toi ici</a>
+                    </p>
+                </form>
+            </div>
+        </main>
     </div>
-</main>
 
 <?php include("includes/footer.php"); ?>
