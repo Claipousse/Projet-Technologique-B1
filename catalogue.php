@@ -155,11 +155,18 @@ include_once 'includes/header.php';
                             <div class="game-info">
                                 <div class="game-title"><?= htmlspecialchars($jeu['nom']) ?></div>
                                 <p class="game-description">
-                                    <?= htmlspecialchars($jeu['description_courte']) ?>
+                                    <?= htmlspecialchars(substr($jeu['description_courte'], 0, 100)) ?>...
                                 </p>
                                 <div class="game-meta">
                                     <span class="game-tag"><?= htmlspecialchars($jeu['nom_genre']) ?></span>
                                     <span class="game-tag"><?= htmlspecialchars($jeu['nom_type']) ?></span>
+                                </div>
+
+                                <!-- Nouveau bouton "Voir plus" -->
+                                <div class="game-actions">
+                                    <a href="jeu-detail.php?id=<?= $jeu['id_jeux'] ?>" class="btn btn-detail">
+                                        <i class="fas fa-eye"></i> Voir plus
+                                    </a>
                                 </div>
                             </div>
                         </div>
