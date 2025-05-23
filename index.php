@@ -53,7 +53,7 @@ include_once 'includes/header.php';
                 passant par les jeux de rôle et les jeux de cartes, trouvez votre
                 prochain coup de cœur ludique chez Pistache.
             </p>
-            <a href="#catalogue-events" class="btn">Découvrir nos jeux</a>
+            <a href="#catalogue-events" class="btn">Découvrir notre site</a>
         </div>
         <div class="scroll-arrow">
             <a href="#catalogue-events">
