@@ -25,7 +25,7 @@ function connexionBDD() {
 
 // Fonction pour vérifier si l'utilisateur est connecté
 function estConnecte() {
-    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+    return !empty($_SESSION['id_utilisateur']);
 }
 
 // Fonction pour vérifier si l'utilisateur est un administrateur

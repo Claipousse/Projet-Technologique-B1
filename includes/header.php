@@ -31,7 +31,7 @@ require_once __DIR__ . '/../includes/fonctions.php';
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle">
                         <i class="fas fa-user-circle"></i>
-                        <?php echo isset($_SESSION['utilisateur']['prenom']) ? $_SESSION['utilisateur']['prenom'] : 'Utilisateur'; ?>
+                        <?php echo isset($_SESSION['prenom']) ? $_SESSION['prenom'] : 'Utilisateur'; ?>
                         <i class="fas fa-chevron-down"></i>
                     </a>
                     <div class="dropdown-content">

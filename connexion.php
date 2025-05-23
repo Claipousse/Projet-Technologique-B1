@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["id_utilisateur"] = $utilisateur["id_utilisateur"];
         $_SESSION["role"] = $utilisateur["role"];
         $_SESSION["nom"] = $utilisateur["nom"];
+        $_SESSION["prenom"] = $utilisateur["prenom"];
 
         if ($utilisateur["role"] == "admin") {
             header("Location: admin/index.php"); // tableau de bord admin
