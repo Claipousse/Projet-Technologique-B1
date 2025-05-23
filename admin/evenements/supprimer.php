@@ -2,11 +2,15 @@
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../../includes/fonctions.php';
 
-/* Vérification des droits d'accès
+// Vérifier que l'utilisateur est connecté et est admin
+if (!estConnecte() || !estAdmin()) {
+    rediriger('../../connexion.php');
+}
+
+// Vérification des droits d'accès
 if (!estConnecte() || !estAdmin()) {
     redirigerAvecMessage('../../connexion.php', "Vous devez être connecté en tant qu'administrateur.");
 }
-*/
 
 // Récupérer l'ID de l'événement à supprimer
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;

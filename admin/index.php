@@ -2,6 +2,11 @@
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/fonctions.php';
 
+// Vérifier que l'utilisateur est connecté et est admin
+if (!estConnecte() || !estAdmin()) {
+    rediriger('../connexion.php');
+}
+
 // Récupérer les statistiques pour le tableau de bord
 try {
     $pdo = connexionBDD();

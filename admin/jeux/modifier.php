@@ -2,11 +2,10 @@
 require_once '../../config/config.php';
 require_once '../../includes/fonctions.php';
 
-/*
+// Vérifier que l'utilisateur est connecté et est admin
 if (!estConnecte() || !estAdmin()) {
-    redirigerAvecMessage('../../connexion.php', "Vous devez être connecté en tant qu'administrateur.");
+    rediriger('../../connexion.php');
 }
-*/
 
 $id_jeu = intval($_GET['id']);
 $erreurs = [];

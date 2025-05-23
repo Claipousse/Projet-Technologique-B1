@@ -2,6 +2,11 @@
 require_once(__DIR__ . "/../../config/config.php");
 $pdo = connexionBDD();
 
+// Vérifier que l'utilisateur est connecté et est admin
+if (!estConnecte() || !estAdmin()) {
+    rediriger('../../connexion.php');
+}
+
 $message = '';
 $messageType = '';
 

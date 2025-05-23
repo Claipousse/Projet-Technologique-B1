@@ -2,6 +2,11 @@
 require_once '../../config/config.php';
 require_once '../../includes/fonctions.php';
 
+// Vérifier que l'utilisateur est connecté et est admin
+if (!estConnecte() || !estAdmin()) {
+    rediriger('../../connexion.php');
+}
+
 // Récupérer la liste des événements
 try {
     $conn = connexionBDD();
