@@ -48,6 +48,11 @@ if (strpos($_SERVER['REQUEST_URI'], '/admin/jeux/') !== false ||
                         <i class="bi bi-calendar-event"></i> Événements
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo $basePath; ?>inscriptions/liste.php">
+                        <i class="bi bi-people"></i> Inscriptions
+                    </a>
+                </li>
             </ul>
 
             <div class="navbar-nav">

@@ -19,8 +19,7 @@ try {
 
     // Vérifier que l'inscription existe et est en attente
     $stmt = $pdo->prepare("
-        SELECT i.*, e.capacite_max, e.titre as evenement_titre,
-               u.prenom, u.nom
+        SELECT i.*, e.titre as evenement_titre, u.prenom, u.nom
         FROM inscription i
         JOIN evenement e ON i.id_evenement = e.id_evenement
         JOIN utilisateur u ON i.id_utilisateur = u.id_utilisateur
@@ -37,34 +36,16 @@ try {
         redirigerAvecMessage('liste.php', 'Cette inscription n\'est pas en attente.', 'warning');
     }
 
-    // Vérifier la capacité de l'événement
-    $stmt = $pdo->prepare("
-        SELECT COUNT(*) as nb_inscrits 
-        FROM inscription 
-        WHERE id_evenement = ? AND status = 'validé'
-    ");
-    $stmt->execute([$inscription['id_evenement']]);
-    $nbInscrits = $stmt->fetchColumn();
-
-    $totalPlaces = ($inscription['nb_accompagnant'] ?: 0) + 1; // +1 pour le participant principal
-    $placesRestantes = $inscription['capacite_max'] - $nbInscrits;
-
-    if ($placesRestantes < $totalPlaces) {
-        redirigerAvecMessage('liste.php',
-            'Impossible de valider : pas assez de places disponibles (' . $placesRestantes . ' places restantes, ' . $totalPlaces . ' demandées).',
-            'danger');
-    }
-
-    // Valider l'inscription
-    $stmt = $pdo->prepare("UPDATE inscription SET status = 'validé' WHERE id_inscription = ?");
+    // Refuser l'inscription
+    $stmt = $pdo->prepare("UPDATE inscription SET status = 'annulé' WHERE id_inscription = ?");
     $stmt->execute([$id_inscription]);
 
     if ($stmt->rowCount() > 0) {
         $message = 'Inscription de ' . htmlspecialchars($inscription['prenom'] . ' ' . $inscription['nom']) .
-            ' pour "' . htmlspecialchars($inscription['evenement_titre']) . '" validée avec succès.';
-        redirigerAvecMessage('liste.php', $message, 'success');
+            ' pour "' . htmlspecialchars($inscription['evenement_titre']) . '" refusée.';
+        redirigerAvecMessage('liste.php', $message, 'warning');
     } else {
-        redirigerAvecMessage('liste.php', 'Erreur lors de la validation de l\'inscription.', 'danger');
+        redirigerAvecMessage('liste.php', 'Erreur lors du refus de l\'inscription.', 'danger');
     }
 
 } catch (PDOException $e) {
