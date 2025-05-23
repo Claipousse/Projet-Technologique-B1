@@ -30,7 +30,7 @@ function estConnecte() {
 
 // Fonction pour vérifier si l'utilisateur est un administrateur
 function estAdmin() {
-    return isset($_SESSION['user_role']) && $_SESSION['user_role'] == 'admin';
+    return isset($_SESSION['role']) && $_SESSION['role'] == 'admin';
 }
 
 // Fonction pour rediriger vers une autre page

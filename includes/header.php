@@ -1,4 +1,10 @@
 <?php
+// Démarrer la session si pas déjà fait
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Inclure les fichiers nécessaires
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../includes/fonctions.php';
 ?>
@@ -38,7 +44,6 @@ require_once __DIR__ . '/../includes/fonctions.php';
                         <?php if (estAdmin()): ?>
                             <a href="admin/index.php"><i class="fas fa-cog"></i> Administration</a>
                         <?php endif; ?>
-                        <a href="profil.php"><i class="fas fa-user"></i> Mon profil</a>
                         <a href="deconnexion.php"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
                     </div>
                 </li>
