@@ -144,4 +144,4 @@ VALUES
     
 -- insertion de l'admin
 INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, role)
-VALUES ('pist', 'ache', 'pistache280525@gmail.com', 'pisTache2805', 'admin');
+VALUES ('Admin', 'Admin', 'admin@pistache.com', '$2y$10$s8Esr76stvOWzBFJKD49IO07S6Pk8.1yk9AcdK7LC0oz11sreM0bG', 'admin');
