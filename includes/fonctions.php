@@ -322,17 +322,19 @@ function inscrireUtilisateur($nom, $prenom, $email, $nb_accompagnant, $id_evenem
     }
 }
 
-// Récupère les inscriptions d'un utilisateur
+// Récupère les inscriptions d'un utilisateur (version corrigée)
 function getInscriptionsUtilisateur($id_utilisateur) {
-    $conn = connexionBDD(); 
-    
+    $conn = connexionBDD();
+
     try {
         $stmt = $conn->prepare("
             SELECT i.*, e.titre, e.description, e.date_debut, e.date_fin, e.duree_type
             FROM inscription i
             JOIN evenement e ON i.id_evenement = e.id_evenement
             WHERE i.id_utilisateur = ?
-            ORDER BY i.date_inscription DESC
+            AND i.status IN ('en attente', 'validé')
+            AND e.date_fin >= CURDATE()
+            ORDER BY e.date_debut ASC, i.date_inscription DESC
         ");
         $stmt->execute([$id_utilisateur]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -358,4 +360,55 @@ function getPreferencesInscription($id_inscription) {
         throw new Exception("Erreur lors de la récupération des préférences : " . $e->getMessage());
     }
 }
-?>
+
+// Fonction pour désinscrire un utilisateur d'un événement
+function desinscrireUtilisateur($id_inscription, $id_utilisateur) {
+    $conn = connexionBDD();
+
+    try {
+        $conn->beginTransaction();
+
+        // Vérifier que l'inscription appartient bien à l'utilisateur et qu'elle existe
+        $stmt = $conn->prepare("
+            SELECT i.*, e.date_debut, e.titre 
+            FROM inscription i 
+            JOIN evenement e ON i.id_evenement = e.id_evenement 
+            WHERE i.id_inscription = ? AND i.id_utilisateur = ? 
+            AND i.status IN ('en attente', 'validé')
+        ");
+        $stmt->execute([$id_inscription, $id_utilisateur]);
+        $inscription = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$inscription) {
+            throw new Exception("Inscription non trouvée ou déjà annulée");
+        }
+
+        // Vérifier que l'événement n'est pas déjà passé
+        if ($inscription['date_debut'] < date('Y-m-d')) {
+            throw new Exception("Impossible de se désinscrire d'un événement passé");
+        }
+
+        // Supprimer les préférences de jeux liées à cette inscription
+        $stmt_pref = $conn->prepare("DELETE FROM preferences WHERE id_inscription = ?");
+        $stmt_pref->execute([$id_inscription]);
+
+        // Supprimer l'inscription au lieu de la marquer comme annulée
+        $stmt_del = $conn->prepare("DELETE FROM inscription WHERE id_inscription = ?");
+        $stmt_del->execute([$id_inscription]);
+
+        $conn->commit();
+
+        return [
+            'success' => true,
+            'message' => "Vous avez été désinscrit avec succès de l'événement \"" . htmlspecialchars($inscription['titre'])
+        ];
+
+    } catch (Exception $e) {
+        $conn->rollBack();
+
+        return [
+            'success' => false,
+            'message' => $e->getMessage()
+        ];
+    }
+}

@@ -40,6 +40,7 @@ require_once __DIR__ . '/../includes/fonctions.php';
                         <i class="fas fa-chevron-down"></i>
                     </a>
                     <div class="dropdown-content">
+                        <a href="mes-inscriptions.php"><i class="fas fa-calendar-check"></i> Mes inscriptions</a>
                         <?php if (estAdmin()): ?>
                             <a href="admin/index.php"><i class="fas fa-cog"></i> Administration</a>
                         <?php endif; ?>
