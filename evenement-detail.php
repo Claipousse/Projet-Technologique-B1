@@ -12,6 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $nb_accompagnants = (int)($_POST['nb_accompagnants'] ?? 0);
     $jeux_preferences = $_POST['jeux_preferences'] ?? [];
 
+    // Validation de la limitation à 3 jeux maximum
+    if (!empty($jeux_preferences) && count($jeux_preferences) > 3) {
+        redirigerAvecMessage("evenement-detail.php?id=$id_evenement", 'Vous ne pouvez sélectionner que 3 jeux maximum.', 'error');
+    }
+
     try {
         $conn = connexionBDD();
 
@@ -520,6 +525,25 @@ include_once 'includes/header.php';
             line-height: 1.3;
         }
 
+        /* Compteur de jeux sélectionnés */
+        .preferences-counter {
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary-color);
+            padding: 0.8rem;
+            background: rgba(139, 69, 19, 0.1);
+            border-radius: 5px;
+            border: 1px solid rgba(139, 69, 19, 0.2);
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .preferences-counter.limit-reached {
+            color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+            border-color: rgba(220, 53, 69, 0.2);
+        }
+
         .btn-inscription {
             background-color: var(--primary-color);
             color: white;
@@ -884,7 +908,7 @@ include_once 'includes/header.php';
                         <?php if (!empty($jeux_evenement)): ?>
                             <div class="form-group">
                                 <label class="form-label">
-                                    Préférences de jeux (optionnel) :
+                                    Préférences de jeux (optionnel, 3 maximum) :
                                     <small style="color: #666; font-weight: normal;">Sélectionnez les jeux qui vous intéressent le plus</small>
                                 </label>
                                 <div class="preferences-grid">
@@ -919,6 +943,16 @@ include_once 'includes/header.php';
             const checkbox = document.getElementById(`jeu_${jeuId}`);
             const item = checkbox.closest('.preference-item');
 
+            // Vérifier le nombre de jeux déjà sélectionnés
+            const selectedCheckboxes = document.querySelectorAll('.preference-checkbox:checked');
+            const selectedCount = selectedCheckboxes.length;
+
+            // Si on veut cocher et qu'on a déjà 3 jeux sélectionnés, on bloque
+            if (!checkbox.checked && selectedCount >= 3) {
+                alert('Vous pouvez sélectionner au maximum 3 jeux.');
+                return;
+            }
+
             checkbox.checked = !checkbox.checked;
 
             if (checkbox.checked) {
@@ -926,12 +960,60 @@ include_once 'includes/header.php';
             } else {
                 item.classList.remove('selected');
             }
+
+            // Mettre à jour l'état des autres éléments
+            updatePreferencesState();
+        }
+
+        function updatePreferencesState() {
+            const checkboxes = document.querySelectorAll('.preference-checkbox');
+            const selectedCount = document.querySelectorAll('.preference-checkbox:checked').length;
+
+            // Mettre à jour le compteur si il existe
+            let counter = document.getElementById('preferences-counter');
+            if (!counter) {
+                // Créer le compteur s'il n'existe pas
+                counter = document.createElement('div');
+                counter.id = 'preferences-counter';
+                counter.className = 'preferences-counter';
+
+                const preferencesGrid = document.querySelector('.preferences-grid');
+                if (preferencesGrid) {
+                    preferencesGrid.parentNode.insertBefore(counter, preferencesGrid.nextSibling);
+                }
+            }
+
+            counter.textContent = `${selectedCount}/3 jeux sélectionnés`;
+            counter.classList.toggle('limit-reached', selectedCount >= 3);
+
+            // Désactiver visuellement les éléments non sélectionnés si on a atteint la limite
+            checkboxes.forEach(checkbox => {
+                const item = checkbox.closest('.preference-item');
+                if (!checkbox.checked && selectedCount >= 3) {
+                    item.style.opacity = '0.5';
+                    item.style.pointerEvents = 'none';
+                } else {
+                    item.style.opacity = '1';
+                    item.style.pointerEvents = 'auto';
+                }
+            });
         }
 
         // Empêcher la propagation du clic quand on clique directement sur la checkbox
         document.querySelectorAll('.preference-checkbox').forEach(checkbox => {
             checkbox.addEventListener('click', function(e) {
                 e.stopPropagation();
+
+                const selectedCheckboxes = document.querySelectorAll('.preference-checkbox:checked');
+                const selectedCount = selectedCheckboxes.length;
+
+                // Si on veut cocher et qu'on a déjà 3 jeux sélectionnés, on bloque
+                if (this.checked && selectedCount > 3) {
+                    this.checked = false;
+                    alert('Vous pouvez sélectionner au maximum 3 jeux.');
+                    return;
+                }
+
                 const item = this.closest('.preference-item');
 
                 if (this.checked) {
@@ -939,6 +1021,8 @@ include_once 'includes/header.php';
                 } else {
                     item.classList.remove('selected');
                 }
+
+                updatePreferencesState();
             });
         });
 
@@ -947,6 +1031,8 @@ include_once 'includes/header.php';
             document.querySelectorAll('.preference-checkbox:checked').forEach(checkbox => {
                 checkbox.closest('.preference-item').classList.add('selected');
             });
+
+            updatePreferencesState();
         });
     </script>
 
