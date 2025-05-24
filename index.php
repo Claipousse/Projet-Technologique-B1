@@ -2,6 +2,9 @@
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/includes/fonctions.php';
 
+// Supprimer automatiquement les événements terminés
+supprimerEvenementsTermines();
+
 // Récupérer les 5 derniers jeux ajoutés
 try {
     $conn = connexionBDD();
@@ -23,9 +26,9 @@ try {
                                ORDER BY date_debut ASC
                                LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
 
-    // Pour chaque événement, récupérer le nombre d'inscrits
+    // Pour chaque événement, récupérer le nombre d'inscrits validés uniquement
     foreach ($evenements as &$evenement) {
-        $sql_count = "SELECT COUNT(*) as nb_inscrits FROM inscription WHERE id_evenement = :id_evenement";
+        $sql_count = "SELECT COUNT(*) as nb_inscrits FROM inscription WHERE id_evenement = :id_evenement AND status = 'validé'";
         $stmt_count = $conn->prepare($sql_count);
         $stmt_count->execute([':id_evenement' => $evenement['id_evenement']]);
         $result = $stmt_count->fetch(PDO::FETCH_ASSOC);
@@ -33,6 +36,7 @@ try {
         $evenement['places_restantes'] = $evenement['capacite_max'] - $evenement['nb_inscrits'];
         $evenement['pourcentage_remplissage'] = ($evenement['capacite_max'] > 0) ?
             round(($evenement['nb_inscrits'] / $evenement['capacite_max']) * 100) : 0;
+        $evenement['est_complet'] = $evenement['places_restantes'] <= 0;
     }
     unset($evenement);
 
@@ -151,7 +155,7 @@ include_once 'includes/header.php';
                             </div>
                             <div class="event-capacity">
                                 <div class="progress-mini">
-                                    <div class="progress-bar-mini" style="width: <?php echo $evenement['pourcentage_remplissage']; ?>%"></div>
+                                    <div class="progress-bar-mini <?php echo $evenement['est_complet'] ? 'complet' : 'disponible'; ?>" style="width: <?php echo $evenement['pourcentage_remplissage']; ?>%"></div>
                                 </div>
                                 <small style="color: #495057; font-weight: 500;">
                                     <?php echo $evenement['nb_inscrits']; ?>/<?php echo $evenement['capacite_max']; ?> participants
