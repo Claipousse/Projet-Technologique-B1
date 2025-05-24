@@ -7,6 +7,9 @@ if (!estConnecte() || !estAdmin()) {
     rediriger('../../connexion.php');
 }
 
+// Supprimer automatiquement les événements terminés
+supprimerEvenementsTermines();
+
 // Récupérer la liste des événements
 try {
     $conn = connexionBDD();

@@ -308,59 +308,125 @@ include_once 'includes/header.php';
             padding-bottom: 0.5rem;
         }
 
-        .jeux-grid {
+        /* STYLES ADAPTATIFS POUR LES JEUX SELON LE NOMBRE */
+
+        /* Un seul jeu - Affichage complet centré */
+        .jeux-grid.single-game {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .jeux-grid.single-game .jeu-card {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .jeux-grid.single-game .jeu-image,
+        .jeux-grid.single-game .jeu-no-image {
+            height: 400px;
+        }
+
+        /* Deux jeux - Layout adaptatif */
+        .jeux-grid.two-games {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Trois jeux ou plus - Grid standard */
+        .jeux-grid.multiple-games {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
             margin-bottom: 3rem;
         }
 
         .jeu-card {
             background-color: white;
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border: 1px solid #e6ddd0;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .jeu-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         .jeu-image {
             width: 100%;
-            height: 150px;
+            height: 240px;
             object-fit: cover;
-            border-radius: 6px;
-            margin-bottom: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .jeu-image:hover {
+            transform: scale(1.02);
         }
 
         .jeu-no-image {
             width: 100%;
-            height: 150px;
-            background-color: #f0f0f0;
+            height: 240px;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             color: #999;
-            border-radius: 6px;
-            margin-bottom: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
             border: 2px dashed #ddd;
+        }
+
+        .jeu-no-image i {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .jeu-no-image span {
+            font-size: 0.9rem;
+            text-align: center;
         }
 
         .jeu-titre {
             font-family: "Playfair Display", serif;
             color: var(--primary-color);
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            line-height: 1.3;
         }
 
         .jeu-description {
             color: #666;
-            font-size: 0.9rem;
-            line-height: 1.4;
+            font-size: 1rem;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        /* Styles spéciaux pour un seul jeu */
+        .single-game .jeu-titre {
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        .single-game .jeu-description {
+            font-size: 1.1rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .single-game .jeu-card {
+            padding: 2.5rem;
+            min-height: auto;
         }
 
         .inscription-section {
@@ -406,8 +472,8 @@ include_once 'includes/header.php';
 
         .preferences-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 0.8rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
             margin-top: 0.5rem;
         }
 
@@ -555,12 +621,67 @@ include_once 'includes/header.php';
                 gap: 2rem;
             }
 
-            .jeux-grid {
+            /* Responsive pour les jeux */
+            .jeux-grid.single-game .jeu-image,
+            .jeux-grid.single-game .jeu-no-image {
+                height: 300px;
+            }
+
+            .jeux-grid.two-games {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .jeux-grid.multiple-games {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .jeu-image, .jeu-no-image {
+                height: 200px;
+            }
+
+            .single-game .jeu-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .single-game .jeu-titre {
+                font-size: 1.5rem;
             }
 
             .preferences-grid {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .jeu-image, .jeu-no-image {
+                height: 180px;
+            }
+
+            .jeux-grid.single-game .jeu-image,
+            .jeux-grid.single-game .jeu-no-image {
+                height: 250px;
+            }
+
+            .jeu-card {
+                padding: 1rem;
+            }
+
+            .single-game .jeu-card {
+                padding: 1.5rem;
+            }
+
+            .jeu-titre {
+                font-size: 1.1rem;
+            }
+
+            .single-game .jeu-titre {
+                font-size: 1.3rem;
+            }
+
+            .jeu-description {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -664,7 +785,19 @@ include_once 'includes/header.php';
             <?php if (!empty($jeux_evenement)): ?>
                 <div class="section">
                     <h2 class="section-title">Jeux de l'événement</h2>
-                    <div class="jeux-grid">
+                    <?php
+                    $nb_jeux = count($jeux_evenement);
+                    $grid_class = '';
+
+                    if ($nb_jeux == 1) {
+                        $grid_class = 'single-game';
+                    } elseif ($nb_jeux == 2) {
+                        $grid_class = 'two-games';
+                    } else {
+                        $grid_class = 'multiple-games';
+                    }
+                    ?>
+                    <div class="jeux-grid <?= $grid_class ?>">
                         <?php foreach ($jeux_evenement as $jeu): ?>
                             <div class="jeu-card">
                                 <?php if ($jeu['image_path'] && file_exists($jeu['image_path'])): ?>
@@ -672,7 +805,8 @@ include_once 'includes/header.php';
                                          alt="<?= htmlspecialchars($jeu['nom']) ?>" class="jeu-image">
                                 <?php else: ?>
                                     <div class="jeu-no-image">
-                                        <i class="fas fa-image" style="font-size: 2rem;"></i>
+                                        <i class="fas fa-gamepad"></i>
+                                        <span>Image non disponible</span>
                                     </div>
                                 <?php endif; ?>
                                 <div class="jeu-titre"><?= htmlspecialchars($jeu['nom']) ?></div>

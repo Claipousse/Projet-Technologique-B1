@@ -2,7 +2,8 @@
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/includes/fonctions.php';
 
-
+// Supprimer automatiquement les événements terminés
+supprimerEvenementsTermines();
 
 // Récupération des filtres
 $filtre_statut = $_GET['statut'] ?? 'tous';
@@ -26,10 +27,10 @@ try {
             $where_conditions[] = "(SELECT COUNT(*) FROM inscription WHERE id_evenement = e.id_evenement AND status = 'validé') < e.capacite_max";
             break;
         case 'termine':
-            $where_conditions[] = "e.date_debut <= CURDATE()";
+            $where_conditions[] = "e.date_debut < CURDATE()";
             break;
         case 'actif':
-            $where_conditions[] = "e.date_debut > CURDATE()";
+            $where_conditions[] = "e.date_debut >= CURDATE()";
             break;
     }
 
@@ -52,34 +53,35 @@ try {
 
     $where_clause = implode(' AND ', $where_conditions);
 
-    // Requête événements
+    // Requête simplifiée : événements avec inscriptions validées en haut
     $sql = "SELECT e.*, 
                    (SELECT COUNT(*) FROM inscription WHERE id_evenement = e.id_evenement AND status = 'validé') as nb_inscrits,
                    (SELECT GROUP_CONCAT(j.nom SEPARATOR ', ') FROM jeux_evenement je JOIN jeux j ON je.id_jeux = j.id_jeux WHERE je.id_evenement = e.id_evenement) as jeux_liste
             FROM evenement e 
             WHERE $where_clause 
-            ORDER BY e.date_debut ASC";
+            ORDER BY nb_inscrits DESC, e.date_debut ASC";
 
     $stmt = $conn->prepare($sql);
     $stmt->execute($params);
     $evenements = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Enrichir les données
-    foreach ($evenements as &$evenement) {
-        $evenement['places_restantes'] = $evenement['capacite_max'] - $evenement['nb_inscrits'];
-        $evenement['pourcentage'] = ($evenement['capacite_max'] > 0) ? round(($evenement['nb_inscrits'] / $evenement['capacite_max']) * 100) : 0;
-        $evenement['est_complet'] = $evenement['places_restantes'] <= 0;
-        $evenement['est_termine'] = strtotime($evenement['date_debut']) <= time() - 86400; // Terminé seulement le jour suivant
+    foreach ($evenements as $key => $evenement) {
+        $evenements[$key]['places_restantes'] = $evenement['capacite_max'] - $evenement['nb_inscrits'];
+        $evenements[$key]['pourcentage'] = ($evenement['capacite_max'] > 0) ? round(($evenement['nb_inscrits'] / $evenement['capacite_max']) * 100) : 0;
+        $evenements[$key]['est_complet'] = $evenements[$key]['places_restantes'] <= 0;
+        $evenements[$key]['est_termine'] = strtotime($evenement['date_debut']) < strtotime(date('Y-m-d'));
 
         // Inscription utilisateur
-        $evenement['inscription_status'] = null;
+        $evenements[$key]['inscription_status'] = null;
         if (estConnecte()) {
             $stmt_user = $conn->prepare("SELECT status FROM inscription WHERE id_utilisateur = ? AND id_evenement = ? AND status != 'annulé'");
             $stmt_user->execute([$_SESSION['id_utilisateur'], $evenement['id_evenement']]);
             $inscription_user = $stmt_user->fetch();
-            $evenement['inscription_status'] = $inscription_user ? $inscription_user['status'] : null;
+            $evenements[$key]['inscription_status'] = $inscription_user ? $inscription_user['status'] : null;
         }
     }
+    unset($evenement); // Détruit la référence pour éviter les problèmes
 
     // Liste des jeux pour le filtre
     $stmt_jeux = $conn->query("SELECT DISTINCT j.nom FROM jeux j JOIN jeux_evenement je ON j.id_jeux = je.id_jeux ORDER BY j.nom");
@@ -225,6 +227,18 @@ include_once 'includes/header.php';
 
         .evenement-carte:hover { transform: scale(1.01); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
 
+        /* Style spécial pour les événements terminés */
+        .evenement-carte.termine {
+            opacity: 0.7;
+            border-color: #ccc;
+            background-color: #f8f9fa;
+        }
+
+        .evenement-carte.termine:hover {
+            transform: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
         .evenement-date {
             background: linear-gradient(135deg, var(--primary-color), #A0522D);
             color: white;
@@ -237,6 +251,11 @@ include_once 'includes/header.php';
             flex-shrink: 0;
         }
 
+        /* Date spéciale pour événements terminés */
+        .evenement-carte.termine .evenement-date {
+            background: linear-gradient(135deg, #6c757d, #495057);
+        }
+
         .evenement-infos { flex-grow: 1; padding: 0.5rem 0; }
 
         .evenement-titre {
@@ -246,6 +265,11 @@ include_once 'includes/header.php';
             font-family: "Playfair Display", serif;
             color: var(--primary-color);
             line-height: 1.3;
+        }
+
+        /* Titre grisé pour événements terminés */
+        .evenement-carte.termine .evenement-titre {
+            color: #6c757d;
         }
 
         .evenement-description { color: #666; margin-bottom: 1rem; line-height: 1.5; }
@@ -267,7 +291,7 @@ include_once 'includes/header.php';
         /* Actions */
         .evenement-actions { display: flex; flex-direction: column; gap: 0.8rem; min-width: 120px; flex-shrink: 0; }
 
-        .btn-details, .btn-inscrire, .btn-complet, .btn-inscrit, .btn-attente {
+        .btn-details, .btn-inscrire, .btn-complet, .btn-inscrit, .btn-attente, .btn-termine {
             padding: 0.7rem 1rem;
             border-radius: 4px;
             font-weight: 600;
@@ -290,8 +314,7 @@ include_once 'includes/header.php';
         .btn-complet { background-color: #dc3545; color: white; }
         .btn-inscrit { background-color: #28a745; color: white; }
         .btn-attente { background-color: #ffc107; color: #212529; }
-
-
+        .btn-termine { background-color: #6c757d; color: white; cursor: default; }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -300,7 +323,7 @@ include_once 'includes/header.php';
             .evenement-carte { flex-direction: column; text-align: center; gap: 1rem; }
             .evenement-date { min-width: auto; width: 100%; max-width: 200px; margin: 0 auto; }
             .evenement-actions { flex-direction: row; justify-content: center; width: 100%; }
-            .btn-details, .btn-inscrire, .btn-complet, .btn-inscrit, .btn-attente { flex: 1; max-width: 120px; }
+            .btn-details, .btn-inscrire, .btn-complet, .btn-inscrit, .btn-attente, .btn-termine { flex: 1; max-width: 120px; }
         }
     </style>
 
@@ -365,13 +388,18 @@ include_once 'includes/header.php';
             <!-- Liste des événements -->
             <?php if (!empty($evenements)): ?>
                 <?php foreach ($evenements as $evenement): ?>
-                    <div class="evenement-carte">
+                    <div class="evenement-carte <?= $evenement['est_termine'] ? 'termine' : '' ?>">
                         <div class="evenement-date">
                             <?= formaterDateEvenement($evenement['date_debut'], $evenement['date_fin'], true) ?>
                         </div>
 
                         <div class="evenement-infos">
-                            <div class="evenement-titre"><?= htmlspecialchars($evenement['titre']) ?></div>
+                            <div class="evenement-titre">
+                                <?= htmlspecialchars($evenement['titre']) ?>
+                                <?php if ($evenement['est_termine']): ?>
+                                    <span style="color: #dc3545; font-size: 0.8em; font-weight: normal;">(Terminé)</span>
+                                <?php endif; ?>
+                            </div>
                             <div class="evenement-description"><?= htmlspecialchars($evenement['description']) ?></div>
 
                             <?php if ($evenement['jeux_liste']): ?>
@@ -400,7 +428,7 @@ include_once 'includes/header.php';
                             </a>
 
                             <?php if ($evenement['est_termine']): ?>
-                                <div class="btn-complet"><i class="fas fa-clock"></i> Terminé</div>
+                                <div class="btn-termine"><i class="fas fa-clock"></i> Terminé</div>
                             <?php elseif ($evenement['est_complet']): ?>
                                 <div class="btn-complet"><i class="fas fa-users"></i> Complet</div>
                             <?php elseif ($evenement['inscription_status'] === 'validé'): ?>
@@ -424,8 +452,6 @@ include_once 'includes/header.php';
             <?php endif; ?>
         </div>
     </main>
-
-
 
     <script>
         // Détecter rafraîchissement et reset filtres

@@ -39,5 +39,51 @@ function rediriger($url) {
     exit;
 }
 
+// Fonction pour supprimer automatiquement les événements terminés
+function supprimerEvenementsTermines() {
+    try {
+        $conn = connexionBDD();
+        $conn->beginTransaction();
+
+        // Récupérer les IDs des événements terminés
+        $stmt = $conn->prepare("SELECT id_evenement FROM evenement WHERE date_fin < CURDATE()");
+        $stmt->execute();
+        $evenements_termines = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+        if (!empty($evenements_termines)) {
+            $placeholders = implode(',', array_fill(0, count($evenements_termines), '?'));
+
+            // Supprimer les préférences liées aux inscriptions de ces événements
+            $stmt = $conn->prepare("
+                DELETE p FROM preferences p 
+                JOIN inscription i ON p.id_inscription = i.id_inscription 
+                WHERE i.id_evenement IN ($placeholders)
+            ");
+            $stmt->execute($evenements_termines);
+
+            // Supprimer les inscriptions
+            $stmt = $conn->prepare("DELETE FROM inscription WHERE id_evenement IN ($placeholders)");
+            $stmt->execute($evenements_termines);
+
+            // Supprimer les associations jeux-événement
+            $stmt = $conn->prepare("DELETE FROM jeux_evenement WHERE id_evenement IN ($placeholders)");
+            $stmt->execute($evenements_termines);
+
+            // Supprimer les événements
+            $stmt = $conn->prepare("DELETE FROM evenement WHERE id_evenement IN ($placeholders)");
+            $stmt->execute($evenements_termines);
+        }
+
+        $conn->commit();
+        return count($evenements_termines);
+    } catch (PDOException $e) {
+        if (isset($conn)) {
+            $conn->rollBack();
+        }
+        error_log("Erreur lors de la suppression des événements terminés : " . $e->getMessage());
+        return false;
+    }
+}
+
 /* Remarque : On pourrait ajouter des fonctions pour hasher les données sensibles,
 notamment les mots de passes. C'est pas demandé mais c'est toujours un plus */
