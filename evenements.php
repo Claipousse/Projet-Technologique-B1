@@ -2,63 +2,7 @@
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/includes/fonctions.php';
 
-// Traitement AJAX pour l'inscription
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'inscription') {
-    header('Content-Type: application/json');
 
-    if (!estConnecte()) {
-        echo json_encode(['success' => false, 'message' => 'Vous devez être connecté pour vous inscrire.', 'redirect' => true]);
-        exit;
-    }
-
-    $id_evenement = (int)($_POST['id_evenement'] ?? 0);
-    $nb_accompagnants = (int)($_POST['nb_accompagnants'] ?? 0);
-
-    try {
-        $conn = connexionBDD();
-
-        // Vérifier événement existe
-        $stmt = $conn->prepare("SELECT * FROM evenement WHERE id_evenement = ?");
-        $stmt->execute([$id_evenement]);
-        $evenement = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$evenement) {
-            echo json_encode(['success' => false, 'message' => 'Événement introuvable.']);
-            exit;
-        }
-
-        // Vérifier si déjà inscrit
-        $stmt = $conn->prepare("SELECT COUNT(*) FROM inscription WHERE id_utilisateur = ? AND id_evenement = ? AND status != 'annulé'");
-        $stmt->execute([$_SESSION['id_utilisateur'], $id_evenement]);
-        if ($stmt->fetchColumn() > 0) {
-            echo json_encode(['success' => false, 'message' => 'Vous êtes déjà inscrit à cet événement.']);
-            exit;
-        }
-
-        // Vérifier places disponibles
-        $stmt = $conn->prepare("SELECT COUNT(*) FROM inscription WHERE id_evenement = ? AND status = 'validé'");
-        $stmt->execute([$id_evenement]);
-        $nb_inscrits = $stmt->fetchColumn();
-
-        $places_demandees = $nb_accompagnants + 1;
-        $places_restantes = $evenement['capacite_max'] - $nb_inscrits;
-
-        if ($places_restantes < $places_demandees) {
-            echo json_encode(['success' => false, 'message' => 'Pas assez de places disponibles.']);
-            exit;
-        }
-
-        // Inscrire
-        $stmt = $conn->prepare("INSERT INTO inscription (id_utilisateur, id_evenement, nb_accompagnant, date_inscription, status) VALUES (?, ?, ?, CURDATE(), 'en attente')");
-        $stmt->execute([$_SESSION['id_utilisateur'], $id_evenement, $nb_accompagnants]);
-
-        echo json_encode(['success' => true, 'message' => 'Inscription enregistrée ! Elle sera validée par un administrateur.']);
-
-    } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'message' => 'Erreur : ' . $e->getMessage()]);
-    }
-    exit;
-}
 
 // Récupération des filtres
 $filtre_statut = $_GET['statut'] ?? 'tous';
@@ -82,10 +26,10 @@ try {
             $where_conditions[] = "(SELECT COUNT(*) FROM inscription WHERE id_evenement = e.id_evenement AND status = 'validé') < e.capacite_max";
             break;
         case 'termine':
-            $where_conditions[] = "e.date_debut < CURDATE()";
+            $where_conditions[] = "e.date_debut <= CURDATE()";
             break;
         case 'actif':
-            $where_conditions[] = "e.date_debut >= CURDATE()";
+            $where_conditions[] = "e.date_debut > CURDATE()";
             break;
     }
 
@@ -125,7 +69,7 @@ try {
         $evenement['places_restantes'] = $evenement['capacite_max'] - $evenement['nb_inscrits'];
         $evenement['pourcentage'] = ($evenement['capacite_max'] > 0) ? round(($evenement['nb_inscrits'] / $evenement['capacite_max']) * 100) : 0;
         $evenement['est_complet'] = $evenement['places_restantes'] <= 0;
-        $evenement['est_termine'] = strtotime($evenement['date_debut']) < time();
+        $evenement['est_termine'] = strtotime($evenement['date_debut']) <= time() - 86400; // Terminé seulement le jour suivant
 
         // Inscription utilisateur
         $evenement['inscription_status'] = null;
@@ -310,7 +254,13 @@ include_once 'includes/header.php';
 
         .evenement-capacite { margin-top: 0.5rem; }
         .barre-progression { height: 8px; background-color: #e9ecef; border-radius: 4px; overflow: hidden; margin: 5px 0; }
-        .barre-remplissage { height: 100%; background: linear-gradient(90deg, #28a745 0%, #20c997 50%, #ffc107 80%, #dc3545 100%); border-radius: 4px; transition: width 0.3s ease; }
+        .barre-remplissage {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        .barre-remplissage.disponible { background-color: #28a745; }
+        .barre-remplissage.complet { background-color: #dc3545; }
         .capacite-texte { color: #495057; font-weight: 500; font-size: 0.9rem; }
         .places-restantes { color: #28a745; }
 
@@ -334,58 +284,14 @@ include_once 'includes/header.php';
         .btn-details { background-color: var(--secondary-color); color: white; text-decoration: none; }
         .btn-details:hover { background-color: var(--primary-color); color: white; text-decoration: none; }
 
-        .btn-inscrire { background-color: var(--primary-color); color: white; border: none; cursor: pointer; }
-        .btn-inscrire:hover { background-color: var(--secondary-color); }
+        .btn-inscrire { background-color: var(--primary-color); color: white; border: none; cursor: pointer; text-decoration: none; }
+        .btn-inscrire:hover { background-color: var(--secondary-color); color: white; text-decoration: none; }
 
         .btn-complet { background-color: #dc3545; color: white; }
         .btn-inscrit { background-color: #28a745; color: white; }
         .btn-attente { background-color: #ffc107; color: #212529; }
 
-        /* Modal */
-        .modal-inscription {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
 
-        .modal-contenu {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 12px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-
-        .modal-fermer {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 28px;
-            font-weight: bold;
-            color: #999;
-            cursor: pointer;
-        }
-
-        .modal-titre { font-family: "Playfair Display", serif; color: var(--primary-color); margin-bottom: 1.5rem; text-align: center; }
-        .modal-evenement { text-align: center; margin-bottom: 1.5rem; color: var(--secondary-color); font-weight: 600; }
-
-        .form-groupe { margin-bottom: 1.5rem; }
-        .form-label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: var(--dark-text); }
-        .form-control { width: 100%; padding: 0.8rem; border: 1px solid var(--accent-color); border-radius: 4px; background-color: var(--light-bg); }
-
-        .modal-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; }
-        .btn-secondaire, .btn-primaire { padding: 0.8rem 1.5rem; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
-        .btn-secondaire { background-color: #6c757d; color: white; }
-        .btn-primaire { background-color: var(--primary-color); color: white; }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -478,7 +384,7 @@ include_once 'includes/header.php';
                             <?php if (!$evenement['est_complet'] && !$evenement['est_termine']): ?>
                                 <div class="evenement-capacite">
                                     <div class="barre-progression">
-                                        <div class="barre-remplissage" style="width: <?= $evenement['pourcentage'] ?>%"></div>
+                                        <div class="barre-remplissage <?= $evenement['est_complet'] ? 'complet' : 'disponible' ?>" style="width: <?= $evenement['pourcentage'] ?>%"></div>
                                     </div>
                                     <div class="capacite-texte">
                                         <?= $evenement['nb_inscrits'] ?>/<?= $evenement['capacite_max'] ?> participants
@@ -502,9 +408,9 @@ include_once 'includes/header.php';
                             <?php elseif ($evenement['inscription_status'] === 'en attente'): ?>
                                 <div class="btn-attente"><i class="fas fa-hourglass-half"></i> En attente</div>
                             <?php else: ?>
-                                <button class="btn-inscrire" onclick="ouvrirModal(<?= $evenement['id_evenement'] ?>, '<?= htmlspecialchars($evenement['titre']) ?>', <?= $evenement['places_restantes'] ?>)">
+                                <a href="evenement-detail.php?id=<?= $evenement['id_evenement'] ?>#inscription" class="btn-inscrire">
                                     <i class="fas fa-user-plus"></i> S'inscrire
-                                </button>
+                                </a>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -519,33 +425,7 @@ include_once 'includes/header.php';
         </div>
     </main>
 
-    <!-- Modal d'inscription -->
-    <div id="modalInscription" class="modal-inscription">
-        <div class="modal-contenu">
-            <span class="modal-fermer" onclick="fermerModal()">&times;</span>
-            <h3 class="modal-titre">Inscription à l'événement</h3>
-            <div id="modalEvenementNom" class="modal-evenement"></div>
 
-            <form id="formInscription">
-                <input type="hidden" id="modalEventId" name="id_evenement">
-                <div class="form-groupe">
-                    <label for="nbAccompagnants" class="form-label">Nombre d'accompagnants :</label>
-                    <select id="nbAccompagnants" name="nb_accompagnants" class="form-control">
-                        <option value="0">Aucun</option>
-                        <option value="1">1 accompagnant</option>
-                        <option value="2">2 accompagnants</option>
-                        <option value="3">3 accompagnants</option>
-                        <option value="4">4 accompagnants</option>
-                        <option value="5">5 accompagnants</option>
-                    </select>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-secondaire" onclick="fermerModal()">Annuler</button>
-                    <button type="submit" class="btn-primaire">Confirmer l'inscription</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <script>
         // Détecter rafraîchissement et reset filtres
@@ -598,72 +478,6 @@ include_once 'includes/header.php';
                 const icon = dropdown.querySelector('i');
                 if (icon) icon.className = 'fas fa-chevron-down';
             }
-        });
-
-        function ouvrirModal(eventId, eventTitle, placesRestantes) {
-            <?php if (!estConnecte()): ?>
-            if (confirm('Vous devez être connecté pour vous inscrire. Voulez-vous vous connecter maintenant ?')) {
-                window.location.href = 'connexion.php';
-            }
-            return;
-            <?php endif; ?>
-
-            document.getElementById('modalEventId').value = eventId;
-            document.getElementById('modalEvenementNom').textContent = eventTitle;
-            document.getElementById('modalInscription').style.display = 'flex';
-
-            // Limiter accompagnants selon places disponibles
-            const select = document.getElementById('nbAccompagnants');
-            const maxAccompagnants = Math.min(5, placesRestantes - 1);
-
-            select.innerHTML = '';
-            for (let i = 0; i <= maxAccompagnants; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i === 0 ? 'Aucun' : i + ' accompagnant' + (i > 1 ? 's' : '');
-                select.appendChild(option);
-            }
-        }
-
-        function fermerModal() {
-            document.getElementById('modalInscription').style.display = 'none';
-        }
-
-        // Traitement formulaire inscription
-        document.getElementById('formInscription').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const formData = new FormData(this);
-            formData.append('action', 'inscription');
-
-            fetch('evenements.php', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message);
-                        location.reload();
-                    } else {
-                        if (data.redirect) {
-                            if (confirm(data.message + ' Voulez-vous vous connecter maintenant ?')) {
-                                window.location.href = 'connexion.php';
-                            }
-                        } else {
-                            alert(data.message);
-                        }
-                    }
-                })
-                .catch(error => {
-                    alert('Erreur lors de l\'inscription');
-                    console.error('Error:', error);
-                });
-        });
-
-        // Fermer modal en cliquant à l'extérieur
-        document.getElementById('modalInscription').addEventListener('click', function(e) {
-            if (e.target === this) fermerModal();
         });
     </script>
 

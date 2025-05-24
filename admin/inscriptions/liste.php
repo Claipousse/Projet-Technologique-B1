@@ -155,7 +155,7 @@ include_once '../includes/admin-header.php';
                                                onclick="return confirm('Valider cette inscription ?')">
                                                 <i class="bi bi-check-circle"></i> Valider
                                             </a>
-                                            <a href="refuser.php?id=<?php echo $inscription['id_inscription']; ?>"
+                                            <a href="annuler.php?id=<?php echo $inscription['id_inscription']; ?>"
                                                class="btn btn-danger btn-sm"
                                                onclick="return confirm('Refuser cette inscription ?')">
                                                 <i class="bi bi-x-circle"></i> Refuser
