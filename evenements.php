@@ -84,7 +84,7 @@ include_once 'includes/header.php';
         <main>
             <h1>Nos Évènements</h1>
 
-            <a href="inscription_formulaire.html" class="inscription-btn">S'inscrire à un événement</a>
+            <a href="inscription.php" class="inscription-btn">S'inscrire à un événement</a>
 
             <?php if (!empty($evenements)): ?>
                 <?php foreach ($evenements as $evenement): ?>

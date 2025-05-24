@@ -1191,6 +1191,123 @@ footer {
   color: var(--secondary-color);
 }
 
+
+/* pour inscription.php */
+    .auth-container {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .event-info {
+        background-color: #e9ecef;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 15px;
+        margin-top: 10px;
+        display: none;
+    }
+    
+    .event-info.show {
+        display: block;
+    }
+    
+    .capacity-info {
+        color: #28a745;
+        font-weight: bold;
+    }
+    
+    option:disabled {
+        color: #999;
+    }
+    
+    .jeux-selection {
+        margin: 15px 0;
+    }
+    
+    .jeux-info {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 10px;
+        font-style: italic;
+    }
+    
+    .jeux-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .jeu-item {
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 12px;
+        transition: all 0.3s ease;
+    }
+    
+    .jeu-item:hover {
+        border-color: #007bff;
+        box-shadow: 0 2px 5px rgba(0,123,255,0.1);
+    }
+    
+    .jeu-item.selected {
+        border-color: #007bff;
+        background-color: #f8f9ff;
+    }
+    
+    .jeu-checkbox {
+        width: auto;
+        margin-right: 8px;
+    }
+    
+    .jeu-label {
+        cursor: pointer;
+        display: block;
+        margin: 0;
+        font-weight: normal;
+    }
+    
+    .jeu-label strong {
+        display: block;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    
+    .jeu-description {
+        display: block;
+        font-size: 12px;
+        color: #666;
+        line-height: 1.3;
+    }
+    
+    .jeux-counter {
+        text-align: center;
+        font-weight: bold;
+        color: #007bff;
+        padding: 8px;
+        background: #f8f9ff;
+        border-radius: 5px;
+        border: 1px solid #e3f2fd;
+    }
+    
+    .jeux-counter.limit-reached {
+        color: #dc3545;
+        background: #fff5f5;
+        border-color: #f5c6cb;
+    }
+    
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    
 /* Styles pour les documents et vidéos en sections séparées */
 .document-item {
   display: flex;
@@ -1723,3 +1840,4 @@ footer {
     border: 1px solid #ccc !important;
   }
 }
+

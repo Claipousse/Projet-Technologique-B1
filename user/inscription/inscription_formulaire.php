@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../config.php";
+require_once __DIR__ . "/../../config/config.php";
 session_start(); // On lance la session pour savoir qui est connecté
 $pdo = connexionBDD();
 
