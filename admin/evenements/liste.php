@@ -11,7 +11,7 @@ if (!estConnecte() || !estAdmin()) {
 try {
     $conn = connexionBDD();
     $sql = "SELECT e.id_evenement, e.titre, e.date_debut, e.date_fin, e.capacite_max, e.duree_type,
-                   COUNT(i.id_inscription) as nb_inscrits
+                   COUNT(CASE WHEN i.status = 'validé' THEN 1 END) as nb_inscrits
             FROM evenement e
             LEFT JOIN inscription i ON e.id_evenement = i.id_evenement
             GROUP BY e.id_evenement
@@ -29,6 +29,44 @@ $messageType = isset($_GET['type']) ? $_GET['type'] : 'info';
 
 include_once '../includes/admin-header.php';
 ?>
+
+    <style>
+        /* Styles spécifiques pour les barres de progression */
+        .progress-bar-custom {
+            height: 30px;
+            background-color: #e9ecef;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            width: 200px;
+            margin: 0 auto;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 15px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-fill.disponible {
+            background-color: #28a745;
+        }
+
+        .progress-fill.complet {
+            background-color: #dc3545;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: #495057;
+            z-index: 10;
+        }
+    </style>
 
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -67,6 +105,7 @@ include_once '../includes/admin-header.php';
                             <?php
                             $pourcentage = ($evenement['capacite_max'] > 0) ?
                                 round(($evenement['nb_inscrits'] / $evenement['capacite_max']) * 100) : 0;
+                            $est_complet = $evenement['nb_inscrits'] >= $evenement['capacite_max'];
                             ?>
                             <tr>
                                 <td>
@@ -80,7 +119,7 @@ include_once '../includes/admin-header.php';
                                 </td>
                                 <td class="text-center">
                                     <div class="progress-bar-custom">
-                                        <div class="progress-fill" style="width: <?php echo $pourcentage; ?>%"></div>
+                                        <div class="progress-fill <?php echo $est_complet ? 'complet' : 'disponible'; ?>" style="width: <?php echo $pourcentage; ?>%"></div>
                                         <div class="progress-text">
                                             <?php echo $evenement['nb_inscrits']; ?>/<?php echo $evenement['capacite_max']; ?>
                                         </div>

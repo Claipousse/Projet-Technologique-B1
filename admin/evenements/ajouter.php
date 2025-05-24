@@ -7,6 +7,10 @@ if (!estConnecte() || !estAdmin()) {
     rediriger('../../connexion.php');
 }
 
+// Récupération de tous les jeux
+$stmt = $pdo->query("SELECT id_jeux, nom FROM jeux ORDER BY nom");
+$jeux = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 $message = '';
 $messageType = '';
 
@@ -16,6 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $date_debut = $_POST['date_debut'];
     $duree_type = htmlspecialchars($_POST['duree_type']);
     $capacite = intval($_POST['capacite_max']);
+    $jeux_selectionnes = isset($_POST['jeux']) ? $_POST['jeux'] : [];
 
     // Calculer automatiquement la date de fin selon la durée
     $date_fin = $date_debut; // Par défaut pour demi-journée et journée
@@ -30,14 +35,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $messageType = "danger";
     } else {
         try {
+            $pdo->beginTransaction();
+
+            // Insérer l'événement
             $sql = "INSERT INTO evenement (titre, description, date_debut, date_fin, capacite_max, duree_type)
                     VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$titre, $description, $date_debut, $date_fin, $capacite, $duree_type]);
 
+            $id_evenement = $pdo->lastInsertId();
+
+            // Insérer les jeux associés
+            if (!empty($jeux_selectionnes)) {
+                $stmt_jeux = $pdo->prepare("INSERT INTO jeux_evenement (id_evenement, id_jeux) VALUES (?, ?)");
+                foreach ($jeux_selectionnes as $id_jeux) {
+                    $stmt_jeux->execute([$id_evenement, $id_jeux]);
+                }
+            }
+
+            $pdo->commit();
             $message = "✅ Événement ajouté avec succès !";
             $messageType = "success";
         } catch (PDOException $e) {
+            $pdo->rollBack();
             $message = "Erreur lors de l'ajout : " . $e->getMessage();
             $messageType = "danger";
         }
@@ -90,6 +110,29 @@ include_once '../includes/admin-header.php';
                         <div class="mb-3">
                             <label for="capacite_max" class="form-label">Capacité maximale</label>
                             <input type="number" class="form-control" id="capacite_max" name="capacite_max" min="1" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Jeux associés</label>
+                            <div class="form-text mb-2">Sélectionnez les jeux qui seront disponibles lors de cet événement</div>
+                            <?php if (!empty($jeux)): ?>
+                                <div class="row row-cols-1 row-cols-md-3 g-2">
+                                    <?php foreach ($jeux as $jeu) : ?>
+                                        <div class="col">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="jeux[]" value="<?php echo $jeu['id_jeux']; ?>" id="jeu_<?php echo $jeu['id_jeux']; ?>">
+                                                <label class="form-check-label" for="jeu_<?php echo $jeu['id_jeux']; ?>">
+                                                    <?php echo htmlspecialchars($jeu['nom']); ?>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle"></i> Aucun jeu disponible. Veuillez d'abord ajouter des jeux dans la section "Gestion des jeux".
+                                </div>
+                            <?php endif; ?>
                         </div>
 
                         <div class="text-end">
