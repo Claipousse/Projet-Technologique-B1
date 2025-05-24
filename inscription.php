@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php endforeach; ?>
                     </select>
                     
-                    <div id="event-info" class="event-info"></div>
+                    <div id="event-info1" class="event-info1"></div>
                 </div>
 
                 <button type="submit" class="btn">S'inscrire</button>
@@ -157,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <script>
 function showEventInfo(eventId) {
-    const eventInfo = document.getElementById('event-info');
+    const eventInfo = document.getElementById('event-info1');
     const select = document.getElementById('id_evenement');
     const selectedOption = select.options[select.selectedIndex];
     
