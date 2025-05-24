@@ -9,7 +9,7 @@ if (!estConnecte() || !estAdmin()) {
 
 // Vérifier qu'un ID d'inscription a été fourni
 if (!isset($_GET['id']) || empty($_GET['id'])) {
-    redirigerAvecMessage('liste.php', 'ID d\'inscription manquant.', 'danger');
+    rediriger('liste.php');
 }
 
 $id_inscription = (int)$_GET['id'];
@@ -30,11 +30,11 @@ try {
     $inscription = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$inscription) {
-        redirigerAvecMessage('liste.php', 'Inscription introuvable.', 'danger');
+        rediriger('liste.php');
     }
 
     if ($inscription['status'] !== 'en attente') {
-        redirigerAvecMessage('liste.php', 'Cette inscription n\'est pas en attente.', 'warning');
+        rediriger('liste.php');
     }
 
     // Vérifier la capacité de l'événement
@@ -50,23 +50,16 @@ try {
     $placesRestantes = $inscription['capacite_max'] - $nbInscrits;
 
     if ($placesRestantes < $totalPlaces) {
-        redirigerAvecMessage('liste.php',
-            'Impossible de valider : pas assez de places disponibles (' . $placesRestantes . ' places restantes, ' . $totalPlaces . ' demandées).',
-            'danger');
+        rediriger('liste.php');
     }
 
     // Valider l'inscription
     $stmt = $pdo->prepare("UPDATE inscription SET status = 'validé' WHERE id_inscription = ?");
     $stmt->execute([$id_inscription]);
 
-    if ($stmt->rowCount() > 0) {
-        $message = 'Inscription de ' . htmlspecialchars($inscription['prenom'] . ' ' . $inscription['nom']) .
-            ' pour "' . htmlspecialchars($inscription['evenement_titre']) . '" validée avec succès.';
-        redirigerAvecMessage('liste.php', $message, 'success');
-    } else {
-        redirigerAvecMessage('liste.php', 'Erreur lors de la validation de l\'inscription.', 'danger');
-    }
+    // Redirection simple sans message
+    rediriger('liste.php');
 
 } catch (PDOException $e) {
-    redirigerAvecMessage('liste.php', 'Erreur base de données : ' . $e->getMessage(), 'danger');
+    rediriger('liste.php');
 }

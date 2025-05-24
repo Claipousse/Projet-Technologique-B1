@@ -9,7 +9,7 @@ if (!estConnecte() || !estAdmin()) {
 
 // Vérifier qu'un ID d'inscription a été fourni
 if (!isset($_GET['id']) || empty($_GET['id'])) {
-    redirigerAvecMessage('liste.php', 'ID d\'inscription manquant.', 'danger');
+    rediriger('liste.php');
 }
 
 $id_inscription = (int)$_GET['id'];
@@ -29,25 +29,20 @@ try {
     $inscription = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$inscription) {
-        redirigerAvecMessage('liste.php', 'Inscription introuvable.', 'danger');
+        rediriger('liste.php');
     }
 
     if ($inscription['status'] !== 'en attente') {
-        redirigerAvecMessage('liste.php', 'Cette inscription n\'est pas en attente.', 'warning');
+        rediriger('liste.php');
     }
 
     // Refuser l'inscription
     $stmt = $pdo->prepare("UPDATE inscription SET status = 'annulé' WHERE id_inscription = ?");
     $stmt->execute([$id_inscription]);
 
-    if ($stmt->rowCount() > 0) {
-        $message = 'Inscription de ' . htmlspecialchars($inscription['prenom'] . ' ' . $inscription['nom']) .
-            ' pour "' . htmlspecialchars($inscription['evenement_titre']) . '" refusée.';
-        redirigerAvecMessage('liste.php', $message, 'warning');
-    } else {
-        redirigerAvecMessage('liste.php', 'Erreur lors du refus de l\'inscription.', 'danger');
-    }
+    // Redirection simple sans message
+    rediriger('liste.php');
 
 } catch (PDOException $e) {
-    redirigerAvecMessage('liste.php', 'Erreur base de données : ' . $e->getMessage(), 'danger');
+    rediriger('liste.php');
 }
