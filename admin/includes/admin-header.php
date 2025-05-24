@@ -56,10 +56,13 @@ if (strpos($_SERVER['REQUEST_URI'], '/admin/jeux/') !== false ||
             </ul>
 
             <div class="navbar-nav">
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                <div class="nav-item dropdown admin-dropdown">
+                    <button class="nav-link btn-admin-dropdown"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
                         <i class="bi bi-person-circle"></i> Admin
-                    </a>
+                    </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="<?php echo $basePath; ?>../index.php">
                                 <i class="bi bi-arrow-left"></i> Retour au site
