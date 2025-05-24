@@ -202,33 +202,4 @@ include_once 'includes/header.php';
         </main>
     </div>
 
-    <!-- Modal pour les images (plus nécessaire mais gardé pour compatibilité) -->
-    <div id="imageModal" class="modal" onclick="fermerModal()">
-        <div class="modal-content">
-            <span class="close" onclick="fermerModal()">&times;</span>
-            <img id="modalImage" src="" alt="">
-            <div id="modalTitle"></div>
-        </div>
-    </div>
-
-    <script>
-        // Modal functions (gardées pour compatibilité mais plus nécessaires)
-        function ouvrirModal(src, title) {
-            document.getElementById('modalImage').src = src;
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('imageModal').style.display = 'block';
-        }
-
-        function fermerModal() {
-            document.getElementById('imageModal').style.display = 'none';
-        }
-
-        // Fermer le modal avec la touche Escape
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                fermerModal();
-            }
-        });
-    </script>
-
 <?php include_once 'includes/footer.php'; ?>
