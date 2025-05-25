@@ -65,15 +65,10 @@ include_once 'includes/header.php';
 
     <div class="page-content">
         <main class="jeu-detail-container">
-            <!-- Breadcrumb -->
-            <nav class="breadcrumb">
-                <a href="index.php">Accueil</a>
-                <span class="breadcrumb-separator">></span>
-                <a href="catalogue.php">Catalogue</a>
-                <span class="breadcrumb-separator">></span>
-                <span class="breadcrumb-current"><?= htmlspecialchars($jeu['nom']) ?></span>
-            </nav>
-
+            <!-- Bouton retour -->
+            <a href="catalogue.php" class="btn-retour">
+                <i class="fas fa-arrow-left"></i> Retour au catalogue
+            </a>
             <!-- Section principale du jeu -->
             <section class="jeu-hero">
                 <div class="jeu-hero-content">
@@ -171,7 +166,6 @@ include_once 'includes/header.php';
                                     <iframe
                                             src="https://www.youtube.com/embed/<?= $video_id ?>"
                                             title="<?= htmlspecialchars($video['titre']) ?>"
-                                            frameborder="0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                             allowfullscreen>
                                     </iframe>
@@ -233,6 +227,25 @@ include_once 'includes/header.php';
 
         .regles-content p {
             margin-bottom: 1rem;
+        }
+
+        .btn-retour {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .btn-retour:hover {
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
         }
 
         /* Responsive pour la section règles */

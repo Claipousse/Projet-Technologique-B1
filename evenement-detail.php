@@ -143,37 +143,6 @@ include_once 'includes/header.php';
             padding: 2rem;
         }
 
-        .breadcrumb {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            font-size: 0.9rem;
-            border: 1px solid #e6ddd0;
-        }
-
-        .breadcrumb a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .breadcrumb a:hover {
-            color: var(--secondary-color);
-            text-decoration: underline;
-        }
-
-        .breadcrumb-separator {
-            margin: 0 0.5rem;
-            color: #999;
-        }
-
-        .breadcrumb-current {
-            color: var(--dark-text);
-            font-weight: 600;
-        }
-
         .evenement-hero {
             background-color: white;
             border-radius: 12px;
@@ -712,15 +681,6 @@ include_once 'includes/header.php';
 
     <main class="evenement-detail">
         <div class="evenement-container">
-            <!-- Breadcrumb -->
-            <nav class="breadcrumb">
-                <a href="index.php">Accueil</a>
-                <span class="breadcrumb-separator">></span>
-                <a href="evenements.php">Événements</a>
-                <span class="breadcrumb-separator">></span>
-                <span class="breadcrumb-current"><?= htmlspecialchars($evenement['titre']) ?></span>
-            </nav>
-
             <!-- Bouton retour -->
             <a href="evenements.php" class="btn-retour">
                 <i class="fas fa-arrow-left"></i> Retour aux événements
