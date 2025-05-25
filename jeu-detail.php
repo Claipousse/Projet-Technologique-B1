@@ -165,21 +165,25 @@ include_once 'includes/header.php';
                                 <div class="video-wrapper">
                                     <iframe
                                             src="https://www.youtube.com/embed/<?= $video_id ?>"
-                                            title="<?= htmlspecialchars($video['titre']) ?>"
+                                            title="<?= htmlspecialchars($video['titre'] ?: 'Vidéo du jeu') ?>"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                             allowfullscreen>
                                     </iframe>
                                 </div>
-                                <div class="video-info">
-                                    <h4><?= htmlspecialchars($video['titre']) ?></h4>
-                                </div>
+                                <?php if (!empty($video['titre'])): ?>
+                                    <div class="video-info">
+                                        <h4><?= htmlspecialchars($video['titre']) ?></h4>
+                                    </div>
+                                <?php endif; ?>
                             <?php else: ?>
                                 <div class="video-error">
                                     <div class="video-no-thumb">
                                         <i class="fas fa-video"></i>
                                     </div>
                                     <div class="video-info">
-                                        <h4><?= htmlspecialchars($video['titre']) ?></h4>
+                                        <?php if (!empty($video['titre'])): ?>
+                                            <h4><?= htmlspecialchars($video['titre']) ?></h4>
+                                        <?php endif; ?>
                                         <p>Lien YouTube invalide</p>
                                         <a href="<?= htmlspecialchars($video['url']) ?>"
                                            target="_blank"

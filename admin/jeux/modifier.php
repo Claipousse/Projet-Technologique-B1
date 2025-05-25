@@ -154,8 +154,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            // Traitement de la nouvelle vidéo
-            if (!empty($_POST['video_url']) && !empty($_POST['titre_video'])) {
+            // Traitement de la nouvelle vidéo - Titre maintenant optionnel
+            if (!empty($_POST['video_url'])) {
                 // Supprimer l'ancienne vidéo si elle existe
                 if ($video_existante) {
                     $stmt = $conn->prepare('DELETE FROM ressource WHERE id_ressource = ?');
@@ -163,9 +163,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 $url = $_POST['video_url'];
-                $titre = $_POST['titre_video'];
+                // Si pas de titre fourni, utiliser un titre par défaut
+                $titre = !empty($_POST['titre_video']) ? $_POST['titre_video'] : 'Vidéo de ' . $nom;
                 $stmt = $conn->prepare("INSERT INTO ressource (id_jeux, type_ressource, url, titre) VALUES (?, 'video', ?, ?)");
                 $stmt->execute([$id_jeu, $url, $titre]);
+            } elseif (empty($_POST['video_url']) && empty($_POST['titre_video']) && $video_existante) {
+                // Si les champs vidéo sont vides et qu'il y avait une vidéo, la supprimer
+                $stmt = $conn->prepare('DELETE FROM ressource WHERE id_ressource = ?');
+                $stmt->execute([$video_existante['id_ressource']]);
             }
 
             $conn->commit();
@@ -361,14 +366,15 @@ include_once '../includes/admin-header.php';
                                value="<?php echo $video_existante ? htmlspecialchars($video_existante['url']) : ''; ?>"
                                placeholder="https://www.youtube.com/watch?v=...">
                         <?php if ($video_existante): ?>
-                            <div class="form-text">Saisissez une nouvelle URL pour remplacer l'actuelle</div>
+                            <div class="form-text">Saisissez une nouvelle URL pour remplacer l'actuelle, ou laissez vide pour supprimer</div>
                         <?php endif; ?>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Titre de la vidéo</label>
+                        <label class="form-label">Titre de la vidéo (optionnel)</label>
                         <input type="text" class="form-control" name="titre_video"
                                value="<?php echo $video_existante ? htmlspecialchars($video_existante['titre']) : ''; ?>"
                                placeholder="Ex: Règles expliquées, Partie commentée...">
+                        <div class="form-text">Si aucun titre n'est fourni, un titre par défaut sera généré automatiquement.</div>
                     </div>
                 </div>
             </div>

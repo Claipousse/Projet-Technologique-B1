@@ -212,9 +212,11 @@ function updatePreferencesState() {
     checkboxes.forEach(checkbox => {
         const item = checkbox.closest('.preference-item');
         if (!checkbox.checked && selectedCount >= 3) {
+            item.classList.add('disabled');
             item.style.opacity = '0.5';
             item.style.pointerEvents = 'none';
         } else {
+            item.classList.remove('disabled');
             item.style.opacity = '1';
             item.style.pointerEvents = 'auto';
         }
@@ -224,7 +226,31 @@ function updatePreferencesState() {
 // Initialisation spécifique pour evenement-detail.php
 document.addEventListener('DOMContentLoaded', function() {
 
-    // Empêcher la propagation du clic quand on clique directement sur la checkbox (evenement-detail.php)
+    // Rendre toute la zone de préférence cliquable (amélioration principale)
+    document.querySelectorAll('.preference-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            // Ne pas déclencher si on clique directement sur la checkbox (éviter le double toggle)
+            if (e.target.type === 'checkbox') {
+                return;
+            }
+
+            // Ne pas déclencher si l'élément est désactivé
+            if (this.classList.contains('disabled')) {
+                return;
+            }
+
+            const checkbox = this.querySelector('.preference-checkbox');
+            if (checkbox) {
+                const jeuId = checkbox.value;
+                togglePreference(jeuId);
+            }
+        });
+
+        // Ajouter un style de cursor pointer pour indiquer que c'est cliquable
+        item.style.cursor = 'pointer';
+    });
+
+    // Empêcher la propagation du clic quand on clique directement sur la checkbox
     document.querySelectorAll('.preference-checkbox').forEach(checkbox => {
         checkbox.addEventListener('click', function(e) {
             e.stopPropagation();

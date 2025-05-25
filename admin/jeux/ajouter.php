@@ -84,10 +84,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
-            // Traitement de la vidéo (une seule)
-            if (!empty($_POST['video_url']) && !empty($_POST['titre_video'])) {
+            // Traitement de la vidéo (une seule) - Titre maintenant optionnel
+            if (!empty($_POST['video_url'])) {
                 $url = $_POST['video_url'];
-                $titre = $_POST['titre_video'];
+                // Si pas de titre fourni, utiliser un titre par défaut
+                $titre = !empty($_POST['titre_video']) ? $_POST['titre_video'] : 'Vidéo de ' . $nom;
                 $stmt = $pdo->prepare("INSERT INTO ressource (id_jeux, type_ressource, url, titre) VALUES (?, 'video', ?, ?)");
                 $stmt->execute([$id_jeu, $url, $titre]);
             }
@@ -216,8 +217,9 @@ include_once '../includes/admin-header.php';
                         <input type="url" class="form-control" name="video_url" placeholder="https://www.youtube.com/watch?v=...">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Titre de la vidéo</label>
+                        <label class="form-label">Titre de la vidéo (optionnel)</label>
                         <input type="text" class="form-control" name="titre_video" placeholder="Ex: Règles expliquées, Partie commentée...">
+                        <div class="form-text">Si aucun titre n'est fourni, un titre par défaut sera généré automatiquement.</div>
                     </div>
                 </div>
             </div>

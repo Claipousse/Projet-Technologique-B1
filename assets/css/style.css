@@ -1429,40 +1429,69 @@ footer {
   padding: 1rem;
   transition: all 0.3s ease;
   cursor: pointer;
+  position: relative;
 }
 
 .preference-item:hover {
   border-color: var(--primary-color);
   box-shadow: 0 2px 5px rgba(139, 69, 19, 0.1);
+  transform: translateY(-1px);
 }
 
 .preference-item.selected {
   border-color: var(--primary-color);
   background-color: rgba(139, 69, 19, 0.05);
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.15);
 }
 
 .preference-checkbox {
   margin-right: 0.5rem;
+  cursor: pointer;
 }
 
 .preference-label {
   cursor: pointer;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin: 0;
   font-weight: normal;
+  width: 100%;
 }
 
 .preference-nom {
   font-weight: 600;
   color: var(--primary-color);
   margin-bottom: 0.3rem;
+  display: block;
 }
 
 .preference-description {
   font-size: 0.85rem;
   color: #666;
   line-height: 1.3;
+  display: block;
+}
+
+.preference-label > div {
+  flex: 1;
+}
+
+/* Effet visuel quand désactivé */
+.preference-item.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Animation lors de la sélection */
+.preference-item.selected::before {
+  content: '✓';
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 1.2rem;
 }
 
 .preferences-counter {
