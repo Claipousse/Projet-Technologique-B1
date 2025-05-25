@@ -1,12 +1,22 @@
+/**
+ * Admin.js - Script JavaScript simplifié pour l'administration Pistache
+ */
+
 document.addEventListener('DOMContentLoaded', function() {
 
-    //Met à jour automatiquement l'affichage de la date de fin selon la durée sélectionnée
+    // Configuration simple
+    const isDevMode = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+    /**
+     * Gestionnaire des dates d'événements
+     * Met à jour automatiquement l'affichage de la date de fin selon la durée sélectionnée
+     */
     function initEventDateManager() {
         const dateDebut = document.getElementById('date_debut');
         const dureeType = document.getElementById('duree_type');
         const dateFinInfo = document.getElementById('date_fin_info');
 
-        // Vérifier que les éléments existent avant de continuer
+        // Vérifier que les éléments existent
         if (!dateDebut || !dureeType || !dateFinInfo) {
             return;
         }
@@ -15,79 +25,87 @@ document.addEventListener('DOMContentLoaded', function() {
             const dateDebutValue = dateDebut.value;
             const dureeValue = dureeType.value;
 
-            if (dateDebutValue && dureeValue) {
-                const date = new Date(dateDebutValue);
-                let dateFin = new Date(date);
-
-                // Calculer la date de fin selon la durée
-                if (dureeValue === 'weekend') {
-                    dateFin.setDate(date.getDate() + 1);
-                }
-
-                // Options de formatage pour l'affichage en français
-                const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                const dateDebutFormatted = date.toLocaleDateString('fr-FR', options);
-                const dateFinFormatted = dateFin.toLocaleDateString('fr-FR', options);
-
-                // Afficher le texte selon la durée
-                if (dureeValue === 'demi-journée' || dureeValue === 'journée') {
-                    dateFinInfo.textContent = `Date de fin automatique : ${dateDebutFormatted}`;
-                } else {
-                    dateFinInfo.textContent = `Date de fin automatique : ${dateFinFormatted}`;
-                }
-                dateFinInfo.style.color = '#28a745';
-            } else {
+            if (!dateDebutValue || !dureeValue) {
                 dateFinInfo.textContent = '';
+                return;
             }
+
+            const date = new Date(dateDebutValue);
+            let dateFin = new Date(date);
+
+            // Calculer la date de fin selon la durée
+            if (dureeValue === 'weekend') {
+                dateFin.setDate(date.getDate() + 1);
+            }
+
+            // Formater les dates en français
+            const optionsFr = { day: 'numeric', month: 'long', year: 'numeric' };
+            const dateDebutFormatted = date.toLocaleDateString('fr-FR', optionsFr);
+            const dateFinFormatted = dateFin.toLocaleDateString('fr-FR', optionsFr);
+
+            // Afficher le texte selon la durée
+            const message = dureeValue === 'weekend'
+                ? `Date de fin automatique : ${dateFinFormatted}`
+                : `Date de fin automatique : ${dateDebutFormatted}`;
+
+            dateFinInfo.textContent = message;
+            dateFinInfo.style.color = '#28a745';
         }
 
         // Attacher les événements
         dateDebut.addEventListener('change', updateDateFinInfo);
         dureeType.addEventListener('change', updateDateFinInfo);
 
-        // Initialiser l'affichage au chargement (utile pour la modification)
+        // Initialiser l'affichage au chargement
         updateDateFinInfo();
     }
 
-    // Gère la prévisualisation d'images pour les formulaires d'upload
+    /**
+     * Gestionnaire de prévisualisation d'images
+     */
     function initImagePreview() {
         const imageInput = document.getElementById('image');
         const preview = document.getElementById('preview');
 
-        // Vérifier que les éléments existent avant de continuer
         if (!imageInput || !preview) {
             return;
         }
 
         imageInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
-            
-            if (file) {
-                // Vérifier que c'est bien une image
-                if (!file.type.startsWith('image/')) {
-                    preview.style.display = 'none';
-                    alert('Veuillez sélectionner un fichier image valide.');
-                    return;
-                }
 
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            } else {
+            if (!file) {
                 preview.style.display = 'none';
+                return;
             }
+
+            // Vérifier que c'est une image
+            if (!file.type.startsWith('image/')) {
+                preview.style.display = 'none';
+                alert('Veuillez sélectionner un fichier image valide.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                preview.style.maxWidth = '200px';
+                preview.style.height = 'auto';
+                preview.style.borderRadius = '4px';
+            };
+            reader.readAsDataURL(file);
         });
     }
 
-    //Ajoute des confirmations personnalisés pour les suppressions
+    /**
+     * Gestionnaire des confirmations de suppression
+     */
     function initDeleteConfirmations() {
         const deleteLinks = document.querySelectorAll('a[href*="supprimer.php"]');
-        
+
         deleteLinks.forEach(function(link) {
-            // Récupérer le type d'élément à supprimer depuis l'URL ou le contexte
+            // Déterminer le type d'élément à supprimer
             let itemType = 'cet élément';
             if (link.href.includes('/jeux/')) {
                 itemType = 'ce jeu';
@@ -106,12 +124,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    //Masque automatiquement les alertes après 5 secondes
+    /**
+     * Masque automatiquement les alertes de succès après 5 secondes
+     */
     function initAutoHideAlerts() {
         const successAlerts = document.querySelectorAll('.alert-success');
-        
+
         successAlerts.forEach(function(alert) {
-            // Masquer automatiquement après 5 secondes
             setTimeout(function() {
                 if (alert.parentNode) {
                     alert.style.transition = 'opacity 0.5s';
@@ -122,20 +141,22 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }, 500);
                 }
-            }, 5000); //5000ms = 5sec
+            }, 5000); // 5 secondes
         });
     }
 
-    //Amélioration UX des formulaires
-    function initFormEnhancements() {
-        // Sauvegarde automatique des données du formulaire en cas de rafraîchissement accidentel
+    /**
+     * Sauvegarde automatique des formulaires pour éviter la perte de données
+     */
+    function initFormBackup() {
         const forms = document.querySelectorAll('form[method="POST"], form[method="post"]');
-        
+
         forms.forEach(function(form) {
-            const formId = form.action || window.location.pathname;
-            
+            const formId = btoa(form.action || window.location.pathname).slice(0, 16);
+            const backupKey = `form_backup_${formId}`;
+
             // Restaurer les données sauvegardées
-            const savedData = localStorage.getItem('form_backup_' + formId);
+            const savedData = localStorage.getItem(backupKey);
             if (savedData) {
                 try {
                     const data = JSON.parse(savedData);
@@ -145,19 +166,18 @@ document.addEventListener('DOMContentLoaded', function() {
                             input.value = data[name];
                         }
                     });
-                    // Supprimer la sauvegarde après restauration
-                    localStorage.removeItem('form_backup_' + formId);
+                    localStorage.removeItem(backupKey);
                 } catch (e) {
                     // Ignorer les erreurs de parsing
                 }
             }
 
-            // Sauvegarder les données avant soumission
+            // Nettoyer la sauvegarde à la soumission
             form.addEventListener('submit', function() {
-                localStorage.removeItem('form_backup_' + formId);
+                localStorage.removeItem(backupKey);
             });
 
-            // Sauvegarder périodiquement les données
+            // Sauvegarder périodiquement
             let saveTimeout;
             form.addEventListener('input', function() {
                 clearTimeout(saveTimeout);
@@ -165,12 +185,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     const formData = new FormData(form);
                     const data = {};
                     for (let [name, value] of formData.entries()) {
-                        if (form.querySelector(`[name="${name}"]`).type !== 'password' && 
-                            form.querySelector(`[name="${name}"]`).type !== 'file') {
+                        const field = form.querySelector(`[name="${name}"]`);
+                        if (field && field.type !== 'password' && field.type !== 'file') {
                             data[name] = value;
                         }
                     }
-                    localStorage.setItem('form_backup_' + formId, JSON.stringify(data));
+                    try {
+                        localStorage.setItem(backupKey, JSON.stringify(data));
+                    } catch (e) {
+                        // Ignorer les erreurs de stockage
+                    }
                 }, 1000);
             });
         });
@@ -181,17 +205,21 @@ document.addEventListener('DOMContentLoaded', function() {
     initImagePreview();
     initDeleteConfirmations();
     initAutoHideAlerts();
-    initFormEnhancements();
+    initFormBackup();
 
-    // Afficher un message de debug en mode développement
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        console.log('Admin.js chargé avec succès - Modules initialisés');
+    // Message de debug en mode développement
+    if (isDevMode) {
+        console.log('Admin.js chargé avec succès');
     }
 });
 
-//Les fonctions en dessous sont utilitaires
-//Utilitaire pour formater les dates en français
+/**
+ * Utilitaires globaux simplifiés
+ */
 window.AdminUtils = {
+    /**
+     * Formate une date en français
+     */
     formatDate: function(dateString) {
         const date = new Date(dateString);
         return date.toLocaleDateString('fr-FR', {
@@ -201,27 +229,42 @@ window.AdminUtils = {
         });
     },
 
-    //Utilitaire pour valider les emails
+    /**
+     * Valide un email
+     */
     isValidEmail: function(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     },
 
-    //Utilitaire pour afficher des notifications toast
+    /**
+     * Affiche une notification simple
+     */
     showToast: function(message, type = 'info') {
-        // Créer un toast Bootstrap ou une notification simple
+        // Supprimer les anciens toasts
+        const existingToasts = document.querySelectorAll('.admin-toast');
+        existingToasts.forEach(toast => toast.remove());
+
         const toast = document.createElement('div');
-        toast.className = `alert alert-${type} position-fixed`;
-        toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        toast.className = `alert alert-${type} admin-toast position-fixed`;
+        toast.style.cssText = `
+            top: 20px; 
+            right: 20px; 
+            z-index: 9999; 
+            min-width: 300px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 8px;
+        `;
+
         toast.innerHTML = `
             ${message}
             <button type="button" class="btn-close ms-2" onclick="this.parentElement.remove()"></button>
         `;
-        
+
         document.body.appendChild(toast);
-        
+
         // Supprimer automatiquement après 5 secondes
-        setTimeout(function() {
+        setTimeout(() => {
             if (toast.parentNode) {
                 toast.remove();
             }
