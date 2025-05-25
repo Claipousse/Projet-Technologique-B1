@@ -155,7 +155,7 @@ include_once 'includes/header.php';
                             <div class="game-info">
                                 <div class="game-title"><?= htmlspecialchars($jeu['nom']) ?></div>
                                 <p class="game-description">
-                                    <?= htmlspecialchars(substr($jeu['description_courte'], 0, 100)) ?>...
+                                    <?= htmlspecialchars(substr($jeu['description_courte'], 0, 100)) ?>
                                 </p>
                                 <div class="game-meta">
                                     <span class="game-tag"><?= htmlspecialchars($jeu['nom_genre']) ?></span>

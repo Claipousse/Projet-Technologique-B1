@@ -111,20 +111,22 @@ include_once 'includes/header.php';
                         <div class="jeu-description-courte">
                             <h3>Description</h3>
                             <p><?= htmlspecialchars($jeu['description_courte']) ?></p>
-
-                            <!-- Description détaillée intégrée -->
-                            <?php if (!empty($jeu['description_longue'])): ?>
-                                <div class="jeu-description-longue-inline">
-                                    <h4>Règles du jeu</h4>
-                                    <div class="description-content">
-                                        <?= nl2br(htmlspecialchars($jeu['description_longue'])) ?>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
             </section>
+
+            <!-- Section Règles du jeu -->
+            <?php if (!empty($jeu['description_longue'])): ?>
+                <section class="jeu-regles">
+                    <div class="content-section">
+                        <h2>Règles du jeu</h2>
+                        <div class="regles-content">
+                            <?= nl2br(htmlspecialchars($jeu['description_longue'])) ?>
+                        </div>
+                    </div>
+                </section>
+            <?php endif; ?>
 
             <!-- Section Document -->
             <?php if ($document): ?>
@@ -201,5 +203,62 @@ include_once 'includes/header.php';
 
         </main>
     </div>
+
+    <style>
+        /* Styles spécifiques pour la section des règles */
+        .jeu-regles .content-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e6ddd0;
+        }
+
+        .jeu-regles .content-section h2 {
+            font-family: "Playfair Display", serif;
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .regles-content {
+            line-height: 1.8;
+            font-size: 1.05rem;
+            color: var(--dark-text);
+            text-align: justify;
+        }
+
+        .regles-content p {
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive pour la section règles */
+        @media (max-width: 768px) {
+            .jeu-regles .content-section {
+                padding: 1.5rem;
+            }
+
+            .jeu-regles .content-section h2 {
+                font-size: 1.6rem;
+            }
+
+            .regles-content {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .jeu-regles .content-section {
+                padding: 1.2rem;
+            }
+
+            .jeu-regles .content-section h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
 
 <?php include_once 'includes/footer.php'; ?>
