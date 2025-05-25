@@ -23,7 +23,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         $requete = $bdd->prepare("INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, role) VALUES (?, ?, ?, ?, ?)");
         $requete->execute([$nom, $prenom, $email, $mot_de_passe, $role]);
-        header("Location: index.php?inscription=ok");
+
+        // Redirection vers confirmation avec l’e-mail en GET (ajout unique)
+        header("Location: confirmation_inscription.php?email=" . urlencode($email));
         exit();
     }
 }
@@ -31,46 +33,46 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <?php include("includes/header.php"); ?>
 
-    <div class="page-content">
-        <main>
-            <div class="auth-container">
-                <h1>Créer un compte</h1>
+<div class="page-content">
+    <main>
+        <div class="auth-container">
+            <h1>Créer un compte</h1>
 
-                <?php if ($erreur): ?>
-                    <div class="alert alert-error">
-                        <?php echo $erreur; ?>
-                    </div>
-                <?php endif; ?>
+            <?php if ($erreur): ?>
+                <div class="alert alert-error">
+                    <?php echo $erreur; ?>
+                </div>
+            <?php endif; ?>
 
-                <form method="post" action="">
-                    <div class="form-group">
-                        <label for="nom" class="form-label">Nom</label>
-                        <input type="text" id="nom" name="nom" class="form-control" required>
-                    </div>
+            <form method="post" action="">
+                <div class="form-group">
+                    <label for="nom" class="form-label">Nom</label>
+                    <input type="text" id="nom" name="nom" class="form-control" required>
+                </div>
 
-                    <div class="form-group">
-                        <label for="prenom" class="form-label">Prénom</label>
-                        <input type="text" id="prenom" name="prenom" class="form-control" required>
-                    </div>
+                <div class="form-group">
+                    <label for="prenom" class="form-label">Prénom</label>
+                    <input type="text" id="prenom" name="prenom" class="form-control" required>
+                </div>
 
-                    <div class="form-group">
-                        <label for="email" class="form-label">Adresse email</label>
-                        <input type="email" id="email" name="email" class="form-control" required>
-                    </div>
+                <div class="form-group">
+                    <label for="email" class="form-label">Adresse email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
 
-                    <div class="form-group">
-                        <label for="mot_de_passe" class="form-label">Mot de passe</label>
-                        <input type="password" id="mot_de_passe" name="mot_de_passe" class="form-control" required>
-                    </div>
+                <div class="form-group">
+                    <label for="mot_de_passe" class="form-label">Mot de passe</label>
+                    <input type="password" id="mot_de_passe" name="mot_de_passe" class="form-control" required>
+                </div>
 
-                    <button type="submit" class="btn">Créer un compte</button>
+                <button type="submit" class="btn">Créer un compte</button>
 
-                    <p>
-                        Déjà un compte ? <a href="connexion.php">Connecte-toi ici</a>
-                    </p>
-                </form>
-            </div>
-        </main>
-    </div>
+                <p>
+                    Déjà un compte ? <a href="connexion.php">Connecte-toi ici</a>
+                </p>
+            </form>
+        </div>
+    </main>
+</div>
 
 <?php include("includes/footer.php"); ?>
