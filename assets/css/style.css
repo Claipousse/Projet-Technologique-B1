@@ -1,3 +1,7 @@
+/* ===================================
+   CSS COMMUN À TOUTES LES PAGES
+   =================================== */
+
 /* Variables */
 :root {
   --primary-color: #8b4513;
@@ -143,6 +147,138 @@ main {
   min-height: calc(100vh - 140px);
 }
 
+/* Buttons */
+.btn,
+.inscription-btn,
+.btn-submit,
+.btn-detail {
+  display: inline-block;
+  padding: 0.8rem 1.8rem;
+  background-color: var(--primary-color);
+  color: var(--light-text);
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  border: 1px solid var(--light-text);
+  font-family: "Playfair Display", serif;
+}
+
+.btn:hover,
+.inscription-btn:hover,
+.btn-submit:hover,
+.btn-detail:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  color: var(--light-text);
+  text-decoration: none;
+}
+
+.btn-detail {
+  width: 100%;
+  max-width: 200px;
+  padding: 0.7rem 1rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  min-height: 44px;
+}
+
+.btn-detail i {
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* Page Title */
+.page-title {
+  font-family: "Playfair Display", serif;
+  color: var(--primary-color);
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.page-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+/* Alerts */
+.alert {
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* Forms */
+.form-control {
+  padding: 0.5rem;
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  background-color: var(--light-bg);
+  color: var(--dark-text);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(210, 180, 140, 0.3);
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--secondary-color);
+}
+
+/* Footer */
+footer {
+  background-color: var(--secondary-color);
+  color: var(--light-text);
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border-top: 3px solid var(--primary-color);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+/* ===================================
+   CSS SPÉCIFIQUE À INDEX.PHP
+   =================================== */
+
 /* Sections */
 .full-section,
 .half-section {
@@ -196,8 +332,7 @@ main {
   color: var(--dark-text);
 }
 
-.section-heading::after,
-.page-title::after {
+.section-heading::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -218,69 +353,25 @@ main {
   line-height: 1.6;
 }
 
-/* Buttons */
-.btn,
-.inscription-btn,
-.btn-submit,
-.btn-detail {
-  display: inline-block;
-  padding: 0.8rem 1.8rem;
-  background-color: var(--primary-color);
+/* Scroll Arrow */
+.scroll-arrow {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   color: var(--light-text);
-  text-decoration: none;
-  border-radius: 4px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  font-size: 2rem;
+  animation: bounce 2s infinite;
   cursor: pointer;
-  border: 1px solid var(--light-text);
-  font-family: "Playfair Display", serif;
 }
 
-.btn:hover,
-.inscription-btn:hover,
-.btn-submit:hover,
-.btn-detail:hover {
-  background-color: var(--secondary-color);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-  color: var(--light-text);
-  text-decoration: none;
-}
-
-.inscription-btn {
-  display: block;
-  width: fit-content;
-  margin: 0 auto 2rem;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  border: none;
-  color: white;
-}
-
-.btn-detail {
-  width: 100%;
-  max-width: 200px;
-  padding: 0.7rem 1rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  text-align: center;
-  min-height: 44px;
-}
-
-.btn-detail i {
-  font-size: 0.9rem;
-  flex-shrink: 0;
+.scroll-arrow a {
+  color: var(--light-text) !important;
+  text-decoration: none !important;
 }
 
 /* Containers */
-.content-container,
-.catalogue-container {
+.content-container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 3rem 2rem;
@@ -288,11 +379,6 @@ main {
   border-radius: 4px;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
   border: 1px solid #d2b48c;
-}
-
-.catalogue-container {
-  box-shadow: none;
-  border: none;
 }
 
 .section-header {
@@ -329,17 +415,11 @@ main {
 }
 
 /* Grids */
-.content-grid,
-.games-grid {
+.content-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1.5rem;
   margin-bottom: 3rem;
-}
-
-.games-grid {
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
 }
 
 /* Cards */
@@ -386,10 +466,6 @@ main {
   object-fit: cover;
 }
 
-.games-grid .game-image {
-  height: 200px;
-}
-
 .game-info {
   padding: 1.5rem;
   flex-grow: 1;
@@ -412,20 +488,12 @@ main {
   font-size: 1.3rem;
 }
 
-.games-grid .game-title {
-  font-size: 1.3rem;
-}
-
 .game-description {
   color: #666;
   margin-bottom: 1rem;
   line-height: 1.4;
   font-size: 0.95rem;
   flex-grow: 1;
-}
-
-.games-grid .game-description {
-  margin-bottom: 1.5rem;
 }
 
 .game-meta {
@@ -438,19 +506,11 @@ main {
 }
 
 .game-year,
-.game-type,
-.game-tag,
-.tag,
-.places {
+.game-type {
   padding: 0.3rem 0.6rem;
   border-radius: 3px;
   font-size: 0.8rem;
   font-weight: bold;
-}
-
-.game-year,
-.game-type,
-.game-tag {
   background-color: var(--accent-color);
   color: var(--dark-text);
   white-space: nowrap;
@@ -462,59 +522,6 @@ main {
   border-top: 1px solid #e6ddd0;
   display: flex;
   justify-content: center;
-}
-
-/* Events */
-.event {
-  background-color: white;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease;
-  border: 1px solid #e6ddd0;
-}
-
-.event:hover {
-  transform: scale(1.01);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-}
-
-.event h2 {
-  margin-bottom: 1rem;
-  color: var(--secondary-color);
-  font-size: 1.5rem;
-  font-family: "Playfair Display", serif;
-}
-
-.tags {
-  margin-bottom: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.tag {
-  background-color: #f0e6d2;
-  color: var(--secondary-color);
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.places {
-  background-color: var(--primary-color);
-  color: white;
-  border-radius: 20px;
-  padding: 0.4rem 1rem;
-}
-
-.event p {
-  line-height: 1.6;
-  margin: 0;
-  font-size: 1rem;
-  color: var(--dark-text);
 }
 
 .event-date-new {
@@ -555,9 +562,21 @@ main {
   background-color: #dc3545;
 }
 
-/* Catalogue Hero */
+/* ===================================
+   CSS SPÉCIFIQUE À CATALOGUE.PHP
+   =================================== */
+
+.catalogue-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background-color: var(--light-bg);
+  box-shadow: none;
+  border: none;
+}
+
 .catalogue-hero {
-  background: linear-gradient(rgba(61, 28, 14, 0.8), rgba(61, 28, 14, 0.9)), url("/api/placeholder/1200/400") center/cover no-repeat;
+  background: linear-gradient(rgba(61, 28, 14, 0.8), rgba(61, 28, 14, 0.9)), url("../images/accueil.png") center/cover no-repeat;
   color: var(--light-text);
   padding: 8rem 2rem 4rem;
   text-align: center;
@@ -576,6 +595,25 @@ main {
   max-width: 800px;
   margin: 0 auto 2rem;
   line-height: 1.6;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.games-grid .game-image {
+  height: 200px;
+}
+
+.games-grid .game-title {
+  font-size: 1.3rem;
+}
+
+.games-grid .game-description {
+  margin-bottom: 1.5rem;
 }
 
 /* Filters */
@@ -608,8 +646,7 @@ main {
 }
 
 .filter-select,
-.search-input,
-.form-control {
+.search-input {
   padding: 0.5rem;
   border: 1px solid var(--accent-color);
   border-radius: 4px;
@@ -620,7 +657,6 @@ main {
   transition: border-color 0.3s;
 }
 
-.form-control:focus,
 .filter-select:focus,
 .search-input:focus {
   outline: none;
@@ -700,135 +736,835 @@ main {
   opacity: 0.5;
 }
 
-/* Page Title */
-.page-title {
+/* ===================================
+   CSS SPÉCIFIQUE À EVENEMENTS.PHP
+   =================================== */
+
+.evenements-page {
+  padding-top: 100px;
+  background-color: var(--light-bg);
+}
+
+.evenements-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.evenements-title {
   font-family: "Playfair Display", serif;
   color: var(--primary-color);
   font-size: 2.5rem;
-  margin-bottom: 1.5rem;
   text-align: center;
+  margin-bottom: 2rem;
   position: relative;
   padding-bottom: 1rem;
 }
 
-/* Alerts */
-.alert {
-  padding: 1rem;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-  font-weight: bold;
-}
-
-.alert-success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.alert-error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-/* Scroll Arrow */
-.scroll-arrow {
+.evenements-title::after {
+  content: "";
   position: absolute;
-  bottom: 2rem;
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+.filtres-evenements {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  border: 1px solid #e6ddd0;
+}
+
+.filtres-ligne {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: nowrap;
+}
+
+.filtre-groupe {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.filtre-label {
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 0.9rem;
+}
+
+.filtre-select, .recherche-input {
+  padding: 0.5rem;
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  background-color: var(--light-bg);
+  color: var(--dark-text);
+  font-size: 1rem;
+}
+
+.filtre-select {
+  min-width: 150px;
+}
+
+.recherche-box {
+  flex-grow: 1;
+  position: relative;
+  min-width: 250px;
+}
+
+.recherche-input {
+  width: 100%;
+  padding-left: 2rem;
+}
+
+.recherche-icon {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary-color);
+}
+
+.btn-filtrer {
+  background-color: var(--primary-color);
   color: var(--light-text);
-  font-size: 2rem;
-  animation: bounce 2s infinite;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn-filtrer:hover {
+  background-color: var(--secondary-color);
+}
+
+.jeux-dropdown {
+  position: relative;
+  min-width: 200px;
+}
+
+.jeux-dropdown-btn {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  background-color: var(--light-bg);
+  color: var(--dark-text);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+}
+
+.jeux-dropdown-content {
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  max-height: 250px;
+  overflow-y: auto;
+  display: none;
+}
+
+.jeux-dropdown-content.show {
+  display: block !important;
+}
+
+.jeux-option {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.jeux-option:hover {
+  background-color: #f8f9fa;
+}
+
+.jeux-checkbox {
+  margin-right: 0.8rem;
   cursor: pointer;
 }
 
-.scroll-arrow a {
-  color: var(--light-text) !important;
-  text-decoration: none !important;
-}
-
-/* Footer */
-footer {
-  background-color: var(--secondary-color);
-  color: var(--light-text);
-  text-align: center;
-  padding: 1.5rem;
-  margin-top: 2rem;
-  border-top: 3px solid var(--primary-color);
-  font-family: "Playfair Display", Georgia, serif;
+.jeux-label {
+  flex-grow: 1;
   font-size: 0.9rem;
-  letter-spacing: 1px;
+  cursor: pointer;
 }
 
-/* Events Page */
-.evenements-page main {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 1rem;
-}
-
-.evenements-page main h1 {
-  text-align: center;
-  color: var(--primary-color);
-  margin-bottom: 2rem;
-  font-size: 2.5rem;
-  font-family: "Playfair Display", serif;
-}
-
-/* Auth */
-.auth-container {
-  max-width: 500px;
-  margin: 0 auto;
+.evenement-carte {
   background-color: white;
-  padding: 2rem;
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #e6ddd0;
+}
+
+.evenement-carte:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.evenement-carte.termine {
+  opacity: 0.7;
+  border-color: #ccc;
+  background-color: #f8f9fa;
+}
+
+.evenement-carte.termine:hover {
+  transform: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.evenement-date {
+  background: linear-gradient(135deg, var(--primary-color), #A0522D);
+  color: white;
+  padding: 12px 16px;
   border-radius: 8px;
-  border: 1px solid var(--accent-color);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.auth-container h1 {
+  font-weight: 600;
+  font-size: 0.95em;
   text-align: center;
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  color: var(--primary-color);
+  min-width: 130px;
+  flex-shrink: 0;
 }
 
-.auth-container .form-group label {
+.evenement-carte.termine .evenement-date {
+  background: linear-gradient(135deg, #6c757d, #495057);
+}
+
+.evenement-infos {
+  flex-grow: 1;
+  padding: 0.5rem 0;
+}
+
+.evenement-titre {
+  font-size: 1.4rem;
   font-weight: bold;
-  display: block;
-  margin-top: 1rem;
+  margin-bottom: 0.8rem;
+  font-family: "Playfair Display", serif;
+  color: var(--primary-color);
+  line-height: 1.3;
 }
 
-.auth-container .form-control {
-  width: 100%;
-  padding: 0.8rem;
-  margin-top: 0.3rem;
-  background-color: var(--light-bg);
+.evenement-carte.termine .evenement-titre {
+  color: #6c757d;
 }
 
-.auth-container .btn {
-  margin-top: 1.5rem;
-  width: 100%;
-  padding: 0.8rem;
+.evenement-description {
+  color: #666;
+  margin-bottom: 1rem;
+  line-height: 1.5;
 }
 
-.auth-container p {
+.evenement-jeux {
+  margin-bottom: 0.8rem;
+}
+
+.evenement-jeux-label {
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.evenement-capacite {
+  margin-top: 0.5rem;
+}
+
+.barre-progression {
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 5px 0;
+}
+
+.barre-remplissage {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.barre-remplissage.disponible {
+  background-color: #28a745;
+}
+
+.barre-remplissage.complet {
+  background-color: #dc3545;
+}
+
+.capacite-texte {
+  color: #495057;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.places-restantes {
+  color: #28a745;
+}
+
+.evenement-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.btn-details, .btn-inscrire, .btn-complet, .btn-inscrit, .btn-attente, .btn-termine {
+  padding: 0.7rem 1rem;
+  border-radius: 4px;
+  font-weight: 600;
   text-align: center;
-  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 40px;
+  transition: all 0.3s ease;
 }
 
-.auth-container a {
-  color: var(--primary-color);
-  font-weight: bold;
+.btn-details {
+  background-color: var(--secondary-color);
+  color: white;
   text-decoration: none;
 }
 
-.auth-container a:hover {
-  text-decoration: underline;
+.btn-details:hover {
+  background-color: var(--primary-color);
+  color: white;
+  text-decoration: none;
 }
 
-/* Game Detail */
+.btn-inscrire {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-inscrire:hover {
+  background-color: var(--secondary-color);
+  color: white;
+  text-decoration: none;
+}
+
+.btn-complet {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-inscrit {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-attente {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.btn-termine {
+  background-color: #6c757d;
+  color: white;
+  cursor: default;
+}
+
+/* ===================================
+   CSS SPÉCIFIQUE À EVENEMENT-DETAIL.PHP
+   =================================== */
+
+.evenement-detail {
+  padding-top: 100px;
+  background-color: var(--light-bg);
+  min-height: calc(100vh - 100px);
+}
+
+.evenement-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.evenement-hero {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 3rem;
+  overflow: hidden;
+  border: 1px solid #e6ddd0;
+}
+
+.evenement-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.evenement-header .evenement-titre {
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  color: white;
+}
+
+.evenement-date-duree {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.evenement-statut {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.statut-disponible {
+  background-color: #28a745;
+}
+
+.statut-complet {
+  background-color: #dc3545;
+}
+
+.statut-termine {
+  background-color: #6c757d;
+}
+
+.evenement-content {
+  padding: 3rem 2rem;
+}
+
+.evenement-info-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.evenement-description h3 {
+  font-family: "Playfair Display", serif;
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.evenement-description p {
+  line-height: 1.8;
+  font-size: 1.1rem;
+  color: var(--dark-text);
+  margin-bottom: 1.5rem;
+}
+
+.evenement-meta {
+  background-color: var(--light-bg);
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #e6ddd0;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.meta-item i {
+  color: var(--primary-color);
+  width: 20px;
+  text-align: center;
+}
+
+.meta-item:last-child {
+  margin-bottom: 0;
+}
+
+.capacite-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--accent-color);
+}
+
+.capacite-titre {
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.progress-bar {
+  height: 12px;
+  background-color: #e9ecef;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.progress-fill.disponible {
+  background-color: #28a745;
+}
+
+.progress-fill.complet {
+  background-color: #dc3545;
+}
+
+.capacite-details {
+  color: #495057;
+  font-weight: 500;
+}
+
+.section-title {
+  font-family: "Playfair Display", serif;
+  color: var(--primary-color);
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid var(--accent-color);
+  padding-bottom: 0.5rem;
+}
+
+.jeux-grid.single-game {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+.jeux-grid.single-game .jeu-card {
+  max-width: 600px;
+  width: 100%;
+}
+
+.jeux-grid.single-game .jeu-image,
+.jeux-grid.single-game .jeu-no-image {
+  height: 400px;
+}
+
+.jeux-grid.two-games {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.jeux-grid.multiple-games {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.jeu-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e6ddd0;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.jeu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.jeu-image {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.jeu-image:hover {
+  transform: scale(1.02);
+}
+
+.jeu-no-image {
+  width: 100%;
+  height: 240px;
+  background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 2px dashed #ddd;
+}
+
+.jeu-no-image i {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.jeu-no-image span {
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.jeu-titre {
+  font-family: "Playfair Display", serif;
+  color: var(--primary-color);
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.jeu-description {
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.single-game .jeu-titre {
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.single-game .jeu-description {
+  font-size: 1.1rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.single-game .jeu-card {
+  padding: 2.5rem;
+  min-height: auto;
+}
+
+.inscription-section {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e6ddd0;
+}
+
+.inscription-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: var(--dark-text);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  background-color: var(--light-bg);
+  color: var(--dark-text);
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
+}
+
+.preferences-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.preference-item {
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.preference-item:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 5px rgba(139, 69, 19, 0.1);
+}
+
+.preference-item.selected {
+  border-color: var(--primary-color);
+  background-color: rgba(139, 69, 19, 0.05);
+}
+
+.preference-checkbox {
+  margin-right: 0.5rem;
+}
+
+.preference-label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-weight: normal;
+}
+
+.preference-nom {
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 0.3rem;
+}
+
+.preference-description {
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.3;
+}
+
+.preferences-counter {
+  text-align: center;
+  font-weight: bold;
+  color: var(--primary-color);
+  padding: 0.8rem;
+  background: rgba(139, 69, 19, 0.1);
+  border-radius: 5px;
+  border: 1px solid rgba(139, 69, 19, 0.2);
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.preferences-counter.limit-reached {
+  color: #dc3545;
+  background: rgba(220, 53, 69, 0.1);
+  border-color: rgba(220, 53, 69, 0.2);
+}
+
+.btn-inscription {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-inscription:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-retour {
+  display: inline-block;
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.btn-retour:hover {
+  background-color: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.status-inscrit {
+  background-color: #28a745;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.status-attente {
+  background-color: #ffc107;
+  color: #212529;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.status-non-connecte {
+  background-color: #6c757d;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.status-complet {
+  background-color: #dc3545;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* ===================================
+   CSS SPÉCIFIQUE À JEU-DETAIL.PHP
+   =================================== */
+
 .jeu-detail-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -871,7 +1607,7 @@ footer {
   transform: scale(1.05);
 }
 
-.jeu-no-image {
+.jeu-main-image.jeu-no-image {
   width: 100%;
   max-width: 400px;
   height: 300px;
@@ -885,7 +1621,7 @@ footer {
   border: 2px dashed #ddd;
 }
 
-.jeu-no-image i {
+.jeu-main-image.jeu-no-image i {
   font-size: 3rem;
   margin-bottom: 1rem;
 }
@@ -918,35 +1654,21 @@ footer {
   font-size: 1.1rem;
 }
 
-.jeu-meta-item i,
-.ressource-icon {
+.jeu-meta-item i {
   color: var(--primary-color);
   width: 20px;
   text-align: center;
-}
-
-.ressource-icon {
-  font-size: 2rem;
-  min-width: 40px;
 }
 
 .jeu-description-courte {
   flex-grow: 1;
 }
 
-.jeu-description-courte h3,
-.jeu-description-longue-inline h4 {
+.jeu-description-courte h3 {
   font-family: "Playfair Display", serif;
   color: var(--secondary-color);
   margin-bottom: 1rem;
-}
-
-.jeu-description-courte h3 {
   font-size: 1.4rem;
-}
-
-.jeu-description-longue-inline h4 {
-  font-size: 1.3rem;
 }
 
 .jeu-description-courte p {
@@ -954,22 +1676,6 @@ footer {
   font-size: 1.1rem;
   color: var(--dark-text);
   margin-bottom: 1.5rem;
-}
-
-.jeu-description-longue-inline {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 2px solid var(--accent-color);
-}
-
-.description-content {
-  line-height: 1.8;
-  font-size: 1.05rem;
-  color: var(--dark-text);
-}
-
-.description-content p {
-  margin-bottom: 1rem;
 }
 
 .content-section {
@@ -990,174 +1696,35 @@ footer {
   padding-bottom: 0.5rem;
 }
 
-.ressources-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+.jeu-regles .content-section {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e6ddd0;
 }
 
-.ressource-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.5rem;
-  background-color: var(--light-bg);
-  border-radius: 8px;
-  border: 1px solid var(--accent-color);
-  transition: all 0.3s ease;
-}
-
-.ressource-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-color: var(--primary-color);
-}
-
-.ressource-info {
-  flex: 1;
-}
-
-.ressource-info h4 {
-  margin-bottom: 0.3rem;
-  color: var(--secondary-color);
-  font-size: 1.1rem;
-}
-
-.ressource-type {
-  color: #666;
-  font-size: 0.9rem;
-  text-transform: capitalize;
-}
-
-.ressource-link {
+.jeu-regles .content-section h2 {
+  font-family: "Playfair Display", serif;
   color: var(--primary-color);
-  font-size: 1.2rem;
-  text-decoration: none;
-  transition: color 0.3s;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 3px solid var(--accent-color);
+  padding-bottom: 0.5rem;
 }
 
-.ressource-link:hover {
-  color: var(--secondary-color);
+.regles-content {
+  line-height: 1.8;
+  font-size: 1.05rem;
+  color: var(--dark-text);
+  text-align: justify;
 }
 
+.regles-content p {
+  margin-bottom: 1rem;
+}
 
-/* pour inscription.php */
-    .auth-container {
-        max-width: 700px;
-        margin: 0 auto;
-    }
-
-    .event-info1 {
-        background-color: #e9ecef;
-        border: 1px solid #dee2e6;
-        border-radius: 5px;
-        padding: 15px;
-        margin-top: 10px;
-        display: none;
-    }
-
-    .event-info1.show {
-        display: block;
-    }
-
-    .capacity-info {
-        color: #28a745;
-        font-weight: bold;
-    }
-
-    option:disabled {
-        color: #999;
-    }
-
-    .jeux-selection {
-        margin: 15px 0;
-    }
-
-    .jeux-info {
-        color: #666;
-        font-size: 14px;
-        margin-bottom: 10px;
-        font-style: italic;
-    }
-
-    .jeux-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 10px;
-        margin-bottom: 10px;
-    }
-
-    .jeu-item {
-        background: white;
-        border: 2px solid #e9ecef;
-        border-radius: 8px;
-        padding: 12px;
-        transition: all 0.3s ease;
-    }
-
-    .jeu-item:hover {
-        border-color: #007bff;
-        box-shadow: 0 2px 5px rgba(0,123,255,0.1);
-    }
-
-    .jeu-item.selected {
-        border-color: #007bff;
-        background-color: #f8f9ff;
-    }
-
-    .jeu-checkbox {
-        width: auto;
-        margin-right: 8px;
-    }
-
-    .jeu-label {
-        cursor: pointer;
-        display: block;
-        margin: 0;
-        font-weight: normal;
-    }
-
-    .jeu-label strong {
-        display: block;
-        color: #333;
-        margin-bottom: 5px;
-    }
-
-    .jeu-description {
-        display: block;
-        font-size: 12px;
-        color: #666;
-        line-height: 1.3;
-    }
-
-    .jeux-counter {
-        text-align: center;
-        font-weight: bold;
-        color: #007bff;
-        padding: 8px;
-        background: #f8f9ff;
-        border-radius: 5px;
-        border: 1px solid #e3f2fd;
-    }
-
-    .jeux-counter.limit-reached {
-        color: #dc3545;
-        background: #fff5f5;
-        border-color: #f5c6cb;
-    }
-
-    .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-        padding: 15px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        font-weight: bold;
-    }
-
-
-/* Styles pour les documents et vidéos en sections séparées */
 .document-item {
   display: flex;
   align-items: center;
@@ -1205,7 +1772,6 @@ footer {
   text-decoration: none;
 }
 
-/* Styles pour la vidéo */
 .video-container {
   margin-top: 20px;
 }
@@ -1283,56 +1849,525 @@ footer {
   margin-top: 0;
 }
 
-/* Modal pour les images */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.9);
+/* ===================================
+   CSS SPÉCIFIQUE À AUTH/CONFIRMATION-INSCRIPTION.PHP
+   =================================== */
+
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.modal-content {
-  position: relative;
-  margin: auto;
-  padding: 20px;
-  width: 90%;
-  max-width: 800px;
-  top: 50%;
-  transform: translateY(-50%);
-  text-align: center;
+.wrapper main {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
 }
 
-.modal-content img {
-  max-width: 100%;
-  max-height: 80vh;
+.confirmation-box {
+  background-color: white;
+  padding: 2rem;
   border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
 }
 
-.close {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  cursor: pointer;
+.confirmation-box h1 {
+  color: #8b4513;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
 }
 
-.close:hover {
-  color: #bbb;
+.confirmation-box p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
 }
 
-#modalTitle {
+.confirmation-box a {
+  background-color: #8b4513;
   color: white;
-  margin-top: 15px;
-  font-size: 1.2rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
 }
 
-/* Responsive */
+.confirmation-box a:hover {
+  background-color: #5d4037;
+}
+
+.wrapper footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #5d4037;
+  color: #fff8e1;
+}
+
+/* ===================================
+   CSS SPÉCIFIQUE À USER/MES-INSCRIPTIONS.PHP
+   =================================== */
+
+.mes-inscriptions {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.mes-inscriptions .page-content {
+  padding-top: 100px;
+  min-height: calc(100vh - 100px);
+  margin: 0;
+  width: 100vw;
+  box-sizing: border-box;
+}
+
+.mes-inscriptions h1 {
+  font-family: "Playfair Display", serif;
+  color: var(--primary-color);
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.mes-inscriptions h1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+.no-inscriptions {
+  text-align: center;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.no-inscriptions h3 {
+  color: var(--secondary-color);
+  margin-bottom: 1rem;
+}
+
+.no-inscriptions p {
+  color: var(--dark-text);
+  margin-bottom: 0;
+}
+
+.inscriptions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.inscription-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--accent-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.inscription-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-color: var(--primary-color);
+}
+
+.inscription-header {
+  background: var(--secondary-color);
+  color: var(--light-text);
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inscription-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-family: "Playfair Display", serif;
+}
+
+.status {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.status-en-attente {
+  background: #ff8c00;
+  color: white;
+  border: 1px solid #e67e00;
+}
+
+.status-validé {
+  background: #28a745;
+  color: white;
+  border: 1px solid #1e7e34;
+}
+
+.inscription-info {
+  padding: 1.5rem;
+  background-color: var(--light-bg);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.inscription-info p.description {
+  margin-bottom: 1rem;
+  color: var(--dark-text);
+  line-height: 1.6;
+}
+
+.date-info, .participants-info, .inscription-date {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  color: var(--dark-text);
+}
+
+.date-info i, .participants-info i, .inscription-date i {
+  margin-right: 0.8rem;
+  width: 16px;
+  color: var(--primary-color);
+}
+
+.duree {
+  font-style: italic;
+  margin-left: 0.5rem;
+  color: var(--secondary-color);
+}
+
+.preferences-jeux {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--accent-color);
+}
+
+.preferences-jeux h4 {
+  color: var(--secondary-color);
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  font-family: "Playfair Display", serif;
+}
+
+.jeux-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.jeu-tag {
+  background: var(--accent-color);
+  color: var(--dark-text);
+  padding: 0.3rem 0.8rem;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.no-preferences {
+  color: #666;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.inscription-actions {
+  padding: 1rem 1.5rem;
+  background: var(--secondary-color);
+  border-top: 1px solid var(--accent-color);
+}
+
+.btn-desinscription {
+  background-color: #dc3545;
+  color: var(--light-text);
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  font-family: "Playfair Display", serif;
+  letter-spacing: 1px;
+}
+
+.btn-desinscription:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ===================================
+   CSS POUR AUTH (COMMUN)
+   =================================== */
+
+.auth-container {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent-color);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.auth-container h1 {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.auth-container .form-group label {
+  font-weight: bold;
+  display: block;
+  margin-top: 1rem;
+}
+
+.auth-container .form-control {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.3rem;
+  background-color: var(--light-bg);
+}
+
+.auth-container .btn {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.8rem;
+}
+
+.auth-container p {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.auth-container a {
+  color: var(--primary-color);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.auth-container a:hover {
+  text-decoration: underline;
+}
+
+/* ===================================
+   CSS POUR INSCRIPTION (ÉVÉNEMENTS)
+   =================================== */
+
+.inscription-btn {
+  display: block;
+  width: fit-content;
+  margin: 0 auto 2rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  color: white;
+}
+
+.auth-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.event-info1 {
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 15px;
+  margin-top: 10px;
+  display: none;
+}
+
+.event-info1.show {
+  display: block;
+}
+
+.capacity-info {
+  color: #28a745;
+  font-weight: bold;
+}
+
+option:disabled {
+  color: #999;
+}
+
+.jeux-selection {
+  margin: 15px 0;
+}
+
+.jeux-info {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.jeux-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.jeu-item {
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.jeu-item:hover {
+  border-color: #007bff;
+  box-shadow: 0 2px 5px rgba(0,123,255,0.1);
+}
+
+.jeu-item.selected {
+  border-color: #007bff;
+  background-color: #f8f9ff;
+}
+
+.jeu-checkbox {
+  width: auto;
+  margin-right: 8px;
+}
+
+.jeu-label {
+  cursor: pointer;
+  display: block;
+  margin: 0;
+  font-weight: normal;
+}
+
+.jeu-label strong {
+  display: block;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.jeu-description {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  line-height: 1.3;
+}
+
+.jeux-counter {
+  text-align: center;
+  font-weight: bold;
+  color: #007bff;
+  padding: 8px;
+  background: #f8f9ff;
+  border-radius: 5px;
+  border: 1px solid #e3f2fd;
+}
+
+.jeux-counter.limit-reached {
+  color: #dc3545;
+  background: #fff5f5;
+  border-color: #f5c6cb;
+}
+
+/* ===================================
+   ANIMATIONS
+   =================================== */
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0) translateX(-50%);
+  }
+  40% {
+    transform: translateY(-20px) translateX(-50%);
+  }
+  60% {
+    transform: translateY(-10px) translateX(-50%);
+  }
+}
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* ===================================
+   UTILITAIRES
+   =================================== */
+
+.text-center { text-align: center; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+.p-1 { padding: 0.5rem; }
+.p-2 { padding: 1rem; }
+.p-3 { padding: 1.5rem; }
+.p-4 { padding: 2rem; }
+.d-none { display: none; }
+.d-block { display: block; }
+.d-flex { display: flex; }
+.justify-center { justify-content: center; }
+.align-center { align-items: center; }
+.text-primary { color: var(--primary-color); }
+.text-secondary { color: var(--secondary-color); }
+.text-muted { color: #666; }
+.bg-white { background-color: white; }
+.bg-light { background-color: var(--light-bg); }
+.border { border: 1px solid var(--accent-color); }
+.border-radius { border-radius: 4px; }
+.shadow { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+.shadow-lg { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
 @media (max-width: 1200px) {
   .content-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -1393,13 +2428,6 @@ footer {
     min-width: auto;
     width: 100%;
   }
-  .contact-container {
-    flex-direction: column;
-  }
-  .contact-info,
-  .contact-form-container {
-    min-width: 100%;
-  }
   .jeu-hero-content {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -1415,7 +2443,44 @@ footer {
   .content-section {
     padding: 1.5rem;
   }
-  .ressources-grid {
+  .evenement-container {
+    padding: 1rem;
+  }
+  .evenement-titre {
+    font-size: 2rem;
+  }
+  .evenement-header {
+    padding: 2rem 1rem;
+  }
+  .evenement-content {
+    padding: 2rem 1rem;
+  }
+  .evenement-info-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .jeux-grid.single-game .jeu-image,
+  .jeux-grid.single-game .jeu-no-image {
+    height: 300px;
+  }
+  .jeux-grid.two-games {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .jeux-grid.multiple-games {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .jeu-image, .jeu-no-image {
+    height: 200px;
+  }
+  .single-game .jeu-card {
+    padding: 2rem 1.5rem;
+  }
+  .single-game .jeu-titre {
+    font-size: 1.5rem;
+  }
+  .preferences-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -1432,21 +2497,6 @@ footer {
   }
   .section-title {
     font-size: 1.8rem;
-  }
-  .evenements-page main {
-    padding: 0.5rem;
-  }
-  .evenements-page main h1 {
-    font-size: 2rem;
-  }
-  .event {
-    padding: 1rem;
-  }
-  .tags {
-    flex-direction: column;
-  }
-  .tag, .places {
-    width: fit-content;
   }
   .page-content {
     padding-top: 80px;
@@ -1497,12 +2547,14 @@ footer {
   .content-section h2 {
     font-size: 1.6rem;
   }
-  .breadcrumb {
-    padding: 0.8rem;
-    font-size: 0.8rem;
+  .jeu-regles .content-section {
+    padding: 1.5rem;
   }
-  .ressource-item {
-    padding: 1rem;
+  .jeu-regles .content-section h2 {
+    font-size: 1.6rem;
+  }
+  .regles-content {
+    font-size: 1rem;
   }
   .btn-detail {
     font-size: 0.85rem;
@@ -1531,6 +2583,35 @@ footer {
   .document-icon {
     margin-right: 0;
     margin-bottom: 10px;
+  }
+  .filtres-ligne {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .filtre-select, .recherche-input, .btn-filtrer, .jeux-dropdown {
+    width: 100%;
+    min-width: auto;
+  }
+  .evenement-carte {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  .evenement-date {
+    min-width: auto;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+  .evenement-actions {
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  .btn-details, .btn-inscrire, .btn-complet, .btn-inscrit, .btn-attente, .btn-termine {
+    flex: 1;
+    max-width: 120px;
   }
 }
 
@@ -1562,13 +2643,6 @@ footer {
     margin: 1rem;
     padding: 1.5rem;
   }
-  .contact-container {
-    padding: 1rem;
-  }
-  .contact-info,
-  .contact-form-container {
-    padding: 1.5rem;
-  }
   .jeu-title {
     font-size: 1.5rem;
   }
@@ -1581,16 +2655,11 @@ footer {
   .content-section h2 {
     font-size: 1.4rem;
   }
-  .description-content {
-    font-size: 1rem;
+  .jeu-regles .content-section {
+    padding: 1.2rem;
   }
-  .ressource-item {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.8rem;
-  }
-  .ressource-info h4 {
-    margin-bottom: 0.2rem;
+  .jeu-regles .content-section h2 {
+    font-size: 1.4rem;
   }
   .btn-detail {
     font-size: 0.8rem;
@@ -1602,71 +2671,38 @@ footer {
     align-items: flex-start;
     gap: 0.3rem;
   }
-  .game-tag {
+  .game-year,
+  .game-type {
     font-size: 0.75rem;
   }
-}
-
-/* Utilities */
-.text-center { text-align: center; }
-.mb-1 { margin-bottom: 0.5rem; }
-.mb-2 { margin-bottom: 1rem; }
-.mb-3 { margin-bottom: 1.5rem; }
-.mb-4 { margin-bottom: 2rem; }
-.mt-1 { margin-top: 0.5rem; }
-.mt-2 { margin-top: 1rem; }
-.mt-3 { margin-top: 1.5rem; }
-.mt-4 { margin-top: 2rem; }
-.p-1 { padding: 0.5rem; }
-.p-2 { padding: 1rem; }
-.p-3 { padding: 1.5rem; }
-.p-4 { padding: 2rem; }
-.d-none { display: none; }
-.d-block { display: block; }
-.d-flex { display: flex; }
-.justify-center { justify-content: center; }
-.align-center { align-items: center; }
-.text-primary { color: var(--primary-color); }
-.text-secondary { color: var(--secondary-color); }
-.text-muted { color: #666; }
-.bg-white { background-color: white; }
-.bg-light { background-color: var(--light-bg); }
-.border { border: 1px solid var(--accent-color); }
-.border-radius { border-radius: 4px; }
-.shadow { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
-.shadow-lg { box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); }
-
-/* Animations */
-.fade-in {
-  animation: fadeIn 0.5s ease-in;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0) translateX(-50%);
+  .jeu-image, .jeu-no-image {
+    height: 180px;
   }
-  40% {
-    transform: translateY(-20px) translateX(-50%);
+  .jeux-grid.single-game .jeu-image,
+  .jeux-grid.single-game .jeu-no-image {
+    height: 250px;
   }
-  60% {
-    transform: translateY(-10px) translateX(-50%);
+  .jeu-card {
+    padding: 1rem;
+  }
+  .single-game .jeu-card {
+    padding: 1.5rem;
+  }
+  .jeu-titre {
+    font-size: 1.1rem;
+  }
+  .single-game .jeu-titre {
+    font-size: 1.3rem;
+  }
+  .jeu-description {
+    font-size: 0.9rem;
   }
 }
 
-.hover-scale {
-  transition: transform 0.3s ease;
-}
+/* ===================================
+   PRINT
+   =================================== */
 
-.hover-scale:hover {
-  transform: scale(1.05);
-}
-
-/* Print */
 @media print {
   header,
   footer,
@@ -1689,4 +2725,3 @@ footer {
     border: 1px solid #ccc !important;
   }
 }
-

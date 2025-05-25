@@ -26,75 +26,9 @@ if (isset($_GET['email'])) {
     <meta charset="UTF-8">
     <title>Confirmation - Pistache</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
-            margin: 0;
-            font-family: 'Playfair Display', serif;
-            background-color: #f5f5dc;
-            color: #3e2723;
-        }
-
-        .wrapper {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        main {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem 1rem;
-        }
-
-        .confirmation-box {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .confirmation-box h1 {
-            color: #8b4513;
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-
-        .confirmation-box p {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .confirmation-box a {
-            background-color: #8b4513;
-            color: white;
-            padding: 0.7rem 1.5rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-        }
-
-        .confirmation-box a:hover {
-            background-color: #5d4037;
-        }
-
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #5d4037;
-            color: #fff8e1;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
 <div class="wrapper">
