@@ -26,9 +26,6 @@ try {
         case 'disponible':
             $where_conditions[] = "(SELECT COALESCE(SUM(1 + COALESCE(nb_accompagnant, 0)), 0) FROM inscription WHERE id_evenement = e.id_evenement AND status = 'validé') < e.capacite_max";
             break;
-        case 'termine':
-            $where_conditions[] = "e.date_debut < CURDATE()";
-            break;
         case 'actif':
             $where_conditions[] = "e.date_debut >= CURDATE()";
             break;
@@ -342,7 +339,6 @@ include_once 'includes/header.php';
                                 <option value="actif" <?= $filtre_statut === 'actif' ? 'selected' : '' ?>>À venir</option>
                                 <option value="disponible" <?= $filtre_statut === 'disponible' ? 'selected' : '' ?>>Places disponibles</option>
                                 <option value="complet" <?= $filtre_statut === 'complet' ? 'selected' : '' ?>>Complets</option>
-                                <option value="termine" <?= $filtre_statut === 'termine' ? 'selected' : '' ?>>Terminés</option>
                             </select>
                         </div>
 
@@ -454,16 +450,6 @@ include_once 'includes/header.php';
     </main>
 
     <script>
-        // Détecter rafraîchissement et reset filtres
-        window.addEventListener('beforeunload', () => sessionStorage.setItem('pageRefreshed', 'true'));
-        window.addEventListener('load', function() {
-            if (sessionStorage.getItem('pageRefreshed') === 'true') {
-                sessionStorage.removeItem('pageRefreshed');
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.toString()) window.location.href = window.location.pathname;
-            }
-        });
-
         let jeuxDropdownOpen = false;
 
         function toggleJeuxDropdown(event) {
