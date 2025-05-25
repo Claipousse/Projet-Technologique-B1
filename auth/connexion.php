@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/config/config.php');
+require_once(__DIR__ . '/../config/config.php');
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -24,9 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["prenom"] = $utilisateur["prenom"];
 
         if ($utilisateur["role"] == "admin") {
-            header("Location: admin/index.php"); // tableau de bord admin
+            header("Location: ../admin/index.php"); // tableau de bord admin
         } else {
-            header("Location: index.php"); //  page d'accueil
+            header("Location: ../index.php"); //  page d'accueil
         }
 
         exit();
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<?php include("includes/header.php"); ?>
+<?php include("../includes/header.php"); ?>
 
     <div class="page-content">
         <main>
@@ -70,4 +70,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </main>
     </div>
 
-<?php include("includes/footer.php"); ?>
+<?php include("../includes/footer.php"); ?>

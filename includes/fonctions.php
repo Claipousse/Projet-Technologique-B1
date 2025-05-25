@@ -7,6 +7,20 @@ est présente.*/
 
 require_once __DIR__ . "/../config/config.php";
 
+// Fonction pour déterminer le chemin de base selon la profondeur
+function getBasePath() {
+    // Récupérer le chemin du script actuel
+    $scriptPath = $_SERVER['SCRIPT_NAME'];
+
+    // Si on est dans un sous-dossier du projet (auth/ ou user/)
+    if (strpos($scriptPath, '/auth/') !== false || strpos($scriptPath, '/user/') !== false) {
+        return '../';
+    } else {
+        // On est à la racine du projet, pas de préfixe nécessaire
+        return '';
+    }
+}
+
 /* Genère une alerte HTML à afficher, $message: message à afficher, $type: success, danger, warning */
 function alerte($message, $type = 'info') {
     return '<div class="alert alert-' . $type . '" role="alert">
@@ -400,7 +414,7 @@ function desinscrireUtilisateur($id_inscription, $id_utilisateur) {
 
         return [
             'success' => true,
-            'message' => "Vous avez été désinscrit avec succès de l'événement \"" . htmlspecialchars($inscription['titre'])
+            'message' => "Vous avez été désinscrit avec succès de l'événement \"" . $inscription['titre'] . "\"."
         ];
 
     } catch (Exception $e) {

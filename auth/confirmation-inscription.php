@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/config/config.php');
+require_once(__DIR__ . '/../config/config.php');
 $conn = connexionBDD();
 
 $prenom = null;
@@ -99,7 +99,7 @@ if (isset($_GET['email'])) {
 <body>
 <div class="wrapper">
 
-    <?php include_once 'includes/header.php'; ?>
+    <?php include_once '../includes/header.php'; ?>
 
     <main>
         <div class="confirmation-box">
@@ -107,11 +107,11 @@ if (isset($_GET['email'])) {
             <?php if ($prenom): ?>
                 <p>Bienvenue, <?= htmlspecialchars($prenom) ?> !</p>
             <?php endif; ?>
-            <a href="index.php">Retour à l'accueil</a>
+            <a href="../index.php">Retour à l'accueil</a>
         </div>
     </main>
 
-    <?php include_once 'includes/footer.php'; ?>
+    <?php include_once '../includes/footer.php'; ?>
 
 </div>
 </body>

@@ -5,7 +5,7 @@ require_once __DIR__ . '/includes/fonctions.php';
 // Traitement de l'inscription
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'inscription') {
     if (!estConnecte()) {
-        redirigerAvecMessage('connexion.php', 'Vous devez être connecté pour vous inscrire.', 'error');
+        redirigerAvecMessage('auth/connexion.php', 'Vous devez être connecté pour vous inscrire.', 'error');
     }
 
     $id_evenement = (int)($_POST['id_evenement'] ?? 0);
@@ -850,7 +850,7 @@ include_once 'includes/header.php';
                         <i class="fas fa-user-lock"></i>
                         Vous devez être connecté pour vous inscrire à cet événement.
                         <br><br>
-                        <a href="connexion.php" class="btn-inscription">Se connecter</a>
+                        <a href="auth/connexion.php" class="btn-inscription">Se connecter</a>
                     </div>
 
                 <?php elseif ($evenement['est_termine']): ?>

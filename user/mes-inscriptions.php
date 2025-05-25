@@ -1,6 +1,6 @@
 <?php
-require_once 'config/config.php';
-require_once 'includes/fonctions.php';
+require_once '../config/config.php';
+require_once '../includes/fonctions.php';
 
 // Vérifier si l'utilisateur est connecté
 if (!estConnecte()) {
@@ -23,7 +23,7 @@ try {
     $inscriptions = [];
 }
 
-include 'includes/header.php';
+include '../includes/header.php';
 ?>
 
     <main class="page-content">
@@ -117,7 +117,7 @@ include 'includes/header.php';
                             </div>
 
                             <div class="inscription-actions">
-                                <form method="POST" action="desinscription.php" style="display: inline;" onsubmit="return confirmerDesinscription('<?php echo htmlspecialchars($inscription['titre'], ENT_QUOTES); ?>')">
+                                <form method="POST" action="desinscription.php" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir vous désinscrire de cet événement ?')">
                                     <input type="hidden" name="id_inscription" value="<?php echo $inscription['id_inscription']; ?>">
                                     <button type="submit" class="btn-desinscription">
                                         <i class="fas fa-times"></i> Se désinscrire
@@ -347,10 +347,4 @@ include 'includes/header.php';
 
     </style>
 
-    <script>
-        function confirmerDesinscription(titreEvenement) {
-            return confirm('Êtes-vous sûr de vouloir vous désinscrire de l\'événement "' + titreEvenement + '" ?');
-        }
-    </script>
-
-<?php include 'includes/footer.php'; ?>
+<?php include '../includes/footer.php'; ?>

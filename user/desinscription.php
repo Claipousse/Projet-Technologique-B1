@@ -1,10 +1,10 @@
 <?php
-require_once 'config/config.php';
-require_once 'includes/fonctions.php';
+require_once '../config/config.php';
+require_once '../includes/fonctions.php';
 
 // Vérifier si l'utilisateur est connecté
 if (!estConnecte()) {
-    redirigerAvecMessage('connexion.php', 'Vous devez être connecté pour effectuer cette action.', 'warning');
+    redirigerAvecMessage('../auth/connexion.php', 'Vous devez être connecté pour effectuer cette action.', 'warning');
 }
 
 // Vérifier si la requête est en POST et contient l'ID d'inscription
@@ -27,4 +27,3 @@ try {
 } catch (Exception $e) {
     redirigerAvecMessage('mes-inscriptions.php', 'Erreur lors de la désinscription : ' . $e->getMessage(), 'danger');
 }
-?>
