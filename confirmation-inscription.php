@@ -1,22 +1,22 @@
 <?php
-session_start();
 require_once(__DIR__ . '/config/config.php');
 $conn = connexionBDD();
 
 $prenom = null;
 if (isset($_GET['email'])) {
     $email = $_GET['email'];
-    $stmt = $conn->prepare("SELECT * FROM utilisateurs WHERE email = ?");
+    $stmt = $conn->prepare("SELECT * FROM utilisateur WHERE email = ?");
     $stmt->execute([$email]);
     $utilisateur = $stmt->fetch();
 
     if ($utilisateur) {
-        $_SESSION['utilisateur'] = [
-            'id' => $utilisateur['id'],
-            'nom' => $utilisateur['nom'],
-            'email' => $utilisateur['email']
-        ];
-        $prenom = explode(' ', trim($utilisateur['nom']))[0];
+        // Connecter automatiquement l'utilisateur qui vient de créer son compte
+        $_SESSION['id_utilisateur'] = $utilisateur['id_utilisateur'];
+        $_SESSION['role'] = $utilisateur['role'];
+        $_SESSION['nom'] = $utilisateur['nom'];
+        $_SESSION['prenom'] = $utilisateur['prenom'];
+
+        $prenom = $utilisateur['prenom'];
     }
 }
 ?>

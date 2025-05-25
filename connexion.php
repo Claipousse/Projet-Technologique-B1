@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <button type="submit" class="btn">Se connecter</button>
 
                     <p>
-                        Pas encore de compte ? <a href="creation_compte.php">Crée-en un ici</a>
+                        Pas encore de compte ? <a href="creation-compte.php">Crée-en un ici</a>
                     </p>
                 </form>
             </div>

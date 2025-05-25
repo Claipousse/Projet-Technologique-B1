@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $requete->execute([$nom, $prenom, $email, $mot_de_passe, $role]);
 
         // Redirection vers confirmation avec l’e-mail en GET (ajout unique)
-        header("Location: confirmation_inscription.php?email=" . urlencode($email));
+        header("Location: confirmation-inscription.php?email=" . urlencode($email));
         exit();
     }
 }
