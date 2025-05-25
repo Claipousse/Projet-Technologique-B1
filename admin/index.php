@@ -33,9 +33,9 @@ try {
                         ORDER BY date_debut DESC LIMIT 3");
     $derniersEvenements = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Pour chaque événement, récupérer le nombre d'inscrits
+    // Pour chaque événement, récupérer le nombre d'inscrits (avec accompagnants)
     foreach ($derniersEvenements as &$evenement) {
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM inscription WHERE id_evenement = ?");
+        $stmt = $pdo->prepare("SELECT COALESCE(SUM(1 + COALESCE(nb_accompagnant, 0)), 0) FROM inscription WHERE id_evenement = ? AND status = 'validé'");
         $stmt->execute([$evenement['id_evenement']]);
         $evenement['nb_inscrits'] = $stmt->fetchColumn();
     }

@@ -21,10 +21,10 @@ try {
     // Filtres
     switch ($filtre_statut) {
         case 'complet':
-            $where_conditions[] = "(SELECT COUNT(*) FROM inscription WHERE id_evenement = e.id_evenement AND status = 'validé') >= e.capacite_max";
+            $where_conditions[] = "(SELECT COALESCE(SUM(1 + COALESCE(nb_accompagnant, 0)), 0) FROM inscription WHERE id_evenement = e.id_evenement AND status = 'validé') >= e.capacite_max";
             break;
         case 'disponible':
-            $where_conditions[] = "(SELECT COUNT(*) FROM inscription WHERE id_evenement = e.id_evenement AND status = 'validé') < e.capacite_max";
+            $where_conditions[] = "(SELECT COALESCE(SUM(1 + COALESCE(nb_accompagnant, 0)), 0) FROM inscription WHERE id_evenement = e.id_evenement AND status = 'validé') < e.capacite_max";
             break;
         case 'termine':
             $where_conditions[] = "e.date_debut < CURDATE()";
@@ -55,7 +55,7 @@ try {
 
     // Requête simplifiée : événements avec inscriptions validées en haut
     $sql = "SELECT e.*, 
-                   (SELECT COUNT(*) FROM inscription WHERE id_evenement = e.id_evenement AND status = 'validé') as nb_inscrits,
+                   (SELECT COALESCE(SUM(1 + COALESCE(nb_accompagnant, 0)), 0) FROM inscription WHERE id_evenement = e.id_evenement AND status = 'validé') as nb_inscrits,
                    (SELECT GROUP_CONCAT(j.nom SEPARATOR ', ') FROM jeux_evenement je JOIN jeux j ON je.id_jeux = j.id_jeux WHERE je.id_evenement = e.id_evenement) as jeux_liste
             FROM evenement e 
             WHERE $where_clause 

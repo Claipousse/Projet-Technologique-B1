@@ -37,9 +37,9 @@ try {
         rediriger('liste.php');
     }
 
-    // Vérifier la capacité de l'événement
+    // Vérifier la capacité de l'événement (avec accompagnants)
     $stmt = $pdo->prepare("
-        SELECT COUNT(*) as nb_inscrits 
+        SELECT COALESCE(SUM(1 + COALESCE(nb_accompagnant, 0)), 0) as nb_inscrits 
         FROM inscription 
         WHERE id_evenement = ? AND status = 'validé'
     ");

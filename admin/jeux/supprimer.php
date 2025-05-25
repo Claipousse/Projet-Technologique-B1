@@ -65,4 +65,3 @@ try {
     }
     redirigerAvecMessage('liste.php', "Erreur lors de la suppression : " . $e->getMessage(), 'danger');
 }
-?>

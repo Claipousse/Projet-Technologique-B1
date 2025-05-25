@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
 
         // Vérifier les places disponibles (seulement les validés)
-        $stmt = $conn->prepare("SELECT COUNT(*) FROM inscription WHERE id_evenement = ? AND status = 'validé'");
+        $stmt = $conn->prepare("SELECT COALESCE(SUM(1 + COALESCE(nb_accompagnant, 0)), 0) FROM inscription WHERE id_evenement = ? AND status = 'validé'");
         $stmt->execute([$id_evenement]);
         $nb_inscrits = $stmt->fetchColumn();
 
@@ -85,7 +85,7 @@ try {
     // Récupérer l'événement avec les informations d'inscription (seulement les validés)
     $stmt = $conn->prepare("
         SELECT e.*,
-               (SELECT COUNT(*) FROM inscription WHERE id_evenement = e.id_evenement AND status = 'validé') as nb_inscrits
+           (SELECT COALESCE(SUM(1 + COALESCE(nb_accompagnant, 0)), 0) FROM inscription WHERE id_evenement = e.id_evenement AND status = 'validé') as nb_inscrits
         FROM evenement e 
         WHERE e.id_evenement = ?
     ");

@@ -26,9 +26,9 @@ try {
                                ORDER BY date_debut ASC
                                LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
 
-    // Pour chaque événement, récupérer le nombre d'inscrits validés uniquement
+    // Pour chaque événement, récupérer le nombre d'inscrits validés (avec accompagnants)
     foreach ($evenements as &$evenement) {
-        $sql_count = "SELECT COUNT(*) as nb_inscrits FROM inscription WHERE id_evenement = :id_evenement AND status = 'validé'";
+        $sql_count = "SELECT COALESCE(SUM(1 + COALESCE(nb_accompagnant, 0)), 0) as nb_inscrits FROM inscription WHERE id_evenement = :id_evenement AND status = 'validé'";
         $stmt_count = $conn->prepare($sql_count);
         $stmt_count->execute([':id_evenement' => $evenement['id_evenement']]);
         $result = $stmt_count->fetch(PDO::FETCH_ASSOC);
