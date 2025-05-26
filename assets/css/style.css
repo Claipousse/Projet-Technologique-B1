@@ -1591,6 +1591,47 @@ footer {
 }
 
 /* ===================================
+   CSS SPÉCIFIQUE À creation-compte.PHP
+   =================================== */
+
+.password-input-container {
+    position: relative;
+}
+
+.password-input-container .form-control {
+    padding-right: 40px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    font-size: 16px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.password-toggle:hover {
+    opacity: 1;
+}
+
+.password-mismatch {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.8);
+}
+
+.password-match {
+    border-color: #27ae60 !important;
+    box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.8);
+}
+
+
+/* ===================================
    CSS SPÉCIFIQUE À JEU-DETAIL.PHP
    =================================== */
 

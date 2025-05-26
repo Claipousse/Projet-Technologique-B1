@@ -288,3 +288,67 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form'); 
+    const motDePasse = document.getElementById('mot_de_passe');
+    const confirmerMotDePasse = document.getElementById('confirmer_mot_de_passe');
+    
+    function validatePasswords() {
+        if (confirmerMotDePasse.value === '') {
+            confirmerMotDePasse.classList.remove('password-match', 'password-mismatch');
+            return null; 
+        }
+        
+        if (motDePasse.value === confirmerMotDePasse.value) {
+            confirmerMotDePasse.classList.remove('password-mismatch');
+            confirmerMotDePasse.classList.add('password-match');
+            return true; // Mots de passe correspondent
+        } else {
+            confirmerMotDePasse.classList.remove('password-match');
+            confirmerMotDePasse.classList.add('password-mismatch');
+            return false; // Mots de passe ne correspondent pas
+        }
+    }
+    
+    motDePasse.addEventListener('input', validatePasswords);
+    confirmerMotDePasse.addEventListener('input', validatePasswords);
+    
+    form.addEventListener('submit', function(e) {
+        const passwordsValid = validatePasswords();
+        
+        if (passwordsValid === false) {
+            e.preventDefault(); // Empêche la soumission du formulaire
+            const errorDiv = document.createElement('div');
+            errorDiv.textContent = 'Les mots de passe ne correspondent pas';
+            errorDiv.style.color = 'red';
+            errorDiv.style.marginTop = '10px';
+            confirmerMotDePasse.parentNode.appendChild(errorDiv);
+
+            // Supprimer le message après 3 secondes
+           setTimeout(() => {
+         if (errorDiv.parentNode) {
+        errorDiv.parentNode.removeChild(errorDiv);
+          }
+         }, 3000);
+            
+            // focus sur le champ de confirmation
+            confirmerMotDePasse.focus();
+            return false;
+        }
+    });
+});
+
+function togglePassword(fieldId) {
+    const passwordField = document.getElementById(fieldId);
+    const toggleButton = passwordField.nextElementSibling;
+    const eyeIcon = toggleButton.querySelector('.eye-icon');
+    
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        eyeIcon.textContent = '🙈';
+    } else {
+        passwordField.type = 'password';
+        eyeIcon.textContent = '👁️';
+    }
+}

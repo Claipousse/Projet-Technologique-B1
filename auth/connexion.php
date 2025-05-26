@@ -57,7 +57,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <div class="form-group">
                         <label for="mot_de_passe" class="form-label">Mot de passe</label>
+                     <div class="password-input-container">
                         <input type="password" id="mot_de_passe" name="mot_de_passe" class="form-control" required>
+                        <button type="button" class="password-toggle" onclick="togglePassword('mot_de_passe')">
+                            <span class="eye-icon">👁️</span>
+                        </button>
+                      </div>                       
                     </div>
 
                     <button type="submit" class="btn">Se connecter</button>
