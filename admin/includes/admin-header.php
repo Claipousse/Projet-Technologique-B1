@@ -68,7 +68,7 @@ if (strpos($_SERVER['REQUEST_URI'], '/admin/jeux/') !== false ||
                                 <i class="bi bi-arrow-left"></i> Retour au site
                             </a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="<?php echo $basePath; ?>../deconnexion.php">
+                        <li><a class="dropdown-item" href="<?php echo $basePath; ?>../auth/deconnexion.php">
                                 <i class="bi bi-box-arrow-right"></i> Déconnexion
                             </a></li>
                     </ul>
